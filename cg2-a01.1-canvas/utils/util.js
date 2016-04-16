@@ -38,7 +38,7 @@ define(["jquery"], (function($) {
         e.obj = obj;
         return e;
 
-    }
+    };
 
     /**
      *   Display the message / object related to a fatal error
@@ -77,6 +77,13 @@ define(["jquery"], (function($) {
      */
     util.canvasPosition = function(event) {
         return [event.layerX,event.layerY];
+    };
+
+    util.pythagoras = function(a, b) {
+        // a^2 + b^2 = c^2
+        var aSquared = Math.pow(a[0] - b[0], 2);
+        var bSquared = Math.pow(a[1] - b[1], 2);
+        return Math.sqrt(aSquared + bSquared);
     };
 
     /* return the interface defined by this module */
