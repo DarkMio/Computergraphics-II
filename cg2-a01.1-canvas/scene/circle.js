@@ -35,7 +35,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         Circle.prototype.isHit = function(context, mousePos) {
             var mouseDistance = this.pythagoras(mousePos, this.anchor); // how far is the mouse?
             var radius = this.pythagoras(this.radius, this.anchor); // how long is the radius?
-            var margin = this.lineStyle.width;
+            var margin = this.lineStyle.width + 2; // add a bit for convenience
             return radius - margin <= mouseDistance && radius + margin > mouseDistance; // pos within radius ± margin
         };
 
