@@ -61,7 +61,6 @@ define(["jquery", "Line", "Circle", "Point"],
              *  @return : [color, [posX, posY], radius, lineWidth]
              */
             var collectData = function() {
-                var cont = this;
                 var color = $("#boxEnableColor").is(":checked") ? $("#fieldColor").val() : randomColor();
                 var posX = $("#boxEnablePosX").is(":checked") ? $("#fieldPosX").val() : randomX();
                 var posY = $("#boxEnablePosY").is(":checked") ? $("#fieldPosY").val() : randomY();
@@ -101,15 +100,21 @@ define(["jquery", "Line", "Circle", "Point"],
                 radiusY = anchor[1] - radiusY;
                 return [radiusX, radiusY];
             };
+
+
             /*
              * event handler for "new line button".
              */
             $("#btnNewLine").click(
                 (function() {
                     sceneBuilder(function (style, position, radius) {
-                        radius = radius || Math.min(randomX(), randomY());
-                        var randomRadius = jumpPointRadius(position, radius);
-                        return new Line(position, randomRadius, style);
+                        var lineRadius;
+                        if(radius <= 0) {
+                            lineRadius = [randomX(), randomY()];
+                        } else {
+                            lineRadius = jumpPointRadius(position, radius);
+                        }
+                        return new Line(position, lineRadius, style);
                     });
                 })
             );
@@ -133,6 +138,21 @@ define(["jquery", "Line", "Circle", "Point"],
                 })
             );
 
+
+            var valueOverride = function() {
+                var obj = sceneController.getSelectedObject();
+                if($('#boxEnableColor').is(':checked')) {
+                    obj.lineStyle['color'] = $('#fieldColor').val();
+                }
+                if($('#boxEnableLineWidth').is(':checked')) {
+                    obj.lineStyle['width'] = $('#fieldLineWidth').val();
+                }
+                if(is("Circle", obj) || is("Point", obj)) {
+                    obj.setRadius($('#fieldRadius').val());
+                }
+                sceneController.scene.draw(sceneController.context); // force redraw
+            };
+
             var selectorHelper = function() {
                 var obj = sceneController.getSelectedObject();
                 var posX, posY, width;
@@ -140,14 +160,19 @@ define(["jquery", "Line", "Circle", "Point"],
                     posX = obj.p0[0];
                     posY = obj.p0[1];
                     width = obj.lineStyle.width;
+
+                    $('#radius').hide();    // hide
+                    $('#fieldRadius').val(''); // and clear radius field
                 } else if(is("Circle", obj)) {
                     posX = obj.anchor[0];
                     posY = obj.anchor[1];
                     width = obj.lineStyle.width;
+                    $('#radius').show();
                 } else if(is("Point", obj)) {
                     posX = obj.anchor[0];
                     posY = obj.anchor[1];
                     width = obj.lineStyle.width;
+                    $('#radius').show();
                 } else {
                     console.error("Callback for selection encountered an unknown object. Good job, mate. It is: " + obj.constructor.name);
                     return;
@@ -157,8 +182,14 @@ define(["jquery", "Line", "Circle", "Point"],
                 $("#fieldLineWidth").val(width);
             };
 
+            // Change Listener for Canvas Selection
             sceneController.onSelection(selectorHelper);
             sceneController.onObjChange(selectorHelper);
+
+            // Change Listener for Field Changes
+            $("#fieldRadius").change(valueOverride);
+            $('#fieldColor').change(valueOverride);
+            $('#fieldLineWidth').change(valueOverride);
         };
 
 

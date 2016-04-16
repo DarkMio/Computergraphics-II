@@ -36,7 +36,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             var mouseDistance = this.pythagoras(mousePos, this.anchor); // how far is the mouse?
             var radius = this.pythagoras(this.radius, this.anchor); // how long is the radius?
             var margin = this.lineStyle.width;
-            return radius - margin < mouseDistance && radius + margin > mouseDistance; // pos within radius ± margin
+            return radius - margin <= mouseDistance && radius + margin > mouseDistance; // pos within radius ± margin
         };
 
         Circle.prototype.createDraggers = function() {
@@ -63,6 +63,14 @@ define(["util", "vec2", "Scene", "PointDragger"],
             draggers.push(new PointDragger(getAnchor, setAnchor, draggerStyle));
             draggers.push(new PointDragger(getRadius, setRadius, draggerStyle));
             return draggers;
+        };
+
+        Circle.prototype.setRadius = function(radius) {
+            if(radius <= 0) return; // truncate all empty requests.
+            var scale = radius / this.pythagoras(this.anchor, this.radius);
+            var localRadius = [this.radius[0] - this.anchor[0], this.radius[1] - this.anchor[1]];
+            var newRadius = [localRadius[0] * scale, localRadius[1] * scale];
+            this.radius = [this.anchor[0] + newRadius[0], this.anchor[1] + newRadius[1]];
         };
 
         return Circle;

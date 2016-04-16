@@ -48,6 +48,10 @@ define(["util", "vec2", "Scene", "PointDragger"],
             return [new PointDragger(getPos, setPos, draggerStyle)];
         };
 
+        Point.prototype.setRadius = function(radius) {
+            this.radius = radius;
+        };
+
         return Point;
     })
 );
