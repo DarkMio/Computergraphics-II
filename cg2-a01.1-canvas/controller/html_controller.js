@@ -66,10 +66,8 @@ define(["jquery", "Line", "Circle", "Point"],
                 var posY = $("#boxEnablePosY").is(":checked") ? $("#fieldPosY").val() : randomY();
                 var radius = $("#boxEnableRadius").is(":checked") ? $("#fieldRadius").val() : false;
                 var lineWidth = $("#boxEnableLineWidth").is(":checked") ? $("#fieldLineWidth").val() : randomWidth();
-                var data = [color || 10, [posX || 25, posY || 25], radius, Math.max(lineWidth, 1)];
-                console.log(data);
                 // today I'm lazy, tomorrow I'll hate me
-                return data;
+                return [color || 10, [posX || 25, posY || 25], radius, Math.max(lineWidth, 1)];
             };
 
             var is = function(type, obj) {
