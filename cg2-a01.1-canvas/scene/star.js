@@ -17,8 +17,6 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         Star.prototype.draw = function(context) {
-            console.log("innerRad: " + this.innerRadius + " | outerRad: " + this.outerRadius + " | anchor: " + this.anchor);
-
             var rotation = Math.PI / 2 * 3;
             var step = Math.PI / this.spikes;
             var x = this.anchor[0];
