@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point"],
-    (function($, Line, Circle, Point) {
+define(["jquery", "Line", "Circle", "Point", "Star"],
+    (function($, Line, Circle, Point, Star) {
         "use strict";
 
 
@@ -136,6 +136,14 @@ define(["jquery", "Line", "Circle", "Point"],
                 })
             );
 
+            $("#btnNewStar").click(
+                (function() {
+                    sceneBuilder(function (style, position, radius) {
+                        return new Star(position, randomY() / 3, randomY() / 3, style);
+                    });
+                })
+            );
+
 
             var valueOverride = function() {
                 var obj = sceneController.getSelectedObject();
@@ -153,30 +161,31 @@ define(["jquery", "Line", "Circle", "Point"],
 
             var selectorHelper = function() {
                 var obj = sceneController.getSelectedObject();
-                var posX, posY, width;
+                var pos, posY, width;
                 if(is("Line", obj)) {
-                    posX = obj.p0[0];
-                    posY = obj.p0[1];
+                    pos = obj.p0;
                     width = obj.lineStyle.width;
 
                     $('#radius').hide();    // hide
                     $('#fieldRadius').val(''); // and clear radius field
                 } else if(is("Circle", obj)) {
-                    posX = obj.anchor[0];
-                    posY = obj.anchor[1];
+                    pos = obj.anchor;
                     width = obj.lineStyle.width;
                     $('#radius').show();
                 } else if(is("Point", obj)) {
-                    posX = obj.anchor[0];
-                    posY = obj.anchor[1];
+                    pos = obj.anchor;
                     width = obj.lineStyle.width;
                     $('#radius').show();
+                } else if(is("Star", obj)) {
+                    pos = obj.anchor;
+                    width = obj.lineStyle.width;
+                    $('#radius').hide();
                 } else {
                     console.error("Callback for selection encountered an unknown object. Good job, mate. It is: " + obj.constructor.name);
                     return;
                 }
-                $("#fieldPosX").val(posX);
-                $("#fieldPosY").val(posY);
+                $("#fieldPosX").val(pos[0]);
+                $("#fieldPosY").val(pos[1]);
                 $("#fieldLineWidth").val(width);
             };
 
