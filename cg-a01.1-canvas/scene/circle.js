@@ -16,7 +16,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         Circle.prototype.draw = function (context){
 
             context.beginPath();
-            context.arc(this.center[0], this.center[1], this.radius, 0, 2*Math.PI, false);
+            context.arc(this.center[0], this.center[1], Math.abs(this.radius), 0, 2*Math.PI, false);
             context.strokeStyle = this.style.color;
             context.lineWidth = this.style.width;
             context.stroke();
@@ -48,7 +48,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             };
             var setRadius = function(dragEvent) {
                 var pos = dragEvent.position;
-                _circle.radius = Math.abs(_circle.center[1] - pos[1]);
+                _circle.radius =_circle.center[1] - pos[1];
             };
 
             draggers.push(new PointDragger(getCenter, setCenter, draggerStyle));
