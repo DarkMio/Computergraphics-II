@@ -127,8 +127,6 @@ define(["jquery", "Line", "Circle", "Point"],
             };
             sceneController.onObjChange(xD);
             sceneController.onSelection(xD);
-
-            $('#fieldRadius').change(function(
             var hollaAtChoDolla = function(){
                 var obj = sceneController.getSelectedObject();
                 if (obj.radius != null || obj.radius != undefined){
@@ -136,6 +134,9 @@ define(["jquery", "Line", "Circle", "Point"],
                     sceneController.scene.draw(sceneController.context);
                 }
             };
+            $('#fieldRadius').change(hollaAtChoDolla());
+
+
         };
 
         // return the constructor function
