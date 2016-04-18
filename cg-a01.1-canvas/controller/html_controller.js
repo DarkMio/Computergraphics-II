@@ -109,6 +109,33 @@ define(["jquery", "Line", "Circle", "Point"],
             }));
 
 
+
+            var xD = function(){
+                var obj = sceneController.getSelectedObject();
+                var pos = obj.center || obj.p0;
+                var style = obj.style || obj.lineStyle;
+                var radius = obj.radius;
+                $('#fieldPosX').val(pos[0]);
+                $('#fieldPosY').val(pos[1]);
+                $('#fieldColor').val(style.color);
+                $('#fieldLineWidth').val(style.width);
+                if (radius != null || radius != undefined) {
+                    $('#fieldRadius').val(radius).show();
+                } else {
+                    $('#fieldRadius').hide();
+                }
+            };
+            sceneController.onObjChange(xD);
+            sceneController.onSelection(xD);
+
+            $('#fieldRadius').change(function(
+            var hollaAtChoDolla = function(){
+                var obj = sceneController.getSelectedObject();
+                if (obj.radius != null || obj.radius != undefined){
+                    obj.radius = $('#fieldRadius').val();
+                    sceneController.scene.draw(sceneController.context);
+                }
+            };
         };
 
         // return the constructor function

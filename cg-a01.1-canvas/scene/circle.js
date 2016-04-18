@@ -23,7 +23,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         Circle.prototype.isHit = function(context, mousePos){
-            var pos = this.getPos();
+            var pos = center;
             var dx = mousePos[0] - pos[0];
             var dy = mousePos[1] - pos[1];
             var r = this.radius;
