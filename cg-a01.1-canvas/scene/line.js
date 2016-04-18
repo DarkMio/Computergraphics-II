@@ -28,12 +28,12 @@ define(["util", "vec2", "Scene", "PointDragger"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var Line = function Line(point0, point1, lineStyle) {
-            /* don't spam my console, thanks.
+        var Line = function (point0, point1, lineStyle) {
+
             console.log("creating straight line from [" +
                 point0[0] + "," + point0[1] + "] to [" +
                 point1[0] + "," + point1[1] + "].");
-            */
+
             // draw style for drawing the line
             this.lineStyle = lineStyle || {width: "2", color: "#0000AA"};
 
@@ -66,7 +66,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
             // project point on line, get parameter of that projection point
             var t = vec2.projectPointOnLine(pos, this.p0, this.p1);
-            // console.log("t:", t); < don't spam my console, ty.
+            console.log("t:", t);
             // outside the line segment?
             if (t < 0.0 || t > 1.0) {
                 return false;

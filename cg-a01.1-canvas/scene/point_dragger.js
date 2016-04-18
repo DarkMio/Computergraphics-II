@@ -84,6 +84,7 @@ define(["util", "Scene"],
             if (this.drawStyle.fill) {
                 context.fill();
             }
+            ;
             context.stroke();
         };
 
