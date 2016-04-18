@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point"],
-    (function($, Line, Circle, Point) {
+define(["jquery", "Line", "Circle", "Point", "Rectangle"],
+    (function($, Line, Circle, Point, Rectangle) {
         "use strict";
 
         /*
@@ -105,8 +105,20 @@ define(["jquery", "Line", "Circle", "Point"],
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
                 sceneController.select(point); // this will also redraw
-
             }));
+            $('#btnNewRekt').click( (function(){
+                console.log("Rekt called");
+                var style = {
+                    width: Math.floor(Math.random()*3)+1,
+                    color: randomColor()
+                };
+
+                var rekt = new Rectangle ([randomX(), randomY()], [randomX(), randomY()],style);
+                scene.addObjects([rekt]);
+                sceneController.deselect();
+                sceneController.select(rekt);
+            }));
+
             var hollaAtChoDolla = function(){
                 var obj = sceneController.getSelectedObject();
                 if (obj.constructor.name == "Circle" || obj.constructor.name == "Point"){
@@ -117,7 +129,7 @@ define(["jquery", "Line", "Circle", "Point"],
             };
             var xD = function(){
                 var obj = sceneController.getSelectedObject();
-                var pos = obj.center || obj.p0;
+                var pos = obj.center || obj.p0 || obj.point0;
                 var style = obj.style || obj.style;
                 var radius = obj.radius;
                 $('#fieldPosX').val(pos[0]);

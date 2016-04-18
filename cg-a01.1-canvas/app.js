@@ -26,6 +26,7 @@ requirejs.config({
         "Line" : "./scene/line",
         "Circle" : "./scene/circle",
         "Point" : "./scene/point",
+        "Rectangle" : "./scene/rectangle",
         "PointDragger" : "./scene/point_dragger",
 
         "vec2" : "./math/vec2",
