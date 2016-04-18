@@ -37,14 +37,42 @@
 
       <div id="param_area" >
 
-        <h3>Create Objects:</h3>
-
-        <button id="btnNewLine"   type="button"   >New Line</button>
-          <button id="btnNewCircle" type = "button">New Circle</button>
-          <button id="btnNewPnt" type = "button">New Point</button>
-        <!-- add more here... -->
-
-    </div>
+          <h3>Create Objects:</h3>
+          <ul>
+              <li>
+                  <button id="btnNewLine"   type="button"   >New Line</button>
+              </li>
+              <li>
+                  <button id="btnNewCircle" type="button">New Circle</button>
+              </li>
+              <li>
+                  <button id="btnNewPnt" type="button">New Point</button>
+              </li>
+              <li>
+                  <button id="btnNewStar" type="button">New Star</button>
+              </li>
+          </ul>
+          <!-- add more here... -->
+          <h3>Parameters:</h3>
+          <ul>
+              <li id="line">
+                  <input type="checkbox" class="auto" id="boxEnableColor" title="Enable Colors?" checked>
+                  <input type="color" id="fieldColor" title="Select a color!">
+                  <input type="number" id="fieldLineWidth" title="Select a line width!" placeholder="Width">
+                  <input type="checkbox" class="auto" id="boxEnableLineWidth" title="Enable Line Width?" checked>
+              </li>
+              <li id="position">
+                  <input type="checkbox" class="auto" id="boxEnablePosX" title="Enable pos x parameter?" checked>
+                  <input type="number" id="fieldPosX" title="Position X" placeholder="Pos X">
+                  <input type="number" id="fieldPosY" title="Position Y" placeholder="Pos Y">
+                  <input type="checkbox" class="auto" id="boxEnablePosY" title="Enable pos x parameter?" checked>
+              </li>
+              <li id="radius">
+                  <input type="checkbox" class="auto" id="boxEnableRadius" title="Enable Radius?" checked>
+                  <input type="number" id="fieldRadius" title="Radius" placeholder="Radius">
+              </li>
+          </ul>
+      </div>
 
 
     <div style="float:clear;">
