@@ -99,7 +99,7 @@ define(["jquery", "Line", "Circle", "Point"],
                     color: randomColor()
                 };
 
-                var point = new Point( [randomX(),randomY()], style );
+                var point = new Point( [randomX(),randomY()], randomX()/10, style );
                 scene.addObjects([point]);
 
                 // deselect all objects, then select the newly created object
@@ -107,34 +107,35 @@ define(["jquery", "Line", "Circle", "Point"],
                 sceneController.select(point); // this will also redraw
 
             }));
-
-
-
+            var hollaAtChoDolla = function(){
+                var obj = sceneController.getSelectedObject();
+                if (obj.constructor.name == "Circle" || obj.constructor.name == "Point"){
+                    obj.radius = $('#fieldRadius').val();
+                }
+                obj.style.color = $('#fieldColor').val();
+                sceneController.scene.draw(sceneController.context);
+            };
             var xD = function(){
                 var obj = sceneController.getSelectedObject();
                 var pos = obj.center || obj.p0;
-                var style = obj.style || obj.lineStyle;
+                var style = obj.style || obj.style;
                 var radius = obj.radius;
                 $('#fieldPosX').val(pos[0]);
                 $('#fieldPosY').val(pos[1]);
                 $('#fieldColor').val(style.color);
                 $('#fieldLineWidth').val(style.width);
-                if (radius != null || radius != undefined) {
+                if (obj.constructor.name == "Circle" || obj.constructor.name == "Point") {
                     $('#fieldRadius').val(radius).show();
                 } else {
                     $('#fieldRadius').hide();
                 }
             };
+
+
             sceneController.onObjChange(xD);
             sceneController.onSelection(xD);
-            var hollaAtChoDolla = function(){
-                var obj = sceneController.getSelectedObject();
-                if (obj.radius != null || obj.radius != undefined){
-                    obj.radius = $('#fieldRadius').val();
-                    sceneController.scene.draw(sceneController.context);
-                }
-            };
-            $('#fieldRadius').change(hollaAtChoDolla());
+            $('#fieldRadius').change(hollaAtChoDolla);
+            $('#fieldColor').change(hollaAtChoDolla);
 
 
         };

@@ -5,7 +5,7 @@
 define(["util", "vec2", "Scene", "PointDragger"],
     (function (util, vec2, Scene, PointDragger) {
 
-        var Circle = function(center, radius, style){
+        var Circle = function Circle(center, radius, style){
 
             this.style = style || {width: "2", color: "#0000AA"};
             this.center = center || [20, 10];
@@ -38,15 +38,24 @@ define(["util", "vec2", "Scene", "PointDragger"],
             var _circle = this;
             var getCenter = function (){
                 return _circle.center;
-            }
+            };
+            var getRadius = function (){
+                var radius = _circle.center;
+                return [radius[0], radius[1] - _circle.radius];
+            };
             var setCenter = function (dragEvent){
                 _circle.center = dragEvent.position;
-            }
+            };
+            var setRadius = function(dragEvent) {
+                var pos = dragEvent.position;
+                _circle.radius = Math.abs(_circle.center[1] - pos[1]);
+            };
 
             draggers.push(new PointDragger(getCenter, setCenter, draggerStyle));
+            draggers.push(new PointDragger(getRadius, setRadius, draggerStyle));
 
             return draggers;
-        }
+        };
 
         return Circle;
     })

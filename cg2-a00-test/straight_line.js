@@ -10,7 +10,7 @@ define(["util", "scene", "dragger"],
      *  - context: result of Canvas.getContext("2d")
      *  - scene:   Scene object for redrawing the canvas
      *  - point0 and point: Vec2 objects representing the start and end point
-     *  - lineStyle: object defining width and color attributes for line drawing
+     *  - style: object defining width and color attributes for line drawing
      */ 
 
     StraightLine = function(context, scene, point0, point1, lineStyle) {
@@ -19,7 +19,7 @@ define(["util", "scene", "dragger"],
         this.context = context || fatalError("StraightLine2D: no context.");
         
         // draw style for drawing the line
-        this.lineStyle = lineStyle || { width: "2", color: "green" };
+        this.style = lineStyle || { width: "2", color: "green" };
 
         // convert to Vec2 just in case the points were given as arrays
         var p0 = new Vec2(point0[0],point0[1]);
@@ -47,8 +47,8 @@ define(["util", "scene", "dragger"],
         this.context.lineTo(this.cp[1].x,this.cp[1].y);
         
         // set drawing style
-        this.context.lineWidth = this.lineStyle.width;
-        this.context.strokeStyle = this.lineStyle.color;
+        this.context.lineWidth = this.style.width;
+        this.context.strokeStyle = this.style.color;
         
         // actually start drawing
         this.context.stroke(); 

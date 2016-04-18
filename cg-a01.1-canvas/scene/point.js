@@ -8,17 +8,18 @@
 define(["util", "vec2", "Scene", "PointDragger"],
     (function (util, vec2, Scene, PointDragger) {
 
-        var Point = function(center, style){
+        var Point = function Point(center, radius, style){
 
             this.style = style || {width: "2", color: "#0000AA"};
             this.center = center || [20, 10];
+            this.radius = radius || 10;
 
         };
 
         Point.prototype.draw = function (context){
 
             context.beginPath();
-            context.arc(this.center[0], this.center[1], 5, 0, 2*Math.PI, false);
+            context.arc(this.center[0], this.center[1], this.radius, 0, 2*Math.PI, false);
             context.strokeStyle = this.style.color;
             context.lineWidth = this.style.width;
             context.fillStyle = this.style.color;
