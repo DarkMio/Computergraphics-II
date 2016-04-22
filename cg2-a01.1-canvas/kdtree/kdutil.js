@@ -57,12 +57,16 @@ define([], (function() {
      * @param queryPoint
      */
     kdutil.linearSearch = function(pointList, queryPoint) {
-
-        // ===========================================
-        // TODO: implement linear search
-        // ===========================================
-
         var minIdx = 0;
+        var bestDist = 1000000000;
+        for(var i = 0; i < pointList.length; i++) {
+            var distance = kdutil.distance(queryPoint.center, pointList[i].center);
+            if(distance < bestDist) {
+                bestDist = distance;
+                minIdx = i;
+            }
+        }
+        
         return minIdx;
 
     };
@@ -96,9 +100,7 @@ define([], (function() {
             return a.center[dim] - b.center[dim];
         });
 
-        var half = Math.floor(values.length/2);
-
-        return half;
+        return Math.floor(values.length/2);
     };
 
     return kdutil;

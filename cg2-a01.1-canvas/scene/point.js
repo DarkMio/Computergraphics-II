@@ -7,7 +7,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
 
         var Point = function Point(anchor, radius, lineStyle) {
-            this.anchor = anchor;
+            this.center = anchor;
             this.radius = radius;
             this.lineStyle = lineStyle;
         };
@@ -22,7 +22,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         Point.prototype.draw = function(context) {
             context.beginPath();
             // Oh look, it has a builtin.
-            context.arc(this.anchor[0], this.anchor[1], this.radius, 0, 2 * Math.PI, true);
+            context.arc(this.center[0], this.center[1], this.radius, 0, 2 * Math.PI, true);
             context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
             context.fillStyle = this.lineStyle.color;
@@ -31,7 +31,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         Point.prototype.isHit = function(context, mousePos) {
-            var distance = this.pythagoras(mousePos, this.anchor);
+            var distance = this.pythagoras(mousePos, this.center);
             return distance <= this.radius;
         };
 
@@ -40,10 +40,10 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
             var _point = this;
             var getPos = function() {
-                return _point.anchor;
+                return _point.center;
             };
             var setPos = function(drag) {
-                _point.anchor = drag.position;
+                _point.center = drag.position;
             };
             return [new PointDragger(getPos, setPos, draggerStyle)];
         };

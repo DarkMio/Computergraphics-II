@@ -10,7 +10,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
         var Star = function Star(anchor, innerRadius, outerRadius, lineStyle) {
             this.spikes = 5;
-            this.anchor = anchor;
+            this.center = anchor;
             this.innerRadius = innerRadius;
             this.outerRadius = outerRadius;
             this.lineStyle = lineStyle;
@@ -19,8 +19,8 @@ define(["util", "vec2", "Scene", "PointDragger"],
         Star.prototype.draw = function(context) {
             var rotation = Math.PI / 2 * 3;
             var step = Math.PI / this.spikes;
-            var x = this.anchor[0];
-            var y = this.anchor[1];
+            var x = this.center[0];
+            var y = this.center[1];
 
             context.beginPath();
             context.moveTo(x, y - this.outerRadius);
@@ -28,14 +28,14 @@ define(["util", "vec2", "Scene", "PointDragger"],
             var flipFlop = [this.outerRadius, this.innerRadius];
             for(var i = 0; i < this.spikes; i++) {
                 for(var j = 0; j < 2; j++) {
-                    x = this.anchor[0] + Math.cos(rotation) * flipFlop[j];
-                    y = this.anchor[1] + Math.sin(rotation) * flipFlop[j];
+                    x = this.center[0] + Math.cos(rotation) * flipFlop[j];
+                    y = this.center[1] + Math.sin(rotation) * flipFlop[j];
                     context.lineTo(x, y);
                     rotation += step;
                 }
             }
 
-            context.lineTo(this.anchor[0], this.anchor[1] - this.outerRadius);
+            context.lineTo(this.center[0], this.center[1] - this.outerRadius);
             context.closePath();
             context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
@@ -43,7 +43,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         Star.prototype.isHit = function(context, pos) { // rectangle approximation #effort
-            var local = [Math.abs(this.anchor[0] - pos[0]), Math.abs(this.anchor[1] - pos[1])];
+            var local = [Math.abs(this.center[0] - pos[0]), Math.abs(this.center[1] - pos[1])];
             var max = Math.max(this.outerRadius, this.innerRadius);
             return local[1] < max && local[0] < max;
         };
@@ -55,29 +55,29 @@ define(["util", "vec2", "Scene", "PointDragger"],
             // create closure and callbacks for dragger
             var _star = this;
             var getAnchor = function () {
-                return _star.anchor;
+                return _star.center;
             };
             var setAnchor = function (dragEvent) {
-                _star.anchor =  dragEvent.position;
+                _star.center =  dragEvent.position;
 
                 // var distInner = dragEvent.position[1] - _star.innerRadius[1];
                 // _star.innerRadius = [dragEvent.position[1], (dragEvent.position[1] - distInner)];
             };
             
             var getInnerRadius = function() {
-                return [_star.anchor[0], _star.anchor[1] + _star.innerRadius];
+                return [_star.center[0], _star.center[1] + _star.innerRadius];
             };
 
             var setInnerRadius = function(dragEvent) {
-                _star.innerRadius = Math.abs(dragEvent.position[1] - _star.anchor[1]);
+                _star.innerRadius = Math.abs(dragEvent.position[1] - _star.center[1]);
             };
 
             var getOuterRadius = function() {
-                return [_star.anchor[0], _star.anchor[1] - _star.outerRadius];
+                return [_star.center[0], _star.center[1] - _star.outerRadius];
             };
 
             var setOuterRadius = function(dragEvent) {
-                _star.outerRadius = Math.abs(dragEvent.position[1] - _star.anchor[1]);
+                _star.outerRadius = Math.abs(dragEvent.position[1] - _star.center[1]);
             };
 
             draggers.push(new PointDragger(getAnchor, setAnchor, draggerStyle));

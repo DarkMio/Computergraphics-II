@@ -33,7 +33,63 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
              */
             this.build = function(pointList, dim, parent, isLeft) {
 
-                var node = undefined;
+                var node = new KdNode(dim);
+                var median = KdUtil.sortAndMedian(pointList, dim);
+                node.point = pointList[median];
+                pointList.splice(median, 1); // Tagged & Bagged!
+                
+                if(!parent) { // is root, unsorted
+                    var canvas = document.getElementById('drawing_area');
+                    node.bbox = new BoundingBox(0, 0, canvas.width, canvas.height, node.point, dim);
+                    console.log(canvas.height, canvas.width);
+                } else { // Warning: Unreadable code ahead
+                    // dim = 0 -> x, dim = 1 -> y
+                    if(dim) { // y axis, replace x axis
+                        if(isLeft) { // left side
+                            node.bbox = new BoundingBox(
+                                parent.bbox.xmin, parent.bbox.ymin,
+                                parent.point.center[0], parent.bbox.ymax,
+                                node.point, 1
+                            );
+                        } else { // right side
+                            node.bbox = new BoundingBox(
+                                parent.point.center[0], parent.bbox.ymin,
+                                parent.bbox.xmax, parent.bbox.ymax,
+                                node.point, 1
+                            );
+                        }
+                    } else { // x axis, replace y axis
+                        if(isLeft) { // left side
+                            node.bbox = new BoundingBox(
+                                parent.bbox.xmin, parent.bbox.ymin,
+                                parent.bbox.xmax, parent.point.center[1],
+                                node.point, 0
+                            );
+                        } else { // right side
+                            node.bbox = new BoundingBox(
+                                parent.bbox.xmin, parent.point.center[1],
+                                parent.bbox.xmax, parent.bbox.ymax,
+                                node.point, 0
+                            );
+                        }
+                    }
+                } // pyramid of doom: end
+
+                if (pointList.length > 0){
+                    var leftPoints = [];
+                    var rightPoints = [];
+                    for (var i = 0; i < pointList.length; i++){
+                        if(pointList[i].center[dim] < node.point.center[dim]){
+                            leftPoints.push(pointList[i]);
+                        }else{
+                            rightPoints.push(pointList[i]);
+                        }
+                    }
+
+                    // call build for left/right arrays
+                    if(leftPoints.length > 0) node.leftChild = this.build(leftPoints, 1 - dim, node, true);
+                    if(rightPoints.length > 0) node.rightChild = this.build(rightPoints, 1 - dim, node, false);
+                }
 
                 // ===========================================
                 // TODO: implement build tree
@@ -73,6 +129,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
             this.findNearestNeighbor = function(node, query, currentBest, nearestDistance, dim) {
 
                 if( !node ) {
+                    console.log("No node?");
                     return currentBest;
                 }
 

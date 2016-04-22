@@ -102,7 +102,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
 
             /**
              * Searches a random point within an anchors radius and returns a new position.
-             * @param anchor Original anchor of object
+             * @param anchor Original center of object
              * @param radius of how far away a new point should be found
              * @return *[] [x, y] of found position
              */
@@ -230,20 +230,19 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
                 sceneController.select(queryPoint);
 
                 console.log("query point: ", queryPoint.center);
-
                 ////////////////////////////////////////////////
                 // TODO: measure and compare timings of linear
                 //       and kd-nearest-neighbor search
                 ////////////////////////////////////////////////
-                var linearTiming;
-                var kdTiming;
 
+                console.time("linear search");
                 var minIdx = KdUtil.linearSearch(pointList, queryPoint);
-
+                console.timeEnd("linear search");
                 console.log("nearest neighbor linear: ", pointList[minIdx].center);
 
-                var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, 10000000, kdTree.root, 0);
-
+                console.time("kd search");
+                var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, kdTree.root, 10000000, 0);
+                console.timeEnd("kd search");
                 console.log("nearest neighbor kd: ", kdNearestNeighbor.point.center);
 
                 sceneController.select(pointList[minIdx]);
@@ -280,15 +279,15 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
                     $('#radius').hide();    // hide
                     $('#fieldRadius').val(''); // and hide radius field
                 } else if(is("Circle", obj)) {
-                    pos = obj.anchor;
+                    pos = obj.center;
                     width = obj.lineStyle.width;
                     $('#radius').show();
                 } else if(is("Point", obj)) {
-                    pos = obj.anchor;
+                    pos = obj.center;
                     width = obj.lineStyle.width;
                     $('#radius').show();
                 } else if(is("Star", obj)) {
-                    pos = obj.anchor;
+                    pos = obj.center;
                     width = obj.lineStyle.width;
                     $('#radius').hide();
                 } else { // Encountered invalid object
