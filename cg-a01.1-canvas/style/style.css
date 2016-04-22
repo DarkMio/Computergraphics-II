@@ -57,6 +57,10 @@ button {
 input {
     width:60px;
 }
+#btnNewPointList {
+    width:100px;
+}
+
 
 .auto {
     width: auto;
