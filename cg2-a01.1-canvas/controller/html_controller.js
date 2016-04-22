@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Star"],
-    (function($, Line, Circle, Point, Star) {
+define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
+    (function($, Line, Circle, Point, Star, KdTree, KdUtil) {
         "use strict";
 
 
@@ -22,6 +22,9 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
          * and provide them with a closure defining context and scene
          */
         var HtmlController = function(context,scene,sceneController) {
+
+            var kdTree;
+            var pointList = [];
 
             // generate random X coordinate within the canvas
             var randomX = function() {
@@ -67,12 +70,18 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                 var radius = $("#boxEnableRadius").is(":checked") ? $("#fieldRadius").val() : false;
                 var lineWidth = $("#boxEnableLineWidth").is(":checked") ? $("#fieldLineWidth").val() : randomWidth();
                 // today I'm lazy, tomorrow I'll hate me
-                return [color || 10, [posX || 25, posY || 25], radius, Math.max(lineWidth, 1)];
+                return [color || '#0000A0', [posX || 25, posY || 25], radius, Math.max(lineWidth, 1)];
             };
 
+            /**
+             * Identify the object with its constructor. Fast, efficient ans less ugly
+             * @param type Comparison type
+             * @param obj obj to compare type to
+             * @returns {boolean}
+             */
             var is = function(type, obj) {
-                var clas = obj.constructor.name;
-                return obj !== undefined && obj !== null && clas === type;
+                var className = obj.constructor.name;
+                return obj !== undefined && obj !== null && className === type;
             };
 
             var sceneBuilder = function(callback) { // ewghhh.
@@ -82,17 +91,29 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                     color: payload[0]
                 };
                 var drawable = callback(style, payload[1], payload[2]);
-                scene.addObjects([drawable]);
-                sceneController.deselect();
-                sceneController.select(drawable);
+                if(drawable != null && drawable != undefined) { // be something before we'll add you
+                    scene.addObjects([drawable]);
+                    sceneController.deselect();
+                    sceneController.select(drawable);
+                } else {
+                    console.error("SceneBuilder could not complete its task: No object found");
+                }
             };
 
-            // Searches a random point within an anchors radius and returns a new position.
-            var jumpPointRadius = function(anchor, radius) {
+            /**
+             * Searches a random point within an anchors radius and returns a new position.
+             * @param anchor Original anchor of object
+             * @param radius of how far away a new point should be found
+             * @return *[] [x, y] of found position
+             */
+             var jumpPointRadius = function(anchor, radius) {
                 // Do pythagoras to find a vector in sight
+                // start with a random x length
                 var x = radius * Math.random();
+                // Random +/- of x
                 var radiusX = Math.random() > 0.5 ? x : -x;
                 radiusX = anchor[0] - radiusX;
+                // Do c^2 - a^2 = b^2
                 var radiusY = Math.sqrt(radius * radius - x * x);
                 radiusY = Math.random() > 0.5 ? radiusY : -radiusY;
                 radiusY = anchor[1] - radiusY;
@@ -100,7 +121,7 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
             };
 
 
-            /*
+            /**
              * event handler for "new line button".
              */
             $("#btnNewLine").click(
@@ -117,6 +138,9 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                 })
             );
 
+            /**
+             * Event handler for "new circle"
+             */
             $("#btnNewCircle").click(
                 (function() {
                     sceneBuilder(function (style, position, radius) {
@@ -126,7 +150,10 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                     });
                 })
             );
-            
+
+            /**
+             * Event handler for "new point"
+             */
             $("#btnNewPoint").click(
                 (function() {
                     sceneBuilder(function (style, position, radius) {
@@ -136,6 +163,9 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                 })
             );
 
+            /**
+             * Event handler for "new point"
+             */
             $("#btnNewStar").click(
                 (function() {
                     sceneBuilder(function (style, position, radius) {
@@ -144,7 +174,85 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                 })
             );
 
+            /**
+             * KDTree things
+             */
 
+            $("#btnNewPointList").click( (function() {
+
+                // create the actual line and add it to the scene
+                var style = {
+                    width: Math.floor(Math.random()*3)+1,
+                    color: randomColor()
+                };
+
+                var numPoints = parseInt($("#numPoints").attr("value"));;
+                for(var i=0; i<numPoints; ++i) {
+                    var point = new Point([randomX(), randomY()], 5,
+                        style);
+                    scene.addObjects([point]);
+                    pointList.push(point);
+                }
+
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+
+            }));
+
+            $("#visKdTree").click( (function() {
+
+                var showTree = $("#visKdTree").attr("checked");
+                if(showTree && kdTree) {
+                    KdUtil.visualizeKdTree(sceneController, scene, kdTree.root, 0, 0, 600, true);
+                }
+
+            }));
+
+            $("#btnBuildKdTree").click( (function() {
+
+                kdTree = new KdTree(pointList);
+
+            }));
+
+            /**
+             * creates a random query point and
+             * runs linear search and kd-nearest-neighbor search
+             */
+            $("#btnQueryKdTree").click( (function() {
+
+                var style = {
+                    width: 2,
+                    color: "#ff0000"
+                };
+                var queryPoint = new Point([randomX(), randomY()], 2,
+                    style);
+                scene.addObjects([queryPoint]);
+                sceneController.select(queryPoint);
+
+                console.log("query point: ", queryPoint.center);
+
+                ////////////////////////////////////////////////
+                // TODO: measure and compare timings of linear
+                //       and kd-nearest-neighbor search
+                ////////////////////////////////////////////////
+                var linearTiming;
+                var kdTiming;
+
+                var minIdx = KdUtil.linearSearch(pointList, queryPoint);
+
+                console.log("nearest neighbor linear: ", pointList[minIdx].center);
+
+                var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, 10000000, kdTree.root, 0);
+
+                console.log("nearest neighbor kd: ", kdNearestNeighbor.point.center);
+
+                sceneController.select(pointList[minIdx]);
+                sceneController.select(kdNearestNeighbor.point);
+
+            }));
+            /**
+             * Overrides values of a selected object in the canvas
+             */
             var valueOverride = function() {
                 var obj = sceneController.getSelectedObject();
                 if($('#boxEnableColor').is(':checked')) {
@@ -159,15 +267,18 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                 sceneController.scene.draw(sceneController.context); // force redraw
             };
 
+            /**
+             * Handles input fields based on the selected object
+             */
             var selectorHelper = function() {
                 var obj = sceneController.getSelectedObject();
-                var pos, posY, width;
+                var pos, width;
                 if(is("Line", obj)) {
                     pos = obj.p0;
                     width = obj.lineStyle.width;
 
                     $('#radius').hide();    // hide
-                    $('#fieldRadius').val(''); // and clear radius field
+                    $('#fieldRadius').val(''); // and hide radius field
                 } else if(is("Circle", obj)) {
                     pos = obj.anchor;
                     width = obj.lineStyle.width;
@@ -180,7 +291,7 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
                     pos = obj.anchor;
                     width = obj.lineStyle.width;
                     $('#radius').hide();
-                } else {
+                } else { // Encountered invalid object
                     console.error("Callback for selection encountered an unknown object. Good job, mate. It is: " + obj.constructor.name);
                     return;
                 }
@@ -198,14 +309,8 @@ define(["jquery", "Line", "Circle", "Point", "Star"],
             $('#fieldColor').change(valueOverride);
             $('#fieldLineWidth').change(valueOverride);
         };
-
-
+        
         // return the constructor function
         return HtmlController;
-
-
-    })); // require
-
-
-
-            
+    })
+); // require

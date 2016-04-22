@@ -21,6 +21,10 @@ requirejs.config({
             '../lib/jquery-1.7.2.min'],
 
         "util" : "./utils/util",
+        "kdutil" : "./kdtree/kdutil",
+        "KdTree" : "./kdtree/kdtree",
+        "KdNode" : "./kdtree/kdnode",
+        "BoundingBox" : "./kdtree/boundingbox",
 
         "Scene" : "./scene/scene",
         "Line" : "./scene/line",
