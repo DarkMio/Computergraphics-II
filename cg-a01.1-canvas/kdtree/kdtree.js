@@ -43,7 +43,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                         if (isLeft) {
                             node.bbox = new BoundingBox(parent.bbox.xmin, parent.bbox.ymin, parent.point.center[0], parent.bbox.ymax, node.point, 1);
                         } else {
-                            node.bbox = new BoundingBox(node.point.center[0], parent.bbox.ymin, parent.bbox.xmax, parent.bbox.ymax, node.point, 1);
+                            node.bbox = new BoundingBox(parent.point.center[0], parent.bbox.ymin, parent.bbox.xmax, parent.bbox.ymax, node.point, 1);
                         }
                     } else {
                         if (isLeft) {
@@ -56,8 +56,6 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                     var canvas = document.getElementById('drawing_area');
                     node.bbox = new BoundingBox(0,0, canvas.width, canvas.height, node.point, dim);
                 }
-                pointList.splice(median, 1);
-
                 if (pointList.length > 0){
                     var left = [];
                     var right = [];
@@ -93,6 +91,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
             this.findNearestNeighbor = function(node, query, currentBest, nearestDistance, dim) {
 
                 if( !node ) {
+                    console.log("No node?");
                     return currentBest;
                 }
 
