@@ -36,6 +36,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                 var node = new KdNode(dim);
                 var median = KdUtil.sortAndMedian(pointList, dim);
                 node.point = pointList[median];
+                pointList.splice(median, 1);
 
                 if(parent) {
                     if (dim) {

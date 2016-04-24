@@ -58,7 +58,7 @@ define([], (function() {
      */
     kdutil.linearSearch = function(pointList, queryPoint) {
         var minIdx = 0;
-        var shortestDistance = 9000;
+        var shortestDistance = 10000000;
         for (var i = 0; i < pointList.length; i++) {
             var distance = kdutil.distance(queryPoint.center, pointList[i].center);
             if (distance < shortestDistance) {
