@@ -12,7 +12,7 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Rectangle", "KdTree", "util", "kdutil"],
+define(["jquery", "Line", "Circle", "Point", "Rectangle", "KdTree", "kdutil"],
     (function($, Line, Circle, Point, Rectangle, KdTree, KdUtil) {
         "use strict";
 
@@ -171,19 +171,14 @@ define(["jquery", "Line", "Circle", "Point", "Rectangle", "KdTree", "util", "kdu
 
                 console.log("query point: ", queryPoint.center);
 
-                ////////////////////////////////////////////////
-                // TODO: measure and compare timings of linear
-                //       and kd-nearest-neighbor search
-                ////////////////////////////////////////////////
-                var linearTiming;
-                var kdTiming;
-
+                console.time("linear search");
                 var minIdx = KdUtil.linearSearch(pointList, queryPoint);
-
+                console.timeEnd("linear search");
                 console.log("nearest neighbor linear: ", pointList[minIdx].center);
 
+                console.time("kd search");
                 var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, 10000000, kdTree.root, 0);
-
+                console.timeEnd("kd search");
                 console.log("nearest neighbor kd: ", kdNearestNeighbor.point.center);
 
                 sceneController.select(pointList[minIdx]);
@@ -232,4 +227,4 @@ define(["jquery", "Line", "Circle", "Point", "Rectangle", "KdTree", "util", "kdu
 
 
 
-            
+
