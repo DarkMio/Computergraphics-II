@@ -230,25 +230,34 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
                 sceneController.select(queryPoint);
 
                 console.log("query point: ", queryPoint.center);
-                ////////////////////////////////////////////////
-                // TODO: measure and compare timings of linear
-                //       and kd-nearest-neighbor search
-                ////////////////////////////////////////////////
 
                 console.time("linear search");
                 var minIdx = KdUtil.linearSearch(pointList, queryPoint);
                 console.timeEnd("linear search");
-                console.log("nearest neighbor linear: ", pointList[minIdx].center);
 
                 console.time("kd search");
                 var kdNearestNeighbor = kdTree.findNearestNeighbor(kdTree.root, queryPoint, kdTree.root, 10000000, 0);
                 console.timeEnd("kd search");
-                console.log("nearest neighbor kd: ", kdNearestNeighbor.point.center);
 
                 sceneController.select(pointList[minIdx]);
                 sceneController.select(kdNearestNeighbor.point);
 
             }));
+
+            /**
+             * Tab Controller
+             */
+            $('.tabs .tab-links a').on('click', function(e)  {
+                var currentAttrValue = jQuery(this).attr('href');
+
+                // Show/Hide Tabs
+                jQuery('.tabs ' + currentAttrValue).show().siblings().hide();
+
+                // Change/remove current tab to active
+                jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+
+                e.preventDefault();
+            });
             /**
              * Overrides values of a selected object in the canvas
              */
