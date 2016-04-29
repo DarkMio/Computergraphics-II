@@ -67,7 +67,7 @@
                       <h3>KD Tree:</h3>
                       <ul>
                           <li>
-                              <button id="btnNewPointList" type="button">New Point List</button>
+                              <button id="btnNewPointList" type="button">New Points</button>
                               <input id="numPoints" type="number" title="Query Points" value="100">
                           </li>
                           <li>
@@ -83,7 +83,7 @@
                   </div>
                   <div id="tab3" class="tab">
                       <h3>Curves:</h3>
-                      <ul>
+                      <ul id="curveButtons">
                           <li><button id="btnNewParametricCurve" type="button">Parametric Curve</button></li>
                           <li><button id="btnNewBezierCurve" type="button">Bezier Curve</button></li>
                           <li><button id="btnNewCasteljauCurve" type="button">de-Casteljau Bezier</button></li>
@@ -109,11 +109,13 @@
                           <li>
                               <input type="number" id="segments" title="Segments" placeholder="Segments">
                           </li>
+
                           <li>
-                              Tick Marks:
-                              <input type="checkbox" id="ticks" title="Tickmarks" class="auto">
+                              <input type="text" id="parameterX" title="Parameter X" placeholder="X Parameter">
+                              <input type="text" id="parameterY" title="Parameter Y" placeholder="Y Parameter">
                           </li>
                           <li>
+                              <button id="btnToggleTicks" type="button">Toggle Ticks</button>
                               <button id="btnDeleteObject" type="button">Delete Object</button>
                           </li>
                       </ul>
