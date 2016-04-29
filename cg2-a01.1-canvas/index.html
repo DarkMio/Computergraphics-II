@@ -64,7 +64,7 @@
 
                   </div>
                   <div id="tab2" class="tab">
-                      <h3>KD Tree</h3>
+                      <h3>KD Tree:</h3>
                       <ul>
                           <li>
                               <button id="btnNewPointList" type="button">New Point List</button>
@@ -82,7 +82,41 @@
                       </ul>
                   </div>
                   <div id="tab3" class="tab">
-                      <h3>Parametric Curves</h3>
+                      <h3>Curves:</h3>
+                      <ul>
+                          <li><button id="btnNewParametricCurve" type="button">Parametric Curve</button></li>
+                          <li><button id="btnNewBezierCurve" type="button">Bezier Curve</button></li>
+                          <li><button id="btnNewCasteljauCurve" type="button">de-Casteljau Bezier</button></li>
+                      </ul>
+                      <h3>Additional Parameters:</h3>
+                      <ul>
+                          <li>
+                              <input type="number" id="controlPoint0X" title="Control Point 0 X" placeholder="CP A X">
+                              <input type="number" id="controlPoint0Y" title="Control Point 0 Y" placeholder="CP A Y">
+                          </li>
+                          <li>
+                              <input type="number" id="controlPoint1X" title="Control Point 1 X" placeholder="CP B X">
+                              <input type="number" id="controlPoint1Y" title="Control Point 1 Y" placeholder="CP B Y">
+                          </li>
+                          <li>
+                              <input type="number" id="controlPoint2X" title="Control Point 2 X" placeholder="CP C X">
+                              <input type="number" id="controlPoint2Y" title="Control Point 2 Y" placeholder="CP C Y">
+                          </li>
+                          <li>
+                              <input type="number" id="controlPoint3X" title="Control Point 3 X" placeholder="CP D X">
+                              <input type="number" id="controlPoint3Y" title="Control Point 3 Y" placeholder="CP D Y">
+                          </li>
+                          <li>
+                              <input type="number" id="segments" title="Segments" placeholder="Segments">
+                          </li>
+                          <li>
+                              Tick Marks:
+                              <input type="checkbox" id="ticks" title="Tickmarks" class="auto">
+                          </li>
+                          <li>
+                              <button id="btnDeleteObject" type="button">Delete Object</button>
+                          </li>
+                      </ul>
                   </div>
               </div>
           </div>
@@ -100,7 +134,7 @@
                   <input type="number" id="fieldPosY" title="Position Y" placeholder="Pos Y">
                   <input type="checkbox" class="auto" id="boxEnablePosY" title="Enable pos x parameter?" checked>
               </li>
-              <li id="radius">
+              <li id="radius" hidden>
                   <input type="checkbox" class="auto" id="boxEnableRadius" title="Enable Radius?" checked>
                   <input type="number" id="fieldRadius" title="Radius" placeholder="Radius">
               </li>

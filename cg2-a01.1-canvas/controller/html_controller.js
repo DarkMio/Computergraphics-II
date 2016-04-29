@@ -120,6 +120,24 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
                 return [radiusX, radiusY];
             };
 
+            /**
+             * Tab Controller
+             */
+            $('.tabs .tab-links a').on('click', function(e)  {
+                var currentAttrValue = $(this).attr('href');
+                if(currentAttrValue == '#tab3') {
+                    $('#position').hide();
+                } else {
+                    $('#position').show();
+                }
+                // Show/Hide Tabs
+                $('.tabs ' + currentAttrValue).show().siblings().hide();
+
+                // Change/remove current tab to active
+                $(this).parent('li').addClass('active').siblings().removeClass('active');
+
+                e.preventDefault();
+            });
 
             /**
              * event handler for "new line button".
@@ -245,19 +263,22 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
             }));
 
             /**
-             * Tab Controller
+             * Curves Tab Event Listener:
              */
-            $('.tabs .tab-links a').on('click', function(e)  {
-                var currentAttrValue = jQuery(this).attr('href');
 
-                // Show/Hide Tabs
-                jQuery('.tabs ' + currentAttrValue).show().siblings().hide();
-
-                // Change/remove current tab to active
-                jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
-
-                e.preventDefault();
+            $("#btnNewParametricCurve").click(function() {
+                console.log("Parametric Curve Button");
             });
+
+            $("#btnNewBezierCurve").click(function() {
+                console.log("Bezier Curve Button");
+            });
+
+            $("#btnNewCasteljauCurve").click(function() {
+                console.log("Casteljau Curve");
+            });
+
+
             /**
              * Overrides values of a selected object in the canvas
              */
