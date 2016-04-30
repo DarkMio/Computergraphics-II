@@ -9,7 +9,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
                 tMin = cache;
             }
 
-            this.anchor = anchor;
+            this.center = anchor;
             this.paramX = paramX;
             this.paramY = paramY;
             this.tMin = tMin || 0;
@@ -26,8 +26,8 @@ define(["util", "vec2", "Scene", "PointDragger"],
             try {
                 for (var i = 0; i < this.segments; i++) {
                     var t = this.tMin + i * increment;
-                    var x = eval(this.paramX) + this.anchor[0];
-                    var y = eval(this.paramY) + this.anchor[1];
+                    var x = eval(this.paramX) + this.center[0];
+                    var y = eval(this.paramY) + this.center[1];
                     points.push([x, y]);
                     context.lineTo(x, y);
                 }
@@ -51,7 +51,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         ParametricCurve.prototype.isHit = function(context, mousePos){
-            var pos = this.anchor;
+            var pos = this.center;
 
             // check whether distance between mouse and dragger's center
             // is less or equal ( radius + (line width)/2 )
@@ -68,10 +68,10 @@ define(["util", "vec2", "Scene", "PointDragger"],
             // create closure and callbacks for dragger
             var _curve = this;
             var getAnchor = function () {
-                return _curve.anchor;
+                return _curve.center;
             };
             var setAnchor = function (dragEvent) {
-                _curve.anchor = dragEvent.position;
+                _curve.center = dragEvent.position;
             };
 
             draggers.push(new PointDragger(getAnchor, setAnchor, draggerStyle));

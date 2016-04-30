@@ -293,16 +293,16 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
             );
 
             $("#btnNewBezierCurve").click(function() {
-                sceneBuilder(function (style, position, radius) {
+                sceneBuilder(function (style) {
                     var segments = parseInt($('#segments').val());
-                    return new BezierCurve([296, 127], [414, 44], [371, 353], [334, 289], 10000, style);
+                    return new BezierCurve([296, 127], [414, 44], [371, 353], [334, 289], segments, style);
                 });
             });
 
             $("#btnNewCasteljauCurve").click(function() {
-                sceneBuilder(function(style, position, radius) {
+                sceneBuilder(function(style) {
                     var segments = parseInt($('#segments').val());
-                    return new AdaptiveCurve([296, 127], [414, 44], [371, 353], [334, 289], 10000, style);
+                    return new AdaptiveCurve([296, 127], [414, 44], [371, 353], [334, 289], segments, style);
 
                 });
             });
@@ -310,7 +310,6 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
             $("#btnToggleTicks").click(function() {
                 var obj = sceneController.getSelectedObject();
                 if(is("BezierCurve", obj) || is("ParametricCurve", obj) || is("AdaptiveCurve", obj)) {
-                    console.log("Toggled!");
                     obj.ticks = !obj.ticks;
                     sceneController.scene.draw(sceneController.context); // force redraw
                 }
@@ -336,41 +335,38 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
 
             /**
              * Handles input fields based on the selected object
-             * @TODO: Cleanup. All objs should have a 'center' rather than an 'anchor' by now.
+             * @TODO: Cleanup. All objs should have a 'center' rather than an 'center' by now.
              */
             var selectorHelper = function() {
                 var obj = sceneController.getSelectedObject();
                 var pos, width;
-                if(is("Line", obj)) {
-                    pos = obj.p0;
-                    width = obj.lineStyle.width;
+                width = obj.lineStyle.width;
 
-                    $('#radius').hide();    // hide
-                    $('#fieldRadius').val(''); // and hide radius field
-                } else if(is("Circle", obj)) {
+                if(is("ParametricCurve", obj)) {
+                    $("#parameterX").val(obj.paramX);
+                    $("#parameterY").val(obj.paramY);
+                    $("#tMin").val(obj.tMin);
+                    $("#tMax").val(obj.tMax);
+                    $("#segments").val(obj.segments);
                     pos = obj.center;
-                    width = obj.lineStyle.width;
-                    $('#radius').show();
-                } else if(is("Point", obj)) {
+                    $('#radius').hide();
+                } else if(is("BezierCurve", obj) || is("AdaptiveCurve", obj)) {
+                    obj.showDraggers = true;
+                    $("#tMin").val(0);
+                    $("#tMax").val(1);
+                    $("#segments").val(obj.segments);
+                    pos = obj.p0;
+                    $('#radius').hide();
+                } else if(is("Line", obj)) {
+                    pos = obj.p0;
+                    $('#radius').hide();
+                    $('#fieldRadius').val('');
+                } else if(is("Circle", obj) || is("Point", obj)) {
                     pos = obj.center;
-                    width = obj.lineStyle.width;
                     $('#radius').show();
                 } else if(is("Star", obj)) {
                     pos = obj.center;
-                    width = obj.lineStyle.width;
                     $('#radius').hide();
-                } else if(is("ParametricCurve", obj)) {
-                    pos = obj.anchor;
-                    width = obj.lineStyle.width;
-                    $('#radius').hide();
-                } else if(is("BezierCurve", obj)) {
-                    pos = obj.p0;
-                    width = obj.lineStyle.width;
-                    obj.showDraggers = true;
-                } else if(is("AdaptiveCurve", obj)) {
-                    pos = obj.p0;
-                    width = obj.lineStyle.width;
-                    obj.showDraggers = true;
                 } else { // Encountered invalid object
                     console.error("Callback for selection encountered an unknown object. Good job, mate. It is: " + obj.constructor.name);
                     return;
