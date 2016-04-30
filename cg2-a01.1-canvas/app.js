@@ -34,6 +34,7 @@ requirejs.config({
         "PointDragger" : "./scene/point_dragger",
 
         "ParametricCurve" : "./scene/parametric_curve",
+        "BezierCurve" : "./scene/bezier_curve",
 
         "vec2" : "./math/vec2",
 

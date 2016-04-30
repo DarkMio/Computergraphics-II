@@ -1,8 +1,5 @@
-/**
- * Created by Mio on 29.04.2016.
- */
-define(["util", "vec2", "Scene", "PointDragger", "jquery"],
-    (function (util, vec2, Scene, PointDragger, $) {
+define(["util", "vec2", "Scene", "PointDragger"],
+    (function (util, vec2, Scene, PointDragger) {
         "use strict";
 
         var ParametricCurve = function ParametricCurve(anchor, paramX, paramY, tMin, tMax, segments, lineStyle) {
@@ -19,19 +16,19 @@ define(["util", "vec2", "Scene", "PointDragger", "jquery"],
             this.tMax = tMax || 1;
             this.segments = segments || 1;
             this.lineStyle = lineStyle;
-            console.log(this);
+            this.ticks = false;
         };
 
         ParametricCurve.prototype.draw = function(context){
             var increment = (this.tMax - this.tMin) / this.segments;
+            var points = [];
             context.beginPath();
             try {
-                var x0 = eval(this.paramX) + this.anchor[0];
-                var y0 = eval(this.paramY) + this.anchor[1];
-                context.moveTo(x0, y0);
-                for (var t = this.tMin; t < this.tMax; t += increment) {
+                for (var i = 0; i < this.segments; i++) {
+                    var t = this.tMin + i * increment;
                     var x = eval(this.paramX) + this.anchor[0];
                     var y = eval(this.paramY) + this.anchor[1];
+                    points.push([x, y]);
                     context.lineTo(x, y);
                 }
             } catch(e) {
@@ -40,8 +37,17 @@ define(["util", "vec2", "Scene", "PointDragger", "jquery"],
 
             context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
-
             context.stroke();
+
+            if(this.ticks) {
+                context.beginPath();
+                context.lineWidth = 1;
+                context.strokeStyle = "#f44336";
+                for(var j = 1; j < this.segments-1; j++) {
+                    this.drawTicks(context, points[j-1], points[j], points[j+1]);
+                }
+                context.stroke();
+            }
         };
 
         ParametricCurve.prototype.isHit = function(context, mousePos){
@@ -71,7 +77,17 @@ define(["util", "vec2", "Scene", "PointDragger", "jquery"],
             draggers.push(new PointDragger(getAnchor, setAnchor, draggerStyle));
             return draggers;
         };
-        
+
+        ParametricCurve.prototype.drawTicks = function(context, last, current, next) {
+                var d = vec2.sub(next, last);
+                d = [-d[1], d[0]];
+                d = vec2.mult(d, 0.5);
+                var upper = vec2.add(current, d);
+                var lower = vec2.sub(current, d);
+                context.moveTo(upper[0], upper[1]);
+                context.lineTo(lower[0], lower[1]);
+        };
+
         return ParametricCurve;
     })
 );

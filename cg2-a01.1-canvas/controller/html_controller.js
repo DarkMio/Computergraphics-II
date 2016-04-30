@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve", "util"],
-    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve, util) {
+define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve", "BezierCurve","util"],
+    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve, BezierCurve, util) {
         "use strict";
 
 
@@ -293,11 +293,22 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
             );
 
             $("#btnNewBezierCurve").click(function() {
+                sceneBuilder(function (style, position, radius) {
+                    return new BezierCurve([296, 127], [414, 44], [371, 353], [334, 289], 100, scene, style);
+                });
                 console.log("Bezier Curve Button");
             });
 
             $("#btnNewCasteljauCurve").click(function() {
                 console.log("Casteljau Curve");
+            });
+
+            $("#btnToggleTicks").click(function() {
+                var obj = sceneController.getSelectedObject();
+                if(is("BezierCurve", obj) || is("ParametricCurve", obj) || is("CasteljauCurve", obj)) {
+                    obj.ticks = !obj.ticks;
+                    sceneController.scene.draw(sceneController.context); // force redraw
+                }
             });
 
 
@@ -347,6 +358,10 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
                     pos = obj.anchor;
                     width = obj.lineStyle.width;
                     $('#radius').hide();
+                } else if(is("BezierCurve", obj)) {
+                    pos = obj.p0;
+                    width = obj.lineStyle.width;
+                    obj.showDraggers = true;
                 } else { // Encountered invalid object
                     console.error("Callback for selection encountered an unknown object. Good job, mate. It is: " + obj.constructor.name);
                     return;
