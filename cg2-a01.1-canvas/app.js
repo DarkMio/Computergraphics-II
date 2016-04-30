@@ -35,6 +35,7 @@ requirejs.config({
 
         "ParametricCurve" : "./scene/parametric_curve",
         "BezierCurve" : "./scene/bezier_curve",
+        "AdaptiveCurve" : "./scene/adaptive_curve",
 
         "vec2" : "./math/vec2",
 

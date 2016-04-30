@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve", "BezierCurve","util"],
-    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve, BezierCurve, util) {
+define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve", "BezierCurve", "AdaptiveCurve", "util"],
+    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve, BezierCurve, AdaptiveCurve, util) {
         "use strict";
 
 
@@ -294,18 +294,23 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
 
             $("#btnNewBezierCurve").click(function() {
                 sceneBuilder(function (style, position, radius) {
-                    return new BezierCurve([296, 127], [414, 44], [371, 353], [334, 289], 100, scene, style);
+                    var segments = parseInt($('#segments').val());
+                    return new BezierCurve([296, 127], [414, 44], [371, 353], [334, 289], 10000, style);
                 });
-                console.log("Bezier Curve Button");
             });
 
             $("#btnNewCasteljauCurve").click(function() {
-                console.log("Casteljau Curve");
+                sceneBuilder(function(style, position, radius) {
+                    var segments = parseInt($('#segments').val());
+                    return new AdaptiveCurve([296, 127], [414, 44], [371, 353], [334, 289], 10000, style);
+
+                });
             });
 
             $("#btnToggleTicks").click(function() {
                 var obj = sceneController.getSelectedObject();
-                if(is("BezierCurve", obj) || is("ParametricCurve", obj) || is("CasteljauCurve", obj)) {
+                if(is("BezierCurve", obj) || is("ParametricCurve", obj) || is("AdaptiveCurve", obj)) {
+                    console.log("Toggled!");
                     obj.ticks = !obj.ticks;
                     sceneController.scene.draw(sceneController.context); // force redraw
                 }
@@ -359,6 +364,10 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
                     width = obj.lineStyle.width;
                     $('#radius').hide();
                 } else if(is("BezierCurve", obj)) {
+                    pos = obj.p0;
+                    width = obj.lineStyle.width;
+                    obj.showDraggers = true;
+                } else if(is("AdaptiveCurve", obj)) {
                     pos = obj.p0;
                     width = obj.lineStyle.width;
                     obj.showDraggers = true;

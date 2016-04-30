@@ -1,8 +1,7 @@
 define(["util", "vec2", "Scene", "PointDragger"],
     (function (util, vec2, Scene, PointDragger) {
-        "use strict";
-
-        var BezierCurve = function BezierCurve(p0, p1, p2, p3, segments, lineStyle) {
+    
+        var AdaptiveCurve = function AdaptiveCurve(p0, p1, p2, p3, segments, lineStyle) {
             this.p0 = p0;
             this.p1 = p1;
             this.p2 = p2;
@@ -13,49 +12,43 @@ define(["util", "vec2", "Scene", "PointDragger"],
             this.ticks = false;
         };
 
-        BezierCurve.prototype.draw = function(context) {
-            var increment = 1 / this.segments;
+        AdaptiveCurve.prototype.draw = function(context) {
             var points = [];
+            var increment = 1 / this.segments;
+            context.beginPath();
             if(this.showDraggers) {
                 context.moveTo(this.p1[0], this.p1[1]);
                 context.lineTo(this.p0[0], this.p0[1]);
             } else {
                 context.moveTo(this.p0[0], this.p0[1]);
             }
-
-            for(var t = 0; t < 1; t += increment) {
-                var part = this.controlPolygon(t);
-                points.push(part);
-                context.lineTo(part[0], part[1]);
+            for(var i = 0; i < this.segments + 1; i++) {
+                var t = increment * i;
+                var point = this.casteljau([this.p0, this.p1, this.p2, this.p3], t, context);
+                points.push(point);
             }
             if(this.showDraggers) {
                 context.lineTo(this.p2[0], this.p2[1]);
             }
-
-            // set drawing style
             context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
-
-            // actually start drawing
             context.stroke();
-            this.showDraggers = false; // well, we've shown them once, now dispose them.
-
             if(this.ticks) {
                 context.beginPath();
                 context.lineWidth = 1;
                 context.strokeStyle = "#f44336";
-                for(var j = 1; j < this.segments-1; j++) {
+                for(var j = 1; j < points.length - 1; j++) {
                     this.drawTicks(context, points[j-1], points[j], points[j+1]);
                 }
                 context.stroke();
             }
         };
 
-        BezierCurve.prototype.isHit = function(context, pos) {
+        AdaptiveCurve.prototype.isHit = function() {
             return true;
         };
 
-        BezierCurve.prototype.createDraggers = function() {
+        AdaptiveCurve.prototype.createDraggers = function() {
             var draggerStyle = {radius: 4, color: this.lineStyle.color, width: 0, fill: true};
             var draggers = [];
 
@@ -98,15 +91,22 @@ define(["util", "vec2", "Scene", "PointDragger"],
             return draggers;
         };
 
-        BezierCurve.prototype.controlPolygon = function(t) {
-            var _c = this;
-            var func = function(dim) {
-                return Math.pow(1 - t, 3) * _c.p0[dim] + 3 * Math.pow(1 - t, 2) * t * _c.p1[dim] + 3 * (1 - t) * Math.pow(t, 2) * _c.p2[dim] + Math.pow(t, 3) * _c.p3[dim]
-            };
-            return [func(0), func(1)];
+        AdaptiveCurve.prototype.casteljau = function(points, t, context) {
+            if(points.length == 1) {
+                context.lineTo(points[0][0], points[0][1]);
+                return [points[0][0], points[0][1]];
+            } else {
+                var newPoints = [];
+                for(var i = 0; i < points.length - 1; i++) {
+                    var x = (1-t) * points[i][0] + t * points[i+1][0];
+                    var y = (1-t) * points[i][1] + t * points[i+1][1];
+                    newPoints.push([x, y]);
+                }
+                return this.casteljau(newPoints, t, context);
+            }
         };
 
-        BezierCurve.prototype.drawTicks = function(context, last, current, next) {
+        AdaptiveCurve.prototype.drawTicks = function(context, last, current, next) {
             var d = vec2.sub(next, last);
             d = [-d[1], d[0]];
             d = vec2.mult(d, 0.5);
@@ -116,6 +116,6 @@ define(["util", "vec2", "Scene", "PointDragger"],
             context.lineTo(lower[0], lower[1]);
         };
 
-        return BezierCurve;
+        return AdaptiveCurve;
     })
 );
