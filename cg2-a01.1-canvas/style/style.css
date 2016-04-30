@@ -64,13 +64,13 @@ input {
     width: auto;
 }
 
-/*----- Tabs -----*/
+/* Tabs */
 .tabs {
     width:100%;
     display:inline-block;
 }
 
-/*----- Tab Links -----*/
+/* Tab Links */
 /* Clearfix */
 .tab-links:after {
     display:block;
@@ -110,7 +110,7 @@ li.active a, li.active a:hover {
     color:#4c4c4c;
 }
 
-/*----- Content of Tabs -----*/
+/* Content of Tabs */
 .tab-content {
 
 }
@@ -125,4 +125,30 @@ li.active a, li.active a:hover {
 
 #curveButtons button {
     width: 150px;
+}
+
+/* The alert message box */
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+    position: absolute;
+    bottom: 0;
+    width: 95%;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: black;
 }

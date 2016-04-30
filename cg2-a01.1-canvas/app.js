@@ -33,6 +33,8 @@ requirejs.config({
         "Star" : "./scene/star",
         "PointDragger" : "./scene/point_dragger",
 
+        "ParametricCurve" : "./scene/parametric_curve",
+
         "vec2" : "./math/vec2",
 
         "SceneController" : "./controller/scene_controller",

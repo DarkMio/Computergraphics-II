@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
-    (function($, Line, Circle, Point, Star, KdTree, KdUtil) {
+define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve"],
+    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve) {
         "use strict";
 
 
@@ -25,6 +25,12 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
 
             var kdTree;
             var pointList = [];
+
+            /* Creates a nice looking alert message. */
+            var spawnAlert = function(message) {
+                var failMessage = '<div class="alert"><span class="closebtn">&times;</span>' + message + '</div>';
+                $('body').append(failMessage);
+            };
 
             // generate random X coordinate within the canvas
             var randomX = function() {
@@ -265,10 +271,32 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
             /**
              * Curves Tab Event Listener:
              */
-
-            $("#btnNewParametricCurve").click(function() {
-                console.log("Parametric Curve Button");
-            });
+            $("#btnNewParametricCurve").click(
+                (function() {
+                    sceneBuilder(function (style, position, radius) {
+                        var paramX = $('#parameterX').val();
+                        var paramY = $('#parameterY').val();
+                        var tMin = parseFloat($('#tMin').val()) || 0;
+                        var tMax = parseFloat($('#tMax').val()) || 100;
+                        var segments = parseInt($('#segments').val()) || 10;
+                        try {
+                            if(paramX == "" || paramY == "") {
+                                throw new Error("ParamX or ParamY is empty.");
+                            }
+                            var flipFlop = [tMin, tMax];
+                            for(var i = 0; i < flipFlop.length; i++) { // test against min/max
+                                var t = flipFlop[i];
+                                eval(paramX);
+                                eval(paramY);
+                            }
+                        } catch(e) {
+                            spawnAlert("Cannot create Parametric Curve: " + e);
+                            return;
+                        }
+                        return new ParametricCurve([randomX(), randomY()], paramX, paramY, tMin, tMax, segments, style);
+                    })
+                })
+            );
 
             $("#btnNewBezierCurve").click(function() {
                 console.log("Bezier Curve Button");
@@ -298,6 +326,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
 
             /**
              * Handles input fields based on the selected object
+             * @TODO: Cleanup. All objs should have a 'center' rather than an 'anchor' by now.
              */
             var selectorHelper = function() {
                 var obj = sceneController.getSelectedObject();
@@ -318,6 +347,10 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil"],
                     $('#radius').show();
                 } else if(is("Star", obj)) {
                     pos = obj.center;
+                    width = obj.lineStyle.width;
+                    $('#radius').hide();
+                } else if(is("ParametricCurve", obj)) {
+                    pos = obj.anchor;
                     width = obj.lineStyle.width;
                     $('#radius').hide();
                 } else { // Encountered invalid object
