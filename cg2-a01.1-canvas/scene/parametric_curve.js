@@ -35,7 +35,7 @@ define(["util", "vec2", "Scene", "PointDragger", "jquery"],
                     context.lineTo(x, y);
                 }
             } catch(e) {
-                this.spawnAlert("Eval incorrect: " + e);
+                util.spawnAlert("Eval incorrect: " + e);
             }
 
             context.lineWidth = this.lineStyle.width;
@@ -71,12 +71,7 @@ define(["util", "vec2", "Scene", "PointDragger", "jquery"],
             draggers.push(new PointDragger(getAnchor, setAnchor, draggerStyle));
             return draggers;
         };
-
-        ParametricCurve.prototype.spawnAlert = function(message) {
-            var failMessage = '<div class="alert"><span class="closebtn">&times;</span>' + message + '</div>';
-            $('body').append(failMessage);
-        };
-
+        
         return ParametricCurve;
     })
 );

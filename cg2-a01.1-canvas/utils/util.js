@@ -85,6 +85,10 @@ define(["jquery"], (function($) {
         var bSquared = Math.pow(a[1] - b[1], 2);
         return Math.sqrt(aSquared + bSquared);
     };
+    
+    util.spawnAlert = function(message) {
+        
+    };
 
     /* return the interface defined by this module */
     return util;

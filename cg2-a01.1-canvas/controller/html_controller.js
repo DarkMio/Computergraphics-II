@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve"],
-    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve) {
+define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve", "util"],
+    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve, util) {
         "use strict";
 
 
@@ -25,12 +25,6 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
 
             var kdTree;
             var pointList = [];
-
-            /* Creates a nice looking alert message. */
-            var spawnAlert = function(message) {
-                var failMessage = '<div class="alert"><span class="closebtn">&times;</span>' + message + '</div>';
-                $('body').append(failMessage);
-            };
 
             // generate random X coordinate within the canvas
             var randomX = function() {
@@ -290,7 +284,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
                                 eval(paramY);
                             }
                         } catch(e) {
-                            spawnAlert("Cannot create Parametric Curve: " + e);
+                            util.spawnAlert("Cannot create Parametric Curve: " + e);
                             return;
                         }
                         return new ParametricCurve([randomX(), randomY()], paramX, paramY, tMin, tMax, segments, style);
