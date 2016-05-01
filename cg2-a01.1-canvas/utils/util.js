@@ -25,11 +25,12 @@ define(["jquery"], (function($) {
     util.RuntimeError = function(msg,obj) {
 
         // if an HTML element with id="error" exists, make it visible 
-        //    and insert the message als HTML text. 
-        if($("#error")) {
-            $('#error').text(msg);
-            $('#error').css('display', 'block');
-        };
+        //    and insert the message als HTML text.
+        var err = $('#error');
+        if(err) {
+            err.text(msg);
+            err.css('display', 'block');
+        }
 
         // store message and object in Error object
         var e = new Error(msg);
@@ -51,11 +52,12 @@ define(["jquery"], (function($) {
         var msg = err.message || err;
 
         // if an HTML element with id="error" exists, make it visible 
-        //    and insert the message als HTML text. 
-        if($("#error")) {
-            $('#error').text(msg);
-            $('#error').css('display', 'block');
-        };
+        //    and insert the message als HTML text.
+        var error = $('#error');
+        if(error) {
+            error.text(msg);
+            error.css('display', 'block');
+        }
 
         // also show error on the console
         window.console.log(msg);

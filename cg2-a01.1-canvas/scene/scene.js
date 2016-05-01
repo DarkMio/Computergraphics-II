@@ -63,10 +63,7 @@ define(["util"],
                     // remove obj from array
                     this.drawableObjects.splice(idx, 1);
                 }
-                ;
             }
-            ;
-
         };
 
         /*
@@ -87,8 +84,6 @@ define(["util"],
             } else {
                 return clone.reverse();
             }
-            ;
-
         };
 
         /*
@@ -109,8 +104,6 @@ define(["util"],
             } else {
                 return clone.reverse();
             }
-            ;
-
         };
 
 
@@ -123,8 +116,6 @@ define(["util"],
             if (!context) {
                 throw new util.RuntimeError("Scene.draw(): no context", this);
             }
-            ;
-
             // first we draw a rectangle in background color, same size as canvas
             var width = context.canvas.width;
             var height = context.canvas.height;

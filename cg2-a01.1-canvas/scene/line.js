@@ -86,7 +86,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         // return list of draggers to manipulate this line
         Line.prototype.createDraggers = function () {
 
-            var draggerStyle = {radius: 4, color: this.lineStyle.color, width: 0, fill: true}
+            var draggerStyle = {radius: 4, color: this.lineStyle.color, width: 0, fill: true};
             var draggers = [];
 
             // create closure and callbacks for dragger

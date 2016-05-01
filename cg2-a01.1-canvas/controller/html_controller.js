@@ -21,6 +21,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
          * define callback functions to react to changes in the HTML page
          * and provide them with a closure defining context and scene
          */
+        //noinspection UnnecessaryLocalVariableJS
         var HtmlController = function(context,scene,sceneController) {
 
             var kdTree;
@@ -186,7 +187,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
              */
             $("#btnNewStar").click(
                 (function() {
-                    sceneBuilder(function (style, position, radius) {
+                    sceneBuilder(function (style, position) {
                         return new Star(position, randomY() / 3, randomY() / 3, style);
                     });
                 })
@@ -204,7 +205,7 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
                     color: randomColor()
                 };
 
-                var numPoints = parseInt($("#numPoints").attr("value"));;
+                var numPoints = parseInt($("#numPoints").attr("value"));
                 for(var i=0; i<numPoints; ++i) {
                     var point = new Point([randomX(), randomY()], 5,
                         style);
@@ -267,18 +268,20 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
              */
             $("#btnNewParametricCurve").click(
                 (function() {
-                    sceneBuilder(function (style, position, radius) {
+                    sceneBuilder(function (style) {
                         var paramX = $('#parameterX').val();
                         var paramY = $('#parameterY').val();
                         var tMin = parseFloat($('#tMin').val()) || 0;
                         var tMax = parseFloat($('#tMax').val()) || 100;
                         var segments = parseInt($('#segments').val()) || 10;
                         try {
-                            if(paramX == "" || paramY == "") {
+                            if(paramX == "" || paramY == "") { // just jump out of it already
+                                //noinspection ExceptionCaughtLocallyJS
                                 throw new Error("ParamX or ParamY is empty.");
                             }
                             var flipFlop = [tMin, tMax];
                             for(var i = 0; i < flipFlop.length; i++) { // test against min/max
+                                //noinspection JSUnusedLocalSymbols
                                 var t = flipFlop[i];
                                 eval(paramX);
                                 eval(paramY);

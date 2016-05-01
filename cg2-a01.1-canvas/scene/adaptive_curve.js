@@ -149,8 +149,8 @@ define(["util", "vec2", "Scene", "PointDragger"],
                 context.strokeStyle = this.lineStyle.color;
                 context.stroke();
             } else { // first left, then right
-                array = this.recursiveCastlejau(p0, a0, b0, c0, depth-1, context);
-                return this.recursiveCastlejau(c0, b1, a2, p3, depth-1, context);
+                this.recursiveCastlejau(p0, a0, b0, c0, depth-1, context);
+                this.recursiveCastlejau(c0, b1, a2, p3, depth-1, context);
             }
         };
 

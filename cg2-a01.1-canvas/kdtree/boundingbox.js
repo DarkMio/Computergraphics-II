@@ -14,6 +14,7 @@ define([],
 
         "use strict";
 
+        //noinspection UnnecessaryLocalVariableJS
         var BoundingBox = function (xmin, ymin, xmax, ymax, point, dim) {
 
             this.xmin = xmin;

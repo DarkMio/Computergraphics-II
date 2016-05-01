@@ -25,6 +25,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             context.beginPath();
             try {
                 for (var i = 0; i < this.segments; i++) {
+                    //noinspection JSUnusedLocalSymbols
                     var t = this.tMin + i * increment;
                     var x = eval(this.paramX) + this.center[0];
                     var y = eval(this.paramY) + this.center[1];
@@ -62,7 +63,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         ParametricCurve.prototype.createDraggers = function(){
-            var draggerStyle = {radius: 4, color: this.lineStyle.color, width: 0, fill: true}
+            var draggerStyle = {radius: 4, color: this.lineStyle.color, width: 0, fill: true};
             var draggers = [];
 
             // create closure and callbacks for dragger

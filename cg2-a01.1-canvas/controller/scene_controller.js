@@ -249,7 +249,6 @@ define(["util", "Scene"],
 
                 // redraw the scene
                 this.scene.draw(this.context);
-                return;
 
             } else {
 

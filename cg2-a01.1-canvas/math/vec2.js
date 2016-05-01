@@ -55,8 +55,7 @@ define([],
 
         var dp = vec2.sub(p,p0);
         var dv = vec2.sub(p1,p0);
-        var t  = vec2.dot(dp,dv)/vec2.dot(dv,dv);
-        return t;
+        return vec2.dot(dp,dv)/vec2.dot(dv,dv);
                 
     };
 

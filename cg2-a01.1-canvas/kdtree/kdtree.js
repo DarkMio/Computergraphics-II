@@ -14,6 +14,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
 
         "use strict";
 
+        //noinspection UnnecessaryLocalVariableJS
         /**
          * Creates a kd-tree. The build function is directly called
          * on generation

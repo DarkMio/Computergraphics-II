@@ -15,6 +15,7 @@ define([],
         "use strict";
 
         // A node in the kd-tree
+        //noinspection UnnecessaryLocalVariableJS
         var KdNode = function (axis) {
 
             // axis x or y

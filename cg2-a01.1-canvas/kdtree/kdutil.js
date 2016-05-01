@@ -31,12 +31,6 @@ define([], (function() {
      * @param left
      */
     kdutil.visualizeKdTree = function(sceneController, scene, node, dim, start, end, left) {
-
-        var style = {
-            width: 1,
-            color: "#0000ff"
-        };
-
         scene.addObjects([node.bbox]);
         // deselect all objects, then select the newly created object
         sceneController.deselect();
