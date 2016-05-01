@@ -384,6 +384,13 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
             $("#fieldRadius").change(valueOverride);
             $('#fieldColor').change(valueOverride);
             $('#fieldLineWidth').change(valueOverride);
+            $('#segments').change(function() {
+                var obj = sceneController.getSelectedObject();
+                if(is("AdaptiveCurve", obj) || is("BezierCurve", obj) || is("ParametricCurve", obj)) {
+                    obj.segments = $('#segments').val();
+                    sceneController.scene.draw(sceneController.context);
+                }
+            });
         };
         
         // return the constructor function

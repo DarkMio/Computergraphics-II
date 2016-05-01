@@ -6,7 +6,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             this.p1 = p1;
             this.p2 = p2;
             this.p3 = p3;
-            this.segments = segments || 10;
+            this.segments = segments || 2;
             this.showDraggers = true;
             this.lineStyle = lineStyle;
             this.ticks = false;
@@ -20,7 +20,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
             context.moveTo(this.p1[0], this.p1[1]);
             context.lineTo(this.p0[0], this.p0[1]);
             context.stroke();
-            this.recursive(this.p0, this.p1, this.p2, this.p3, 1, [], context);
+            this.recursive(this.p0, this.p1, this.p2, this.p3, this.segments, [], context);
             context.beginPath();
             context.lineTo(this.p3[0], this.p3[1]);
             context.lineTo(this.p2[0], this.p2[1]);
@@ -146,15 +146,14 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
             c0 = vec2.add(vec2.mult(b0, 0.5), vec2.mult(b1, 0.5));
             if(this.ticks) {
-                context.lineWidth = 1;
-                context.strokeStyle = "#f44336";
+                context.lineWidth = 0.5;
 
 
                 context.beginPath();
                 context.moveTo(a0[0], a0[1]);
                 context.lineTo(a1[0], a1[1]);
                 context.lineTo(a2[0], a2[1]);
-                context.strokeStyle = "#43f436";
+                context.strokeStyle = "#00B24A";
                 context.stroke();
 
                 context.beginPath();
@@ -163,15 +162,17 @@ define(["util", "vec2", "Scene", "PointDragger"],
                 context.strokeStyle = "#f44336";
                 context.stroke();
 
-                context.fillStyle = "#f44336";
+                context.fillStyle = "#00B24A";
                 context.fillRect(a0[0] - 2, a0[1] - 2, 4, 4);
                 context.fillRect(a1[0] - 2, a1[1] - 2, 4, 4);
                 context.fillRect(a2[0] - 2, a2[1] - 2, 4, 4);
+
+                context.fillStyle = "#f44336";
                 context.fillRect(b0[0] - 2, b0[1] - 2, 4, 4);
                 context.fillRect(b1[0] - 2, b1[1] - 2, 4, 4);
 
-                context.fillStyle = "#4336f4";
-                context.fillRect(c0[0] - 2, c0[1] - 2, 4, 4);
+                context.fillStyle = "#CC5714";
+                context.fillRect(c0[0] - 3, c0[1] - 3, 6, 6);
             }
 
             if(depth == 0) {
