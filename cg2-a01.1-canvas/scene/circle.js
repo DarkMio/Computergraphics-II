@@ -16,25 +16,18 @@ define(["util", "vec2", "Scene", "PointDragger"],
             this.radius = radius || [25, 25];
         };
 
-        Circle.prototype.pythagoras = function(a, b) { // whateffs, throw it in the proto
-            // a^2 + b^2 = c^2
-            var aSquared = Math.pow(a[0] - b[0], 2);
-            var bSquared = Math.pow(a[1] - b[1], 2);
-            return Math.sqrt(aSquared + bSquared);
-        };
-
         Circle.prototype.draw = function(context) {
             context.beginPath();
             // Oh look, it has a builtin.
-            context.arc(this.center[0], this.center[1], this.pythagoras(this.radius, this.center), 0, 2 * Math.PI, false);
+            context.arc(this.center[0], this.center[1], vec2.pythagoras(this.radius, this.center), 0, 2 * Math.PI, false);
             context.lineWidth = this.lineStyle.width;
             context.strokeStyle = this.lineStyle.color;
             context.stroke();  // Draw it.
         };
 
         Circle.prototype.isHit = function(context, mousePos) {
-            var mouseDistance = this.pythagoras(mousePos, this.center); // how far is the mouse?
-            var radius = this.pythagoras(this.radius, this.center); // how long is the radius?
+            var mouseDistance = vec2.pythagoras(mousePos, this.center); // how far is the mouse?
+            var radius = vec2.pythagoras(this.radius, this.center); // how long is the radius?
             var margin = this.lineStyle.width + 2; // add a bit for convenience
             return radius - margin <= mouseDistance && radius + margin > mouseDistance; // pos within radius ± margin
         };
@@ -67,7 +60,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
         Circle.prototype.setRadius = function(radius) {
             if(radius <= 0) return; // truncate all empty requests.
-            var scale = radius / this.pythagoras(this.center, this.radius);
+            var scale = radius / vec2.pythagoras(this.center, this.radius);
             var localRadius = [this.radius[0] - this.center[0], this.radius[1] - this.center[1]];
             var newRadius = [localRadius[0] * scale, localRadius[1] * scale];
             this.radius = [this.center[0] + newRadius[0], this.center[1] + newRadius[1]];

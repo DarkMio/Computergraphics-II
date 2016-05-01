@@ -12,13 +12,6 @@ define(["util", "vec2", "Scene", "PointDragger"],
             this.lineStyle = lineStyle;
         };
 
-        Point.prototype.pythagoras = function(a, b) { // whateffs, throw it in the proto
-            // a^2 + b^2 = c^2
-            var aSquared = Math.pow(a[0] - b[0], 2);
-            var bSquared = Math.pow(a[1] - b[1], 2);
-            return Math.sqrt(aSquared + bSquared);
-        };
-
         Point.prototype.draw = function(context) {
             context.beginPath();
             // Oh look, it has a builtin.
@@ -31,7 +24,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         Point.prototype.isHit = function(context, mousePos) {
-            var distance = this.pythagoras(mousePos, this.center);
+            var distance = vec2.pythagoras(mousePos, this.center);
             return distance <= this.radius;
         };
 

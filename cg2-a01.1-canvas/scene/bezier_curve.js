@@ -16,6 +16,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
         BezierCurve.prototype.draw = function(context) {
             var increment = 1 / this.segments;
             var points = [];
+            context.beginPath();
             if(this.showDraggers) {
                 context.moveTo(this.p1[0], this.p1[1]);
                 context.lineTo(this.p0[0], this.p0[1]);
@@ -29,6 +30,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
                 points.push(part);
                 context.lineTo(part[0], part[1]);
             }
+
             if(this.showDraggers) {
                 context.lineTo(this.p2[0], this.p2[1]);
             }
@@ -52,8 +54,11 @@ define(["util", "vec2", "Scene", "PointDragger"],
             }
         };
 
-        BezierCurve.prototype.isHit = function(context, pos) {
-            return true;
+        BezierCurve.prototype.isHit = function(context, mousePos) {
+            // just abbreviate around the main control points.
+            var p0d = vec2.pythagoras(this.p0, mousePos);
+            var p3d = vec2.pythagoras(this.p3, mousePos);
+            return (p0d < 10 || p3d < 10);
         };
 
         BezierCurve.prototype.createDraggers = function() {
@@ -101,8 +106,11 @@ define(["util", "vec2", "Scene", "PointDragger"],
 
         BezierCurve.prototype.controlPolygon = function(t) {
             var _c = this;
-            var func = function(dim) {
-                return Math.pow(1 - t, 3) * _c.p0[dim] + 3 * Math.pow(1 - t, 2) * t * _c.p1[dim] + 3 * (1 - t) * Math.pow(t, 2) * _c.p2[dim] + Math.pow(t, 3) * _c.p3[dim]
+            var func = function(dim) { // actual bezier theorem
+                return Math.pow(1 - t, 3) * _c.p0[dim] +
+                    3 * Math.pow(1 - t, 2) * t * _c.p1[dim] +
+                    3 * (1 - t) * Math.pow(t, 2) * _c.p2[dim] +
+                    Math.pow(t, 3) * _c.p3[dim]
             };
             return [func(0), func(1)];
         };

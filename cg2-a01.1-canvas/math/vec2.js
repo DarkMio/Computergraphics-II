@@ -59,7 +59,14 @@ define([],
         return t;
                 
     };
-    
+
+    vec2.pythagoras = function(a, b) {
+       // a^2 + b^2 = c^2
+       var aSquared = Math.pow(a[0] - b[0], 2);
+       var bSquared = Math.pow(a[1] - b[1], 2);
+       return Math.sqrt(aSquared + bSquared);
+    };
+
     // this module exports an object defining a number of functions
     return vec2;
 

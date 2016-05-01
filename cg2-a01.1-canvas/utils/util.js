@@ -78,13 +78,6 @@ define(["jquery"], (function($) {
     util.canvasPosition = function(event) {
         return [event.layerX,event.layerY];
     };
-
-    util.pythagoras = function(a, b) {
-        // a^2 + b^2 = c^2
-        var aSquared = Math.pow(a[0] - b[0], 2);
-        var bSquared = Math.pow(a[1] - b[1], 2);
-        return Math.sqrt(aSquared + bSquared);
-    };
     
     util.spawnAlert = function(message) {
         

@@ -295,14 +295,24 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
             $("#btnNewBezierCurve").click(function() {
                 sceneBuilder(function (style) {
                     var segments = parseInt($('#segments').val());
-                    return new BezierCurve([296, 127], [414, 44], [371, 353], [334, 289], segments, style);
+                    return new BezierCurve(
+                        [randomX(), randomY()],
+                        [randomX(), randomY()],
+                        [randomX(), randomY()],
+                        [randomX(), randomY()],
+                        segments, style);
                 });
             });
 
             $("#btnNewCasteljauCurve").click(function() {
                 sceneBuilder(function(style) {
                     var segments = parseInt($('#segments').val());
-                    return new AdaptiveCurve([296, 127], [414, 44], [371, 353], [334, 289], segments, style);
+                    return new AdaptiveCurve(
+                        [randomX(), randomY()],
+                        [randomX(), randomY()],
+                        [randomX(), randomY()],
+                        [randomX(), randomY()],
+                        segments, style);
 
                 });
             });
@@ -335,7 +345,6 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
 
             /**
              * Handles input fields based on the selected object
-             * @TODO: Cleanup. All objs should have a 'center' rather than an 'center' by now.
              */
             var selectorHelper = function() {
                 var obj = sceneController.getSelectedObject();
