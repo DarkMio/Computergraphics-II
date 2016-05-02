@@ -24,12 +24,13 @@ define(["util", "vec2", "Scene", "PointDragger"],
                 context.moveTo(this.p0[0], this.p0[1]);
             }
 
-            for(var i = 0; i < this.segments + 1 ; i++) {
+            for(var i = 0; i <= this.segments; i++) {
                 var t = increment * i;
                 var part = this.controlPolygon(t);
                 points.push(part);
                 context.lineTo(part[0], part[1]);
             }
+            context.lineTo(this.p3[0], this.p3[1]);
 
             if(this.showDraggers) {
                 context.lineTo(this.p2[0], this.p2[1]);
@@ -47,7 +48,7 @@ define(["util", "vec2", "Scene", "PointDragger"],
                 context.beginPath();
                 context.lineWidth = 1;
                 context.strokeStyle = "#f44336";
-                for(var j = 1; j < this.segments; j++) {
+                for(var j = 1; j < points.length - 1; j++) {
                     this.drawTicks(context, points[j-1], points[j], points[j+1]);
                 }
                 context.stroke();
