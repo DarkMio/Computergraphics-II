@@ -81,8 +81,11 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
              * @returns {boolean}
              */
             var is = function(type, obj) {
+                if(obj === undefined || obj === null) {
+                    return false;
+                }
                 var className = obj.constructor.name;
-                return obj !== undefined && obj !== null && className === type;
+                return className === type;
             };
 
             var sceneBuilder = function(callback) { // ewghhh.

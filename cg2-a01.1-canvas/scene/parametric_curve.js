@@ -80,13 +80,17 @@ define(["util", "vec2", "Scene", "PointDragger"],
         };
 
         ParametricCurve.prototype.drawTicks = function(context, last, current, next) {
-                var d = vec2.sub(next, last);
-                d = [-d[1], d[0]];
-                d = vec2.mult(d, 0.5);
-                var upper = vec2.add(current, d);
-                var lower = vec2.sub(current, d);
-                context.moveTo(upper[0], upper[1]);
-                context.lineTo(lower[0], lower[1]);
+            var d = vec2.sub(next, last);
+            d = [-d[1], d[0]];
+            var upper = vec2.add(current, d);
+            var lower = vec2.sub(current, d);
+            // and now normalize it
+            var len = vec2.pythagoras(upper, lower);
+            d = vec2.mult(d, 1 / len * 2 * 10);
+            upper = vec2.add(current, d);
+            lower = vec2.sub(current, d);
+            context.moveTo(upper[0], upper[1]);
+            context.lineTo(lower[0], lower[1]);
         };
 
         return ParametricCurve;
