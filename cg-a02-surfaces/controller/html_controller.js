@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface"],
-    (function($,BufferGeometry, Random, Band, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface) {
+define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus"],
+    (function($,BufferGeometry, Random, Band, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus) {
         "use strict";
 
         /*
@@ -108,6 +108,15 @@ define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "
                 var bufferGeo = new BufferGeometry();
                 bufferGeo.addAttribute("position", ssurface.getPositions());
                 bufferGeo.addAttribute("color", ssurface.getPositions());
+
+                scene.addBufferGeometry(bufferGeo);
+            });
+
+            $("#btnBreatherSurface").click(function() {
+                var bSurface = new BraidedTorus();
+                var bufferGeo = new BufferGeometry();
+                bufferGeo.addAttribute("position", bSurface.getPositions());
+                bufferGeo.addAttribute("color", bSurface.getPositions());
 
                 scene.addBufferGeometry(bufferGeo);
             })

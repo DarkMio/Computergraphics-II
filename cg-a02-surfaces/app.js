@@ -30,6 +30,7 @@ requirejs.config({
         "ellipsoid": "models/ellipsoid",
         "wave_sphere" : "models/wave_sphere",
         "snail_surface" : "models/snail_surface",
+        "braided_torus" : "models/braided_torus",
         "util"  : "./utils/util",
         "shaders" : "./shaders",
         "BufferGeometry" : "./scene/buffer_geometry",
