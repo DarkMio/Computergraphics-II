@@ -1,18 +1,16 @@
 define(["three"], function(THREE) {
     "use strict";
 
-    var WaveSphere = function WaveSphere() {
-        this.positions = new Float32Array(250 * 250 * 3);
-        this.colors = new Float32Array(250 * 250 * 3);
+    var WaveSphere = function WaveSphere(heightSegments, widthSegments, size, color) {
+        widthSegments |= 250;
+        heightSegments |= 250;
+        size |= 50;
+        this.positions = new Float32Array(widthSegments * heightSegments * 3);
+        this.colors = new Float32Array(widthSegments * heightSegments * 3);
         var _color = new THREE.Color();
-        _color.setRGB(1, 0, 0);
-        var a = 50;
+        _color.setHex(color);
 
         var index = 0;
-
-        var widthSegments = 250;
-        var heightSegments = 250;
-
         var t_v = 2 * Math.PI / (widthSegments - 1);
         var t_u = 14.5 / (heightSegments - 1);
         for(var y = 0; y < heightSegments; y++) {
@@ -21,9 +19,9 @@ define(["three"], function(THREE) {
             for(var x = 0; x < widthSegments; x++) {
                 var u = t_u * x;
 
-                var px = a * u * Math.cos(Math.cos(u)) * Math.cos(v);
-                var py = a * u * Math.cos(Math.cos(u)) * Math.sin(v);
-                var pz = a * u * Math.sin(Math.cos(u));
+                var px = size * u * Math.cos(Math.cos(u)) * Math.cos(v);
+                var py = size * u * Math.cos(Math.cos(u)) * Math.sin(v);
+                var pz = size * u * Math.sin(Math.cos(u));
 
                 this.positions[index] = px;
                 this.positions[index + 1] = py;

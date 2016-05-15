@@ -57,24 +57,39 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     console.log("cursor right");
                     scope.currentMesh.rotation.y += -0.05;
                     // Cursor up
+                } else if(keyCode == 87) { // w
+                    console.log("w");
+                    scope.currentMesh.position.z += 10;
+                } else if(keyCode == 83) {
+                    console.log("s");
+                    scope.currentMesh.position.z -= 10;
+                } else if(keyCode == 65) {
+                    console.log("a");
+                    scope.currentMesh.position.x -= 10;
+                } else if(keyCode == 68) {
+                    console.log("d");
+                    scope.currentMesh.position.x += 10;
                 }
-            };
+            }
 
             this.addBufferGeometry = function(bufferGeometry) {
                 scope.currentMesh = bufferGeometry.getMesh();
                 scope.scene.add( scope.currentMesh );
 
-            }
+            };
 
             /*
              * drawing the scene
              */
             this.draw = function() {
-
                 requestAnimFrame( scope.draw );
+                if($("#checkAnimate").is(":checked")) {
+                    scope.currentMesh.rotation.x += 0.003;
+                    scope.currentMesh.rotation.y += 0.003;
+                    scope.currentMesh.rotation.z += 0.003;
+                }
 
                 scope.renderer.render(scope.scene, scope.camera);
-
             };
         };
 

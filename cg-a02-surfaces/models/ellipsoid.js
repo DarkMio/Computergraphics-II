@@ -7,18 +7,17 @@ define(["three"], function(THREE) {
      * @constructor
      */
     var Ellipsoid = function Ellipsoid(heightSegments, widthSegments, height, width, length, color) {
-        this.positions = new Float32Array(100 * 100 * 3);
-        this.colors = new Float32Array(100 * 100 * 3);
+        heightSegments |= 100;
+        widthSegments |= 100;
+        this.positions = new Float32Array(heightSegments * widthSegments * 3);
+        this.colors = new Float32Array(heightSegments * widthSegments * 3);
         var _color = new THREE.Color();
-        _color.setRGB(1, 0, 0);
+        _color.setHex(color);
         var a = width || 125;
         var b = height || 250;
         var c = length || 500;
 
-        heightSegments |= 100; // y
-        widthSegments |= 100; // x
         var index = 0;
-
         var t_v = Math.PI / (widthSegments - 1);
         var t_u = Math.PI * 2 / (heightSegments - 1);
         for(var y = 0; y < heightSegments; y++) {

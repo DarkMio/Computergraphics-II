@@ -19,16 +19,16 @@ define(["three"],
          * @param scene  - reference to the scene
          * @constructor
          */
-        var Band = function (config) {
-
+        var Band = function (config, color) {
+            console.log(color);
             var segments = config.segments || 100;
             var radius = config.radius || 300;
             var height = config.height || 100;
-
             this.positions = new Float32Array( 2*segments * 3);
             this.colors = new Float32Array( 2*segments * 3 );
 
-            var color = new THREE.Color();
+            var _color = new THREE.Color();
+            _color.setHex(color || "ff0000");
 
             for(var i=0; i<this.positions.length; i+=6) {
 
@@ -51,18 +51,14 @@ define(["three"],
                 this.positions[ i + 5 ] = z;
 
 
-                color.setRGB( 1,0,0 );
+                this.colors[ i ]     = _color.r;
+                this.colors[ i + 1 ] = _color.g;
+                this.colors[ i + 2 ] = _color.b;
 
-                this.colors[ i ]     = color.r;
-                this.colors[ i + 1 ] = color.g;
-                this.colors[ i + 2 ] = color.b;
-
-                this.colors[ i + 3 ] = color.r;
-                this.colors[ i + 4 ] = color.g;
-                this.colors[ i + 5 ] = color.b;
-            };
-            
-
+                this.colors[ i + 3 ] = _color.r;
+                this.colors[ i + 4 ] = _color.g;
+                this.colors[ i + 5 ] = _color.b;
+            }
 
             this.getPositions = function() {
                 return this.positions;

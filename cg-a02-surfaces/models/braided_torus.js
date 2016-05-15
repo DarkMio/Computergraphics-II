@@ -1,22 +1,20 @@
 define(["three"], function(THREE) {
     "use strict";
 
-    var BraidedTorus = function BraidedTorus() {
-        var widthSegments = 250;
-        var heightSegments = 250;
+    var BraidedTorus = function BraidedTorus(heightSegments, widthSegments, size, color) {
+        widthSegments |= 250;
+        heightSegments |= 250;
         this.positions = new Float32Array(widthSegments * heightSegments * 3);
         this.colors = new Float32Array(widthSegments * heightSegments * 3);
         var _color = new THREE.Color();
-        _color.setRGB(1, 0, 0);
-        var size = 150;
+        _color.setHex(color);
+        size |= 150;
 
         var a = 0.5;
         var n = 1.25;
         var r = 0.5;
         var R = 2.5;
         var index = 0;
-
-
 
         var t_v = 2 * Math.PI / (widthSegments - 1);
         var t_u = 8 * Math.PI / (heightSegments - 1);
@@ -25,8 +23,6 @@ define(["three"], function(THREE) {
 
             for(var x = 0; x < widthSegments; x++) {
                 var u = t_u * x;
-
-
 
                 var px = size * (r * Math.cos(v) * Math.cos(u) + R * Math.cos(u) * (1 + a * Math.cos(n * u)));
                 var py = size * (2.5 * (r * Math.sin(v) + a * Math.sin(n * u)));

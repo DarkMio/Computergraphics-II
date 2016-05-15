@@ -14,14 +14,8 @@ define(["three"],
 
         "use strict";
 
-        /**
-         *
-         * @param scene  - reference to the scene
-         * @constructor
-         */
-        var Random = function (numItems) {
-
-            var items = numItems || 5000;
+        var Random = function (items) {
+            items |= 5000;
 
             this.positions = new Float32Array( items * 3);
             this.colors = new Float32Array( items * 3 );

@@ -31,8 +31,8 @@
     <div id="param_area" >
         <ul>
             <li>
-                <button id="btnRandom" type="button">Random</button>
-                <button id="btnBand" type="button">Band</button>
+                <button id="btnNewRandom" type="button">Random</button>
+                <button id="btnNewBand" type="button">Band</button>
             </li>
             <li>
                 <button id="btnEllipsoid" type="button">Ellipsoid</button>
@@ -48,36 +48,25 @@
             </li>
             <li>
                 <button id="btnSnailSurface" type="button">Snail Surface</button>
-                <button id="btnBreatherSurface" type="button">Braided Torus</button>
+                <button id="btnBraidedTorus" type="button">Braided Torus</button>
             </li>
         </ul>
-        <h3>Selected Object:</h3>
-        <table id="random">
-            <tr>
-                <td>Number of Items:</td>
-                <td><input id="numItems" class="objParam" type="number" min="1" max="10000" value="1000">
-            </tr>
-            <tr>
-                <td><button id="btnNewRandom"   type="button"   >Create Random</button></td>
-            </tr>
-        </table>
-        <table id="band">
-            <tr>
-                <td>Number of Segments:</td>
-                <td><input id="numSegments" class="objParam" type="number" min="1" max="10000" value="1000">
-            </tr>
-            <tr>
-                <td>Radius:</td>
-                <td><input id="radius" class="objParam" type="number" min="1" max="1000" value="300">
-            </tr>
-            <tr>
-                <td>Height:</td>
-                <td><input id="height" class="objParam" type="number" min="1" max="1000" value="100">
-            </tr>
-            <tr>
-                <td><button id="btnNewBand"   type="button"   >Create Band</button></td>
-            </tr>
-        </table>
+
+        <h3>Parameters:</h3>
+        <ul>
+            <li>
+                <input type="number" id="fieldSegmentsWidth" title="Segments (width)" placeholder="Segments (width)">
+                <input type="number" id="fieldSegmentsHeight" title="Segments (height)" placeholder="Segments (height)">
+            </li>
+            <li>
+                <input type="number" id="fieldSize" title="Size (multiplier)" placeholder="Size (multiplier)">
+                <input type="color" id="fieldColor" title="color" placeholder="Pos Y">
+                <input type="checkbox" id="boxColor" class="auto" title="Enable Color">
+            </li>
+            <li>
+                <input id="checkAnimate" class="auto" type="checkbox"> Animate
+            </li>
+        </ul>
 
     </div>
 

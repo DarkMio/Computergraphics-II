@@ -26,6 +26,10 @@ button {
     margin: 2px 0;
 }
 
+.auto {
+    width: auto;
+}
+
 /* region to display an error */
 #error {
     color:white;

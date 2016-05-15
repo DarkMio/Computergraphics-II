@@ -20,108 +20,91 @@ define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "
          * and provide them with a closure defining context and scene
          */
         var HtmlController = function(scene) {
+            var valueCollector = function() {
+                return {
+                    segmentsWidth : parseInt($("#fieldSegmentsWidth").val()),
+                    segmentsHeight : parseInt($("#fieldSegmentsHeight").val()),
+                    size :  parseInt($("#fieldSize").val()),
+                    color : eval("0x" + $("#fieldColor").val().substr(1)),
+                    enableColor : $("#boxColor").is(":checked")
+                }
+            };
 
+            var sceneBuilder = function(callback) {
+                var values = valueCollector();
+                var element = callback(values);
+                var bufferGeometry = new BufferGeometry();
+                bufferGeometry.addAttribute("position", element.getPositions());
+                if(values.enableColor) {
+                    bufferGeometry.addAttribute("color", element.getColors())
+                } else {
+                    bufferGeometry.addAttribute("color", element.getPositions());
+                }
 
-            $("#random").show();
-            $("#band").hide();
+                scene.addBufferGeometry(bufferGeometry);
+            };
 
-            $("#btnRandom").click( (function() {
-                $("#random").show();
-                $("#band").hide();
-            }));
+            $("#btnNewRandom").click(function() {
+                sceneBuilder(function(values) {
+                    return new Random(values.segmentsWidth);
+                });
+            });
 
-            $("#btnBand").click( (function() {
-                $("#random").hide();
-                $("#band").show();
-            }));
-
-            $("#btnNewRandom").click( (function() {
-
-                var numPoints = parseInt($("#numItems").attr("value"));
-                var random = new Random(numPoints);
-                var bufferGeometryRandom = new BufferGeometry();
-                bufferGeometryRandom.addAttribute("position", random.getPositions());
-                bufferGeometryRandom.addAttribute("color", random.getColors());
-
-                scene.addBufferGeometry(bufferGeometryRandom);
-            }));
-
-
-            $("#btnNewBand").click( (function() {
-
-                var config = {
-                    segments : parseInt($("#numSegments").attr("value")),
-                    radius : parseInt($("#radius").attr("value")),
-                    height : parseInt($("#height").attr("value"))
-                };
-
-
-                var band = new Band(config);
-                var bufferGeometryBand = new BufferGeometry();
-                bufferGeometryBand.addAttribute("position", band.getPositions());
-                bufferGeometryBand.addAttribute("color", band.getColors());
-
-                scene.addBufferGeometry(bufferGeometryBand);
-            }));
+            $("#btnNewBand").click(function() {
+                sceneBuilder(function(values) {
+                    var config = {
+                        segments : values.segmentsWidth || 1000,
+                        radius : values.segmentsHeight || 300,
+                        height : values.size || 100
+                    };
+                    return new Band(config, values.color);
+                });
+            });
             
             $("#btnEllipsoid").click(function() {
-                var ellip = new Ellipsoid();
-                var bufferedGeometryEllip = new BufferGeometry();
-                bufferedGeometryEllip.addAttribute("position", ellip.getPositions());
-                bufferedGeometryEllip.addAttribute("color", ellip.getPositions());
-
-                scene.addBufferGeometry(bufferedGeometryEllip);
+                sceneBuilder(function(values) {
+                    return new Ellipsoid(values.heightSegments,
+                                         values.widthSegments,
+                                         125, 250, 500,
+                                         values.color);
+                });
             });
 
             $("#btnCube").click(function() {
                 var cube = new Cube();
                 scene.scene.add(cube);
                 scene.currentMesh = cube;
-                scene.draw();
             });
 
             $("#btnKnot").click(function () {
                 var knot = new Knot();
                 scene.scene.add(knot);
                 scene.currentMesh = knot;
-                scene.draw();
             });
 
             $("#btnTorus").click(function() {
                 var torus = new Torus();
                 scene.scene.add(torus);
                 scene.currentMesh = torus;
-                scene.draw();
             });
 
             $("#btnWaveSphere").click(function() {
-                var wvsphere = new WaveSphere();
-                var bufferGeo = new BufferGeometry();
-                bufferGeo.addAttribute("position", wvsphere.getPositions());
-                bufferGeo.addAttribute("color", wvsphere.getPositions());
-
-                scene.addBufferGeometry(bufferGeo);
+                sceneBuilder(function(values) {
+                    return new WaveSphere(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
+                });
             });
 
             $("#btnSnailSurface").click(function() {
-                var ssurface = new SnailSurface();
-                var bufferGeo = new BufferGeometry();
-                bufferGeo.addAttribute("position", ssurface.getPositions());
-                bufferGeo.addAttribute("color", ssurface.getPositions());
-
-                scene.addBufferGeometry(bufferGeo);
+                sceneBuilder(function(values) {
+                    return new SnailSurface(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
+                });
             });
 
-            $("#btnBreatherSurface").click(function() {
-                var bSurface = new BraidedTorus();
-                var bufferGeo = new BufferGeometry();
-                bufferGeo.addAttribute("position", bSurface.getPositions());
-                bufferGeo.addAttribute("color", bSurface.getPositions());
-
-                scene.addBufferGeometry(bufferGeo);
-            })
-
-
+            $("#btnBraidedTorus").click(function() {
+                sceneBuilder(function(values) {
+                    return new BraidedTorus(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
+                });
+            });
         };
 
         // return the constructor function

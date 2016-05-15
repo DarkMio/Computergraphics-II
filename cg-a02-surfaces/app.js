@@ -78,7 +78,7 @@ define(["jquery", "three", "scene", "HtmlController"],
 
             // this creates a 3d rendering context and
             // a canvas
-            var renderer = new THREE.WebGLRenderer();
+            var renderer = new THREE.WebGLRenderer({antialias: true});
             renderer.setSize( canvasWidth, canvasHeight );
             renderer.setClearColor( 0xEEEEEE, 1 );
 
