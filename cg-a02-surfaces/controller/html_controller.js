@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band"],
-    (function($,BufferGeometry, Random, Band) {
+define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus"],
+    (function($,BufferGeometry, Random, Band, Cube, Knot, Torus) {
         "use strict";
 
         /*
@@ -63,6 +63,24 @@ define(["jquery", "BufferGeometry", "random", "band"],
 
                 scene.addBufferGeometry(bufferGeometryBand);
             }));
+
+            $("#btnCube").click(function() {
+                var cube = new Cube();
+                scene.scene.add(cube);
+                scene.draw();
+            });
+
+            $("#btnKnot").click(function () {
+                var knot = new Knot();
+                scene.scene.add(knot);
+                scene.draw();
+            });
+
+            $("#btnTorus").click(function() {
+                var torus = new Torus();
+                scene.scene.add(torus);
+                scene.draw();
+            })
 
 
         };
