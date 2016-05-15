@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus"],
-    (function($,BufferGeometry, Random, Band, Cube, Knot, Torus) {
+define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface"],
+    (function($,BufferGeometry, Random, Band, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface) {
         "use strict";
 
         /*
@@ -63,23 +63,53 @@ define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus"],
 
                 scene.addBufferGeometry(bufferGeometryBand);
             }));
+            
+            $("#btnEllipsoid").click(function() {
+                var ellip = new Ellipsoid();
+                var bufferedGeometryEllip = new BufferGeometry();
+                bufferedGeometryEllip.addAttribute("position", ellip.getPositions());
+                bufferedGeometryEllip.addAttribute("color", ellip.getPositions());
+
+                scene.addBufferGeometry(bufferedGeometryEllip);
+            });
 
             $("#btnCube").click(function() {
                 var cube = new Cube();
                 scene.scene.add(cube);
+                scene.currentMesh = cube;
                 scene.draw();
             });
 
             $("#btnKnot").click(function () {
                 var knot = new Knot();
                 scene.scene.add(knot);
+                scene.currentMesh = knot;
                 scene.draw();
             });
 
             $("#btnTorus").click(function() {
                 var torus = new Torus();
                 scene.scene.add(torus);
+                scene.currentMesh = torus;
                 scene.draw();
+            });
+
+            $("#btnWaveSphere").click(function() {
+                var wvsphere = new WaveSphere();
+                var bufferGeo = new BufferGeometry();
+                bufferGeo.addAttribute("position", wvsphere.getPositions());
+                bufferGeo.addAttribute("color", wvsphere.getPositions());
+
+                scene.addBufferGeometry(bufferGeo);
+            });
+
+            $("#btnSnailSurface").click(function() {
+                var ssurface = new SnailSurface();
+                var bufferGeo = new BufferGeometry();
+                bufferGeo.addAttribute("position", ssurface.getPositions());
+                bufferGeo.addAttribute("color", ssurface.getPositions());
+
+                scene.addBufferGeometry(bufferGeo);
             })
 
 

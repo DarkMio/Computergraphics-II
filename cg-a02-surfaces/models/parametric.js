@@ -14,7 +14,7 @@ define(["three"],
 
         var ParametricSurface = function (posFunc, config) {
 
-            this.positions = posFunc;
+            this.positions = undefined;
             this.colors = undefined;
 
             this.getPositions = function() {
