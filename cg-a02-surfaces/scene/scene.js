@@ -41,33 +41,21 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 // Get the key code of the pressed key
                 var keyCode = event.which;
 
-                if(keyCode == 38){
-                    console.log("cursor up");
+                if(keyCode == 38){ // Cursor down
                     scope.currentMesh.rotation.x += 0.05;
-                    // Cursor down
-                } else if(keyCode == 40){
-                    console.log("cursor down");
+                } else if(keyCode == 40){ // Cursor left
                     scope.currentMesh.rotation.x += -0.05;
-                    // Cursor left
-                } else if(keyCode == 37){
-                    console.log("cursor left");
+                } else if(keyCode == 37){ // Cursor right
                     scope.currentMesh.rotation.y += 0.05;
-                    // Cursor right
-                } else if(keyCode == 39){
-                    console.log("cursor right");
+                } else if(keyCode == 39){ // Cursor up
                     scope.currentMesh.rotation.y += -0.05;
-                    // Cursor up
                 } else if(keyCode == 87) { // w
-                    console.log("w");
                     scope.currentMesh.position.z += 10;
-                } else if(keyCode == 83) {
-                    console.log("s");
+                } else if(keyCode == 83) { // s
                     scope.currentMesh.position.z -= 10;
-                } else if(keyCode == 65) {
-                    console.log("a");
+                } else if(keyCode == 65) { // a
                     scope.currentMesh.position.x -= 10;
-                } else if(keyCode == 68) {
-                    console.log("d");
+                } else if(keyCode == 68) { // d
                     scope.currentMesh.position.x += 10;
                 }
             }

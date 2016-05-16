@@ -1,49 +1,41 @@
 <html>
 <head>
     <meta charset="UTF-8">
-
     <!--
      *
      * JavaScript / WebGL teaching framwork
      * (C)opyright Kristian Hildebrand, khildebrand@beuth-hochschule.de
     -->
-
     <title>CG2 A2: WebGL / Surfaces</title>
-
     <!-- import main module using RequireJS -->
     <script data-main="app.js" src="../lib/require.js"></script>
-
     <!-- import style sheet -->
     <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
-
 </head>
 
 <body>
 
-  <!-- this element will be used to diplay errors -->
-  <pre id="error"></pre>
+<!-- this element will be used to diplay errors -->
+<pre id="error"></pre>
 
-  <!-- centered region with drawing canvas and parameter area -->
-  <div align="center">
-
-      <div id="drawing_container" width="600" height="400"></div>
-
-    <div id="param_area" >
+<!-- centered region with drawing canvas and parameter area -->
+<div align="center">
+    <div id="drawing_container" width="600" height="400"></div>
+    <div id="param_area">
         <ul>
-            <li>
-                <button id="btnNewRandom" type="button">Random</button>
-                <button id="btnNewBand" type="button">Band</button>
-            </li>
-            <li>
-                <button id="btnEllipsoid" type="button">Ellipsoid</button>
-                <button id="btnParametric" type="button">Parametric</button>
-            </li>
             <li>
                 <button id="btnCube" type="button">Cube</button>
                 <button id="btnKnot" type="button">Knot</button>
             </li>
             <li>
                 <button id="btnTorus" type="button">Torus</button>
+            </li>
+            <li>
+                <button id="btnNewRandom" type="button">Random</button>
+                <button id="btnNewBand" type="button">Band</button>
+            </li>
+            <li>
+                <button id="btnEllipsoid" type="button">Ellipsoid</button>
                 <button id="btnWaveSphere" type="button">Wave Sphere</button>
             </li>
             <li>
@@ -51,7 +43,6 @@
                 <button id="btnBraidedTorus" type="button">Braided Torus</button>
             </li>
         </ul>
-
         <h3>Parameters:</h3>
         <ul>
             <li>
@@ -67,12 +58,31 @@
                 <input id="checkAnimate" class="auto" type="checkbox"> Animate
             </li>
         </ul>
-
+        <div>
+            <h3>Parametric Body:</h3>
+            <ul>
+                <li>
+                    <input type="text" id="fieldParamX" title="Param X" placeholder="Param X">
+                    <input type="text" id="fieldParamY" title="Param Y" placeholder="Param Y">
+                </li>
+                <li>
+                    <input type="text" id="fieldParamZ" title="Param Z" placeholder="Param Z">
+                </li>
+                <li>
+                    <input type="number" id="fieldUMin" title="U Min" placeholder="U Min">
+                    <input type="number" id="fieldUMax" title="U Max" placeholder="U Max">
+                </li>
+                <li>
+                    <input type="number" id="fieldVMin" title="V Min" placeholder="V Min">
+                    <input type="number" id="fieldVMax" title="V Max" placeholder="V Max">
+                </li>
+                <li>
+                    <button type="button" id="btnNewParametric">Parametric</button>
+                </li>
+            </ul>
+        </div>
     </div>
-
-
-
-  </div>
+</div>
 
 </body>
 </html>

@@ -49,9 +49,9 @@ button {
 /* container to display editable parameters */
 #param_area {
     float:left;
-    width:275px;
+    width: 250px;
     height: 398px;
-    padding: 2px 10px 0 10px;
+    padding: 2px 0 0 10px;
     margin-left: -1px;
     border: 1px dashed #c3c3c3;
     text-align:left;

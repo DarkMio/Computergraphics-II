@@ -24,6 +24,7 @@ requirejs.config({
         "scene" : "./scene/scene",
         "random" : "./models/random",
         "band" : "./models/band",
+        "parametric" : "models/parametric",
         "cube" : "models/cube",
         "knot" : "models/knot",
         "torus" : "models/torus",

@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus"],
-    (function($,BufferGeometry, Random, Band, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus) {
+define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus"],
+    (function($,BufferGeometry, Random, Band, ParametricSurface, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus) {
         "use strict";
 
         /*
@@ -33,6 +33,9 @@ define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "
             var sceneBuilder = function(callback) {
                 var values = valueCollector();
                 var element = callback(values);
+                if(element == undefined || element == null) {
+                    return;
+                }
                 var bufferGeometry = new BufferGeometry();
                 bufferGeometry.addAttribute("position", element.getPositions());
                 if(values.enableColor) {
@@ -43,6 +46,8 @@ define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "
 
                 scene.addBufferGeometry(bufferGeometry);
             };
+
+            $("#btnParametric").click();
 
             $("#btnNewRandom").click(function() {
                 sceneBuilder(function(values) {
@@ -105,6 +110,35 @@ define(["jquery", "BufferGeometry", "random", "band", "cube", "knot", "torus", "
                     return new BraidedTorus(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
                 });
             });
+            
+            $("#btnNewParametric").click(function() {
+                sceneBuilder(function(values) {
+                    var posX = $("#fieldParamX").val();
+                    var posY = $("#fieldParamY").val();
+                    var posZ = $("#fieldParamZ").val();
+                    var uMin = parseFloat($("#fieldUMin").val()) || 0;
+                    var uMax = parseFloat($("#fieldUMax").val()) || 2 * Math.PI;
+                    var vMin = parseFloat($("#fieldVMin").val()) || 0;
+                    var vMax = parseFloat($("#fieldVMax").val()) || 2 * Math.PI;
+
+                    try{
+                        var size = values.size; // to emulate object environment
+                        $.each([uMin, uMax], function(u_index, u) {
+                            $.each([vMin, vMax], function(v_index, v) {
+                                // test against each upper and lower bound individually
+                                var result;
+                                result = size * eval(posX);
+                                result = size * eval(posY);
+                                result = size * eval(posZ);
+                            });
+                        });
+                        return new ParametricSurface(values.segmentsHeight, values.segmentsWidth, values.size,
+                            posX, posY, posZ, uMin, uMax, vMin, vMax, values.color);
+                    } catch (Error) {
+                        return null;
+                    }
+                })
+            })
         };
 
         // return the constructor function
