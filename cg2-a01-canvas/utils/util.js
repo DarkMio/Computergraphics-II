@@ -82,7 +82,8 @@ define(["jquery"], (function($) {
     };
     
     util.spawnAlert = function(message) {
-        
+        var failMessage = '<div class="alert"><span class="closebtn">&times;</span>' + message + '</div>';
+        $('body').append(failMessage);
     };
 
     /* return the interface defined by this module */
