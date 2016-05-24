@@ -33,6 +33,42 @@ define(["three"], function(THREE) {
             }
         }
 
+        // buffers
+        var indices = new THREE.BufferAttribute( new Uint32Array( widthSegments*heightSegments*2*3 ) , 1 );
+        // helper variables
+        var indexOffset = 0;
+
+        for (var j = 1; j <= heightSegments; j ++ ) {
+
+            for (var i = 1; i <= widthSegments; i ++ ) {
+
+                // indices
+                var a = ( widthSegments + 1 ) * ( j - 1 ) + ( i - 1 );
+                var b = ( heightSegments + 1 ) * j + ( i - 1 );
+                var c = ( widthSegments + 1 ) * j + i;
+                var d = ( heightSegments + 1 ) * ( j - 1 ) + i;
+
+                // face one
+                indices.setX( indexOffset, a ); indexOffset++;
+                indices.setX( indexOffset, b ); indexOffset++;
+                indices.setX( indexOffset, d ); indexOffset++;
+
+                // face two
+                indices.setX( indexOffset, b ); indexOffset++;
+                indices.setX( indexOffset, c ); indexOffset++;
+                indices.setX( indexOffset, d ); indexOffset++;
+
+            }
+
+        }
+
+        this.indices = indices;
+
+        this.getIndices = function() {
+            return this.indices;
+        };
+
+
         this.getPositions = function() {
             return this.positions;
         };

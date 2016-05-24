@@ -60,6 +60,42 @@ define(["three"],
                 this.colors[ i + 5 ] = _color.b;
             }
 
+            console.log(this.positions);
+
+            // buffers
+            var indices =new Uint32Array( segments*2*3 );
+            // helper variables
+            var indexOffset = 0;
+
+            for (var j = 0; j < segments * 2; j += 2 ) {
+
+                var mod = segments * 2;
+                var a = j;
+                var b = (j+1) % mod;
+                var c = (j+2) % mod;
+                var d = (j+3) % mod;
+
+                console.log([a, b, c]);
+                console.log([b, c, d]);
+                // face one
+                indices[ indexOffset] = a  ; indexOffset++;
+                indices[ indexOffset] = b  ; indexOffset++;
+                indices[ indexOffset] = c ; indexOffset++;
+
+                // face two
+                indices[ indexOffset] = b ; indexOffset++;
+                indices[ indexOffset] = d  ; indexOffset++;
+                indices[ indexOffset] = c ; indexOffset++;
+
+            }
+
+            this.indices = indices;
+            console.log(indices);
+            this.getIndices = function() {
+                return this.indices;
+            };
+
+
             this.getPositions = function() {
                 return this.positions;
             };

@@ -61,9 +61,21 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             }
 
             this.addBufferGeometry = function(bufferGeometry) {
-                scope.currentMesh = bufferGeometry.getMesh();
-                scope.scene.add( scope.currentMesh );
+                scope.currentMesh = new THREE.Mesh(bufferGeometry, new THREE.MeshBasicMaterial({color: 0xFFAAFF, side: THREE.DoubleSide}));
+                /*var meshIndices = bufferGeometry.getIndex();
+                var bff = new THREE.BufferGeometry();
+                /*
+                bff.setIndex(meshIndices);
+                console.log(bufferGeometry.position);
+                bff.addAttribute("position", bufferGeometry.getPositions());
 
+                if(meshIndices) {
+                    console.log("Lets build this reactor.");
+                    scope.scene.add(new THREE.Mesh(bufferGeometry, new THREE.LineBasicMaterial()));
+                } else {
+                 */
+                    scope.scene.add(scope.currentMesh);
+                // }
             };
 
             /*

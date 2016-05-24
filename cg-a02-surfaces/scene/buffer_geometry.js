@@ -23,31 +23,44 @@ define(["three"],
 
         var BufferGeometry = function () {
 
-            this.mesh     = undefined;
+            this.mesh = undefined;
             this.geometry = new THREE.BufferGeometry();
-            this.material = new THREE.PointsMaterial( {
+            this.material = new THREE.MeshBasicMaterial({color: 0xaaaaaa, side: THREE.DoubleSide});
+
+/*
+            this.material = new THREE.PointsMaterial({
                 color: 0xaaaaaa,
                 size: 10, vertexColors: THREE.VertexColors
-            } );
+            });*/
+        };
 
-            /**
-             * Adds a vertex attribute, we assume each element has three components, e.g.
-             * [position_x0, position_y0, position_z0, position_x1, position_y1, position_z1,...]
-             * AddAttribute updates the mesh.
-             *
-             * @param name vertex attributes name, e.g. position, color, normal
-             * @param buffer
-             */
-            this.addAttribute = function(name, buffer) {
-                this.geometry.addAttribute( name, new THREE.BufferAttribute( buffer, 3 ) );
-                this.geometry.computeBoundingSphere();
+        BufferGeometry.prototype.getIndex = function() {
+            return this.index;
+        };
 
-                this.mesh = new THREE.Points( this.geometry, this.material );
-            }
+        BufferGeometry.prototype.setIndex = function(index) {
+            index = new THREE.BufferAttribute(index, 1);
+            this.index = index;
+        };
 
-            this.getMesh = function() {
-                return this.mesh;
-            }
+
+        /**
+         * Adds a vertex attribute, we assume each element has three components, e.g.
+         * [position_x0, position_y0, position_z0, position_x1, position_y1, position_z1,...]
+         * AddAttribute updates the mesh.
+         *
+         * @param name vertex attributes name, e.g. position, color, normal
+         * @param buffer
+         */
+        BufferGeometry.prototype.addAttribute = function(name, buffer) {
+            this.geometry.addAttribute( name, new THREE.BufferAttribute( buffer, 3 ) );
+            this.geometry.computeBoundingSphere();
+
+            this.mesh = new THREE.Mesh( this.geometry, this.material );
+        };
+
+        BufferGeometry.prototype.getMesh = function() {
+            return this.mesh;
         };
 
         return BufferGeometry;

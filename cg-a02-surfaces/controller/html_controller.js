@@ -36,13 +36,15 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 if(element == undefined || element == null) {
                     return;
                 }
-                var bufferGeometry = new BufferGeometry();
-                bufferGeometry.addAttribute("position", element.getPositions());
+                var bufferGeometry = new THREE.BufferGeometry();
+                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
                 if(values.enableColor) {
                     bufferGeometry.addAttribute("color", element.getColors())
                 } else {
                     bufferGeometry.addAttribute("color", element.getPositions());
                 }
+
+                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
 
                 scene.addBufferGeometry(bufferGeometry);
             };
@@ -56,14 +58,28 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
             });
 
             $("#btnNewBand").click(function() {
-                sceneBuilder(function(values) {
-                    var config = {
-                        segments : values.segmentsWidth || 1000,
-                        radius : values.segmentsHeight || 300,
-                        height : values.size || 100
-                    };
-                    return new Band(config, values.color);
-                });
+                var values = valueCollector();
+                var config = {
+                    segments : values.segmentsWidth || 1000,
+                    radius : values.segmentsHeight || 300,
+                    height : values.size || 100
+                };
+                var element = new Band(config, values.color);
+                if(element == undefined || element == null) {
+                    return;
+                }
+                var bufferGeometry = new THREE.BufferGeometry();
+                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
+                if(values.enableColor) {
+                    bufferGeometry.addAttribute("color", element.getColors())
+                } else {
+                    bufferGeometry.addAttribute("color", element.getPositions());
+                }
+
+                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
+
+                scene.addBufferGeometry(bufferGeometry);
+                console.log("Ping.");
             });
             
             $("#btnEllipsoid").click(function() {
@@ -100,15 +116,43 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
             });
 
             $("#btnSnailSurface").click(function() {
-                sceneBuilder(function(values) {
-                    return new SnailSurface(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
-                });
+                var values = valueCollector();
+                var element =  new SnailSurface(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
+                if(element == undefined || element == null) {
+                    return;
+                }
+                var bufferGeometry = new THREE.BufferGeometry();
+                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
+                if(values.enableColor) {
+                    bufferGeometry.addAttribute("color", element.getColors())
+                } else {
+                    bufferGeometry.addAttribute("color", element.getPositions());
+                }
+
+                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
+
+                scene.addBufferGeometry(bufferGeometry);
+                console.log("Ping.");
             });
 
             $("#btnBraidedTorus").click(function() {
-                sceneBuilder(function(values) {
-                    return new BraidedTorus(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
-                });
+                var values = valueCollector();
+                var element = new BraidedTorus(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
+                if(element == undefined || element == null) {
+                    return;
+                }
+                var bufferGeometry = new THREE.BufferGeometry();
+                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
+                if(values.enableColor) {
+                    bufferGeometry.addAttribute("color", element.getColors())
+                } else {
+                    bufferGeometry.addAttribute("color", element.getPositions());
+                }
+
+                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
+
+                scene.addBufferGeometry(bufferGeometry);
+                console.log("Ping.");
             });
             
             $("#btnNewParametric").click(function() {
