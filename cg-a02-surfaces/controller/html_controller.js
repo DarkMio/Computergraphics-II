@@ -59,56 +59,20 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
             });
 
             $("#btnNewBand").click(function() {
-                var values = valueCollector();
-                var config = {
-                    segments : values.segmentsWidth || 1000,
-                    radius : values.segmentsHeight || 300,
-                    height : values.size || 100
-                };
-                var element = new Band(config, values.color);
-                if(element == undefined || element == null) {
-                    return;
-                }
-                var bufferGeometry = new THREE.BufferGeometry();
-                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
-                if(values.enableColor) {
-                    bufferGeometry.addAttribute("color", element.getColors())
-                } else {
-                    bufferGeometry.addAttribute("color", element.getPositions());
-                }
-
-                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
-
-                scene.addBufferGeometry(bufferGeometry);
-                console.log("Ping.");
+                sceneBuilder(function(values) {
+                    var config = {
+                        segments : values.segmentsWidth || 1000,
+                        radius : values.segmentsHeight || 300,
+                        height : values.size || 100
+                    };
+                    return new Band(config, values.color);
+                })
             });
             
             $("#btnEllipsoid").click(function() {
-                var values = valueCollector();
-                var config = {
-                    segments : values.segmentsWidth || 1000,
-                    radius : values.segmentsHeight || 300,
-                    height : values.size || 100
-                };
-                var element = new Ellipsoid(values.segmentsWidth,
-                    values.segmentsHeight,
-                    125, 250, 500,
-                    values.color);
-                if(element == undefined || element == null) {
-                    return;
-                }
-                var bufferGeometry = new THREE.BufferGeometry();
-                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
-                if(values.enableColor) {
-                    bufferGeometry.addAttribute("color", element.getColors())
-                } else {
-                    bufferGeometry.addAttribute("color", element.getPositions());
-                }
-
-                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
-
-                scene.addBufferGeometry(bufferGeometry);
-                console.log("Ping.");
+                sceneBuilder(function(values) {
+                    return new Ellipsoid(values.segmentsWidth, values.segmentsHeight, 125, 250, 500, values.color);
+                })
             });
 
             $("#btnCube").click(function() {
@@ -136,43 +100,15 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
             });
 
             $("#btnSnailSurface").click(function() {
-                var values = valueCollector();
-                var element =  new SnailSurface(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
-                if(element == undefined || element == null) {
-                    return;
-                }
-                var bufferGeometry = new THREE.BufferGeometry();
-                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
-                if(values.enableColor) {
-                    bufferGeometry.addAttribute("color", element.getColors())
-                } else {
-                    bufferGeometry.addAttribute("color", element.getPositions());
-                }
-
-                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
-
-                scene.addBufferGeometry(bufferGeometry);
-                console.log("Ping.");
+                sceneBuilder(function(values) {
+                    return new SnailSurface(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
+                })
             });
 
             $("#btnBraidedTorus").click(function() {
-                var values = valueCollector();
-                var element = new BraidedTorus(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
-                if(element == undefined || element == null) {
-                    return;
-                }
-                var bufferGeometry = new THREE.BufferGeometry();
-                bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
-                if(values.enableColor) {
-                    bufferGeometry.addAttribute("color", element.getColors())
-                } else {
-                    bufferGeometry.addAttribute("color", element.getPositions());
-                }
-
-                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
-
-                scene.addBufferGeometry(bufferGeometry);
-                console.log("Ping.");
+                sceneBuilder(function(values) {
+                    return new BraidedTorus(values.segmentsHeight, values.segmentsWidth, values.size, values.color);
+                })
             });
             
             $("#btnNewParametric").click(function() {
