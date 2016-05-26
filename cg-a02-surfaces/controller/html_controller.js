@@ -150,6 +150,36 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                         return null;
                     }
                 })
+            });
+
+            $("#checkWireframe").change(function() {
+                if(!scene.currentMesh) { // if the scene is empty, we cant do jack shit anyway
+                    return;
+                }
+
+                var children = scene.currentMesh.children;
+                if(!children) {
+                    return;
+                }
+                children[0].material.wireframe = this.checked;
+            });
+
+            $("#checkNormal").change(function() {
+                if(!scene.currentMesh) {
+                    return;
+                }
+                var children = scene.currentMesh.children;
+                if(!children) {
+                    return;
+                }
+                if(this.checked) {
+                    this.oldMaterial = children[0].material;
+                }
+                if(this.checked) {
+                    children[0].material = new THREE.MeshNormalMaterial({side: THREE.DoubleSide});
+                } else {
+                    children[0].material = this.oldMaterial;
+                }
             })
         };
 
