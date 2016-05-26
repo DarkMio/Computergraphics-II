@@ -1,4 +1,4 @@
-define(["three"], function(THREE) {
+define(["three", "util"], function(THREE, util) {
     "use strict";
 
     var BraidedTorus = function BraidedTorus(heightSegments, widthSegments, size, color) {
@@ -18,10 +18,10 @@ define(["three"], function(THREE) {
 
         var t_v = 2 * Math.PI / (widthSegments - 1);
         var t_u = 8 * Math.PI / (heightSegments - 1);
-        for(var y = 0; y < heightSegments; y++) {
+        for(var y = 0; y <= heightSegments; y++) {
             var  v = t_v * y;
 
-            for(var x = 0; x < widthSegments; x++) {
+            for(var x = 0; x <= widthSegments; x++) {
                 var u = t_u * x;
 
                 var px = size * (r * Math.cos(v) * Math.cos(u) + R * Math.cos(u) * (1 + a * Math.cos(n * u)));
@@ -40,37 +40,13 @@ define(["three"], function(THREE) {
             }
         }
 
-        // buffers
-        var indices = new THREE.BufferAttribute( new Uint32Array( widthSegments*heightSegments*2*3 ) , 1 );
-        // helper variables
-        var indexOffset = 0;
-
-        for (var j = 1; j <= heightSegments; j ++ ) {
-            
-            for (var i = 1; i <= widthSegments; i ++ ) {
-
-                // indices
-                var a = ( widthSegments + 1 ) * ( j - 1 ) + ( i - 1 );
-                var b = ( heightSegments + 1 ) * j + ( i - 1 );
-                var c = ( widthSegments + 1 ) * j + i;
-                var d = ( heightSegments + 1 ) * ( j - 1 ) + i;
-
-                // face one
-                indices.setX( indexOffset, a ); indexOffset++;
-                indices.setX( indexOffset, b ); indexOffset++;
-                indices.setX( indexOffset, d ); indexOffset++;
-
-                // face two
-                indices.setX( indexOffset, b ); indexOffset++;
-                indices.setX( indexOffset, c ); indexOffset++;
-                indices.setX( indexOffset, d ); indexOffset++;
-
-            }
-
-        }
+        
+        this.indices = util.calculateIndices(widthSegments, heightSegments);
 
 
-        this.indices = indices;
+        this.getIndices = function() {
+            return this.indices;
+        };
 
         this.getIndices = function() {
             return this.indices;

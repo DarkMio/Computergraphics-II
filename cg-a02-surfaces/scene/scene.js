@@ -32,12 +32,43 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             scope.camera.position.z = 1000;
             scope.scene = new THREE.Scene();
 
+            setupLightning(scope.scene);
+
             // Add a listener for 'keydown' events. By this listener, all key events will be
             // passed to the function 'onDocumentKeyDown'. There's another event type 'keypress'.
             document.addEventListener("keydown", onDocumentKeyDown, false);
 
 
+            function setupLightning(scene) {
+
+                var main = new THREE.PointLight(0xFFFFFF, 0.8, 1500);
+                main.position.z = 1000;
+
+
+                var secondary = new THREE.PointLight(0xC9163C, 0.3, 1000);
+                secondary.position.y = 500;
+                secondary.position.z = 50;
+
+                var tertiary = new THREE.PointLight(0xF3FF73, 0.3, 1000);
+                secondary.position.y = -500;
+                secondary.position.z = -50;
+
+                var ambient = new THREE.AmbientLight( 0xAAAAAA );
+
+                scene.add(ambient);
+                scene.add(main);
+                scene.add(secondary);
+                scene.add(tertiary);
+
+
+
+
+            }
+
             function onDocumentKeyDown(event){
+                if(!scope.currentMesh) {
+                    return;
+                }
                 // Get the key code of the pressed key
                 var keyCode = event.which;
 
@@ -61,7 +92,16 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             }
 
             this.addBufferGeometry = function(bufferGeometry) {
-                scope.currentMesh = new THREE.Mesh(bufferGeometry, new THREE.MeshBasicMaterial({color: 0xFFAAFF, side: THREE.DoubleSide}));
+                bufferGeometry.computeFaceNormals();
+                bufferGeometry.computeVertexNormals();
+                bufferGeometry.computeBoundingBox();
+                var mesh = new THREE.Mesh(bufferGeometry, new THREE.MeshPhongMaterial({color: 0xFFFFFF, side:THREE.DoubleSide, shading: THREE.FlatShading}));
+                var points =  new THREE.Points(bufferGeometry, new THREE.PointsMaterial({color: 0xAA3300, size: 2}));
+                var group = new THREE.Object3D();
+                group.add(mesh);
+                group.add(points);
+                scope.currentMesh = group;
+
                 /*var meshIndices = bufferGeometry.getIndex();
                 var bff = new THREE.BufferGeometry();
                 /*
@@ -83,7 +123,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
              */
             this.draw = function() {
                 requestAnimFrame( scope.draw );
-                if($("#checkAnimate").is(":checked")) {
+                if($("#checkAnimate").is(":checked") && scope.currentMesh) {
                     scope.currentMesh.rotation.x += 0.003;
                     scope.currentMesh.rotation.y += 0.003;
                     scope.currentMesh.rotation.z += 0.003;
