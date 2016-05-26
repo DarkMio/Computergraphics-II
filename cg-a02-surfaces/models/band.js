@@ -45,25 +45,19 @@ define(["three", "util"],
 
                 // add two points for each position on the circle
                 // IMPORTANT: push each float value separately!
-                this.colors[offset]      = _color.r;
-                this.positions[offset] = x;
-                offset++;
-                this.colors[offset]      = _color.g;
-                this.positions[offset]   = y0;
-                offset++;
-                this.colors[offset]      = _color.b;
-                this.positions[offset] = z;
-                offset++;
+                this.colors[offset] = _color.r;
+                this.positions[offset] = x;     offset++;
+                this.colors[offset] = _color.g;
+                this.positions[offset]   = y0;  offset++;
+                this.colors[offset] = _color.b;
+                this.positions[offset] = z;     offset++;
 
-                this.colors[offset]      = _color.r;
-                this.positions[offset] = x;
-                offset++;
-                this.colors[offset]      = _color.g;
-                this.positions[offset] = y1;
-                offset++;
-                this.colors[offset]      = _color.b;
-                this.positions[offset] = z;
-                offset++;
+                this.colors[offset] = _color.r;
+                this.positions[offset] = x;     offset++;
+                this.colors[offset] = _color.g;
+                this.positions[offset] = y1;    offset++;
+                this.colors[offset] = _color.b;
+                this.positions[offset] = z;     offset++;
             }
 
             var indices = new Uint32Array( segments*2*3 );
@@ -77,13 +71,13 @@ define(["three", "util"],
                 var c = (j+2) % mod;
                 var d = (j+3) % mod;
                 // face one
-                indices[ indexOffset] = a  ; indexOffset++;
-                indices[ indexOffset] = b  ; indexOffset++;
-                indices[ indexOffset] = c ; indexOffset++;
+                indices[ indexOffset] = a; indexOffset++;
+                indices[ indexOffset] = b; indexOffset++;
+                indices[ indexOffset] = c; indexOffset++;
                 // face two
-                indices[ indexOffset] = b ; indexOffset++;
-                indices[ indexOffset] = d  ; indexOffset++;
-                indices[ indexOffset] = c ; indexOffset++;
+                indices[ indexOffset] = b; indexOffset++;
+                indices[ indexOffset] = d; indexOffset++;
+                indices[ indexOffset] = c; indexOffset++;
             }
 
             this.indices = indices;

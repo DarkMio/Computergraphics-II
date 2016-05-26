@@ -14,7 +14,7 @@ define(["three"],
 
         "use strict";
 
-        var Random = function (items) {
+        var Random = function Random(items) {
             items |= 5000;
 
             this.positions = new Float32Array( items * 3);
@@ -52,6 +52,10 @@ define(["three"],
                 this.colors[ i + 2 ] = color.b;
 
             }
+
+            this.getIndices = function() {
+                return [];
+            };
 
             this.getPositions = function() {
                 return this.positions;

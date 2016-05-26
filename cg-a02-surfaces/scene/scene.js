@@ -39,8 +39,11 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             document.addEventListener("keydown", onDocumentKeyDown, false);
 
 
+            /**
+             * Sets up some nice lights in the given scene.
+             * @param scene
+             */
             function setupLightning(scene) {
-
                 var main = new THREE.PointLight(0xFFFFFF, 0.8, 1500);
                 main.position.z = 1000;
 
@@ -59,10 +62,6 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scene.add(main);
                 scene.add(secondary);
                 scene.add(tertiary);
-
-
-
-
             }
 
             function onDocumentKeyDown(event){
@@ -95,27 +94,29 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 bufferGeometry.computeFaceNormals();
                 bufferGeometry.computeVertexNormals();
                 bufferGeometry.computeBoundingBox();
-                var mesh = new THREE.Mesh(bufferGeometry, new THREE.MeshPhongMaterial({color: 0xFFFFFF, side:THREE.DoubleSide, shading: THREE.FlatShading}));
-                var points =  new THREE.Points(bufferGeometry, new THREE.PointsMaterial({color: 0xAA3300, size: 2}));
+                var mesh = new THREE.Mesh(bufferGeometry, new THREE.MeshPhongMaterial({
+                    color: 0xFFFFFF,
+                    side:THREE.DoubleSide,
+                    shading: THREE.FlatShading
+                }));
+                var points =  new THREE.Points(bufferGeometry, new THREE.PointsMaterial({
+                    color: 0xAA3300,
+                    size: 2
+                }));
                 var group = new THREE.Object3D();
                 group.add(mesh);
                 group.add(points);
                 scope.currentMesh = group;
+                scope.scene.add(scope.currentMesh);
+            };
 
-                /*var meshIndices = bufferGeometry.getIndex();
-                var bff = new THREE.BufferGeometry();
-                /*
-                bff.setIndex(meshIndices);
-                console.log(bufferGeometry.position);
-                bff.addAttribute("position", bufferGeometry.getPositions());
-
-                if(meshIndices) {
-                    console.log("Lets build this reactor.");
-                    scope.scene.add(new THREE.Mesh(bufferGeometry, new THREE.LineBasicMaterial()));
-                } else {
-                 */
-                    scope.scene.add(scope.currentMesh);
-                // }
+            this.addBufferPoints = function(bufferGeometry) {
+                bufferGeometry.computeBoundingBox();
+                scope.currentMesh = new THREE.Points(bufferGeometry, new THREE.PointsMaterial({
+                    color: 0xAA3300,
+                    size: 15
+                }));
+                scope.scene.add(scope.currentMesh);
             };
 
             /*

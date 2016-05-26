@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus"],
-    (function($,BufferGeometry, Random, Band, ParametricSurface, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus) {
+define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus", "util"],
+    (function($,BufferGeometry, Random, Band, ParametricSurface, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus, util) {
         "use strict";
 
         /*
@@ -34,6 +34,7 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 var values = valueCollector();
                 var element = callback(values);
                 if(element == undefined || element == null) {
+                    console.log("An error occurred while generating the mesh");
                     return;
                 }
                 var bufferGeometry = new THREE.BufferGeometry();
@@ -43,14 +44,14 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 } else {
                     bufferGeometry.addAttribute("color", element.getPositions());
                 }
-
-                bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
-
-                scene.addBufferGeometry(bufferGeometry);
+                if(element.constructor.name === "Random") {
+                    scene.addBufferPoints(bufferGeometry);
+                } else {
+                    bufferGeometry.setIndex(new THREE.BufferAttribute(element.getIndices(), 1));
+                    scene.addBufferGeometry(bufferGeometry);
+                }
             };
-
-            $("#btnParametric").click();
-
+            
             $("#btnNewRandom").click(function() {
                 sceneBuilder(function(values) {
                     return new Random(values.segmentsWidth);
@@ -185,7 +186,7 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                     var vMax = parseFloat($("#fieldVMax").val()) || 2 * Math.PI;
 
                     try{
-                        var size = values.size; // to emulate object environment
+                        var size = values.size || 200; // to emulate object environment
                         $.each([uMin, uMax], function(u_index, u) {
                             $.each([vMin, vMax], function(v_index, v) {
                                 // test against each upper and lower bound individually
@@ -195,9 +196,21 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                                 result = size * eval(posZ);
                             });
                         });
-                        return new ParametricSurface(values.segmentsHeight, values.segmentsWidth, values.size,
-                            posX, posY, posZ, uMin, uMax, vMin, vMax, values.color);
-                    } catch (Error) {
+                        return new ParametricSurface({
+                            heightSegments: values.heightSegments || 100,
+                            widthSegments: values.widthSegments || 100,
+                            posX: function(u, v){return eval(posX)},
+                            posY: function(u, v){return eval(posY)},
+                            posZ: function(u, v){return eval(posZ)},
+                            vMin: vMin,
+                            vMax: vMax,
+                            uMin: uMin,
+                            uMax: uMax,
+                            size: values.size || 200,
+                            color: values.color
+                        });
+                    } catch (err) {
+                        util.fatalError(err);
                         return null;
                     }
                 })

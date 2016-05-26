@@ -7,46 +7,50 @@
  */
 
 /* requireJS module definition */
-define(["three"],
-    (function(THREE) {
+define(["three", "util"],
+    (function(THREE, util) {
 
         "use strict";
 
-        var ParametricSurface = function (heightSegments, widthSegments, size,
-                                          posX, posY, posZ,
-                                          uMin, uMax, vMin, vMax,
-                                          color) {
-            console.log(posX);
-            heightSegments |= 100;
-            widthSegments |= 100;
-            size |= 100;
-
+        /**
+         * Config should contain:
+         * * heightSegments
+         * * widthSegments
+         * * uMin, uMax
+         * * vMin, vMax
+         * * size
+         * * color
+         * * posX, posY, posZ
+         * @param config
+         * @constructor
+         */
+        var ParametricSurface = function (config) {
+            var heightSegments = config.heightSegments;
+            var widthSegments = config.widthSegments;
+            var size = config.size;
             this.positions = new Float32Array(heightSegments * widthSegments * 3);
             this.colors = new Float32Array(heightSegments * widthSegments * 3);
-
             var _color = new THREE.Color();
-            _color.setHex(color);
+            _color.setHex(config.color);
             var index = 0;
+            var t_u = (config.uMax - config.uMin) / widthSegments;
+            var t_v = (config.vMax - config.vMin) / heightSegments;
+            console.log(heightSegments);
+            console.log(widthSegments);
+            for(var y = 0; y <= heightSegments; y++) {
+                var v = t_v * y + config.vMin;
 
-            var t_u = (uMax - uMin) / widthSegments;
-            var t_v = (vMax - vMin) / heightSegments;
-            for(var y = 0; y < heightSegments; y++) {
-                var v = t_v * y + vMin;
+                for (var x = 0; x <= widthSegments; x++) {
+                    var u = t_u * x + config.uMin;
 
-                for (var x = 0; x < widthSegments; x++) {
-                    var u = t_u * x + uMin;
-
-                    // console.log(posX);
-
-                    var px = size * eval(posX);
-                    var py = size * eval(posY);
-                    var pz = size * eval(posZ);
+                    var px = size * config["posX"](u, v);
+                    var py = size * config["posY"](u, v);
+                    var pz = size * config["posZ"](u, v);
 
                     this.positions[index] = px;
                     this.positions[index + 1] = py;
                     this.positions[index + 2] = pz;
 
-                    // console.log("[" + px + ", " + py + ", " + pz +"]");
                     this.colors[index] = _color.r;
                     this.colors[index + 1] = _color.g;
                     this.colors[index + 2] = _color.b;
@@ -55,13 +59,19 @@ define(["three"],
                 }
             }
 
-            this.getPositions = function() {
-                return this.positions;
-            };
+            this.indices = util.calculateIndices(widthSegments, heightSegments);
+        };
 
-            this.getColors = function() {
-                return this.colors;
-            };
+        ParametricSurface.prototype.getIndices = function() {
+            return this.indices;
+        };
+
+        ParametricSurface.prototype.getPositions = function() {
+            return this.positions;
+        };
+
+        ParametricSurface.prototype.getColors = function() {
+            return this.colors;
         };
 
         return ParametricSurface;
