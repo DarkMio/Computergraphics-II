@@ -94,15 +94,12 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 bufferGeometry.computeFaceNormals();
                 bufferGeometry.computeVertexNormals();
                 bufferGeometry.computeBoundingBox();
-                var mesh = new THREE.Mesh(bufferGeometry, new THREE.MeshPhongMaterial({
-                    color: 0xFFFFFF,
-                    side:THREE.DoubleSide,
-                    shading: THREE.FlatShading
-                }));
+                var mesh = new THREE.Mesh(bufferGeometry, util.materialSelector());
                 var points =  new THREE.Points(bufferGeometry, new THREE.PointsMaterial({
                     color: 0xAA3300,
                     size: 2
                 }));
+                points.visible = $("#checkPoints").is(":checked");
                 var group = new THREE.Object3D();
                 group.add(mesh);
                 group.add(points);

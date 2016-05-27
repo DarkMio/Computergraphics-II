@@ -29,6 +29,7 @@
             </li>
             <li>
                 <button id="btnTorus" type="button">Torus</button>
+                <input type="file" id="choose-file" />
             </li>
             <li>
                 <button id="btnNewRandom" type="button">Random</button>
@@ -52,14 +53,19 @@
             <li>
                 <input type="number" id="fieldSize" title="Size (multiplier)" placeholder="Size (multiplier)">
                 <input type="color" id="fieldColor" title="color" placeholder="Color" value="#FFFFFF">
-                <input type="checkbox" id="boxColor" class="auto" title="Enable Color">
             </li>
             <li>
-                <input id="checkAnimate" class="auto" type="checkbox"> Animate
-                <input id="checkWireframe" class="auto" type="checkbox"> Wireframe
             </li>
             <li>
-                <input id="checkNormal" class="auto" type="checkbox">Normal Map
+                <select id="selectionMaterials" class="float" size="3" title="Material Selection">
+                    <option value="Normal" selected>Normal</option>
+                    <option value="Lambert">Lambert</option>
+                    <option value="Phong">Phong</option>
+                    <option value="MeshBasic">Mesh Basic</option>
+                </select>
+                <div class="float"><input id="checkAnimate" class="auto" type="checkbox"> Animate</div>
+                <div class="float"><input id="checkWireframe" class="auto" type="checkbox"> Wireframe</div>
+                <div class="float"><input id="checkPoints" class="auto" type="checkbox"> Points</div>
             </li>
         </ul>
         <div>
@@ -71,16 +77,14 @@
                 </li>
                 <li>
                     <input type="text" id="fieldParamZ" title="Param Z" placeholder="Param Z">
-                </li>
-                <li>
                     <input type="number" id="fieldUMin" title="U Min" placeholder="U Min">
-                    <input type="number" id="fieldUMax" title="U Max" placeholder="U Max">
                 </li>
                 <li>
                     <input type="number" id="fieldVMin" title="V Min" placeholder="V Min">
-                    <input type="number" id="fieldVMax" title="V Max" placeholder="V Max">
+                    <input type="number" id="fieldUMax" title="U Max" placeholder="U Max">
                 </li>
                 <li>
+                    <input type="number" id="fieldVMax" title="V Max" placeholder="V Max">
                     <button type="button" id="btnNewParametric">Parametric</button>
                 </li>
             </ul>

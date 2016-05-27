@@ -102,13 +102,13 @@ define(["jquery"], (function($) {
                 var c = ( widthSegments + 1 ) * j + i;
                 var d = ( widthSegments + 1 ) * ( j - 1 ) + i;
                 // face one
-                indices[indexOffset++] = a ;
-                indices[indexOffset++] = b;
-                indices[indexOffset++] = d;
+                indices[indexOffset] = a; indexOffset++;
+                indices[indexOffset] = b; indexOffset++;
+                indices[indexOffset] = d; indexOffset++;
                 // face two - with same winding
-                indices[indexOffset++] = b;
-                indices[indexOffset++] = c;
-                indices[indexOffset++] = d;
+                indices[indexOffset] = b; indexOffset++;
+                indices[indexOffset] = c; indexOffset++;
+                indices[indexOffset] = d; indexOffset++;
             }
         }
 
@@ -116,6 +116,39 @@ define(["jquery"], (function($) {
             indices[x] = indices[x] % mod;
         }
         return indices;
+    };
+
+    util.valueCollector = function() {
+        return {
+            segmentsWidth : parseInt($("#fieldSegmentsWidth").val()),
+            segmentsHeight : parseInt($("#fieldSegmentsHeight").val()),
+            size :  parseInt($("#fieldSize").val()),
+            color : eval("0x" + $("#fieldColor").val().substr(1))
+        }
+    };
+
+    util.materialSelector = function() {
+        var values = util.valueCollector();
+        var options = {
+            MeshBasic: new THREE.MeshBasicMaterial({color: values.color, shading: THREE.FlatShading, side: THREE.DoubleSide}),
+            Normal: new THREE.MeshNormalMaterial({side: THREE.DoubleSide}),
+            Lambert: new THREE.MeshLambertMaterial({color: values.color, side: THREE.DoubleSide}),
+            Phong: new THREE.MeshPhongMaterial({color: values.color, side: THREE.DoubleSide})
+        };
+        return options[$("#selectionMaterials").val()];
+    };
+
+    util.sceneSelector = function(scene) {
+        if(!scene.currentMesh) {
+            return;
+        }
+
+        var children = scene.currentMesh.children;
+
+        if(!children) {
+            return;
+        }
+        return children;
     };
 
     /* return the interface defined by this module */

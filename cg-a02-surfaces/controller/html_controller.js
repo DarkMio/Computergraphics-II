@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus", "util"],
-    (function($,BufferGeometry, Random, Band, ParametricSurface, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus, util) {
+define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus", "util", "inputfiletext", "objfile"],
+    (function($,BufferGeometry, Random, Band, ParametricSurface, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus, util, inputFileText, OBJFile) {
         "use strict";
 
         /*
@@ -20,18 +20,9 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
          * and provide them with a closure defining context and scene
          */
         var HtmlController = function(scene) {
-            var valueCollector = function() {
-                return {
-                    segmentsWidth : parseInt($("#fieldSegmentsWidth").val()),
-                    segmentsHeight : parseInt($("#fieldSegmentsHeight").val()),
-                    size :  parseInt($("#fieldSize").val()),
-                    color : eval("0x" + $("#fieldColor").val().substr(1)),
-                    enableColor : $("#boxColor").is(":checked")
-                }
-            };
 
             var sceneBuilder = function(callback) {
-                var values = valueCollector();
+                var values = util.valueCollector();
                 var element = callback(values);
                 if(element == undefined || element == null) {
                     console.log("An error occurred while generating the mesh");
@@ -39,11 +30,7 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 }
                 var bufferGeometry = new THREE.BufferGeometry();
                 bufferGeometry.addAttribute("position", new THREE.BufferAttribute(element.getPositions(), 3));
-                if(values.enableColor) {
-                    bufferGeometry.addAttribute("color", element.getColors())
-                } else {
-                    bufferGeometry.addAttribute("color", element.getPositions());
-                }
+                bufferGeometry.addAttribute("color", element.getColors());
                 if(element.constructor.name === "Random") {
                     scene.addBufferPoints(bufferGeometry);
                 } else {
@@ -51,7 +38,7 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                     scene.addBufferGeometry(bufferGeometry);
                 }
             };
-            
+
             $("#btnNewRandom").click(function() {
                 sceneBuilder(function(values) {
                     return new Random(values.segmentsWidth);
@@ -152,34 +139,43 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 })
             });
 
-            $("#checkWireframe").change(function() {
-                if(!scene.currentMesh) { // if the scene is empty, we cant do jack shit anyway
-                    return;
-                }
-
-                var children = scene.currentMesh.children;
+            $('#fieldColor').change(function() {
+                var children = util.sceneSelector(scene);
                 if(!children) {
                     return;
                 }
+
+                children[0].material.color.setHex(eval("0x" + $("#fieldColor").val().substr(1)));
+            });
+
+            $('#choose-file').inputFileText({text: 'OBJ File'}).change(function(e) {
+                var file = e.target.files[0];
+                new OBJFile(file, scene);
+            });
+
+            $("#selectionMaterials").change(function() {
+                var children = util.sceneSelector(scene);
+                if(!children) {
+                    return;
+                }
+                children[0].material = util.materialSelector();
+            });
+
+            $("#checkWireframe").change(function() {
+                var children = util.sceneSelector(scene);
+                if(!children) {
+                    return;
+                }
+
                 children[0].material.wireframe = this.checked;
             });
 
-            $("#checkNormal").change(function() {
-                if(!scene.currentMesh) {
+            $("#checkPoints").change(function() {
+                var children = util.sceneSelector(scene);
+                if(!children || children.length < 2) {
                     return;
                 }
-                var children = scene.currentMesh.children;
-                if(!children) {
-                    return;
-                }
-                if(this.checked) {
-                    this.oldMaterial = children[0].material;
-                }
-                if(this.checked) {
-                    children[0].material = new THREE.MeshNormalMaterial({side: THREE.DoubleSide});
-                } else {
-                    children[0].material = this.oldMaterial;
-                }
+                children[1].visible = this.checked;
             })
         };
 

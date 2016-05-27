@@ -32,11 +32,10 @@ define(["three", "util"],
             this.colors = new Float32Array(heightSegments * widthSegments * 3);
             var _color = new THREE.Color();
             _color.setHex(config.color);
+
             var index = 0;
-            var t_u = (config.uMax - config.uMin) / widthSegments;
-            var t_v = (config.vMax - config.vMin) / heightSegments;
-            console.log(heightSegments);
-            console.log(widthSegments);
+            var t_u = (config.uMax - config.uMin) / (widthSegments - 1);
+            var t_v = (config.vMax - config.vMin) / (heightSegments - 1);
             for(var y = 0; y <= heightSegments; y++) {
                 var v = t_v * y + config.vMin;
 

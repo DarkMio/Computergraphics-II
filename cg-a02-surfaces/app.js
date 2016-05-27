@@ -18,9 +18,9 @@ requirejs.config({
             'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
             //If the load via CDN fails, load locally
             '../lib/jquery-1.7.2.min'],
-
+        "inputfiletext": '../lib/jquery.inputFileText',
         "three" : "../lib/three.min",
-
+        "objloader" : "loaders/OBJLoader",
         "scene" : "./scene/scene",
         "random" : "./models/random",
         "band" : "./models/band",
@@ -32,6 +32,7 @@ requirejs.config({
         "wave_sphere" : "models/wave_sphere",
         "snail_surface" : "models/snail_surface",
         "braided_torus" : "models/braided_torus",
+        "objfile": "models/objfile",
         "util"  : "./utils/util",
         "shaders" : "./shaders",
         "BufferGeometry" : "./scene/buffer_geometry",
@@ -41,7 +42,8 @@ requirejs.config({
     shim: {
         three: {
             exports: 'THREE'
-        }
+        },
+        inputFileText: ['jquery']
     }
 
 });
