@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve", "BezierCurve", "AdaptiveCurve", "util"],
-    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve, BezierCurve, AdaptiveCurve, util) {
+define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "ParametricCurve", "BezierCurve", "AdaptiveCurve", "util", "Thales"],
+    (function($, Line, Circle, Point, Star, KdTree, KdUtil, ParametricCurve, BezierCurve, AdaptiveCurve, util, Thales) {
         "use strict";
 
 
@@ -195,6 +195,13 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
                     });
                 })
             );
+
+            $("#btnNewThales").click(function() {
+                sceneBuilder(function(style, position) {
+                    // return new Thales(3, [2, 3], [0, -5]);
+                    return new Thales(30, [200, 200], [300, 200]);
+                })
+            });
 
             /**
              * KDTree things
@@ -382,6 +389,8 @@ define(["jquery", "Line", "Circle", "Point", "Star", "KdTree", "kdutil", "Parame
                 } else if(is("Star", obj)) {
                     pos = obj.center;
                     $('#radius').hide();
+                } else if(is("Thales", obj)) {
+                    return;
                 } else { // Encountered invalid object
                     console.error("Callback for selection encountered an unknown object. Good job, mate. It is: " + obj.constructor.name);
                     return;

@@ -37,6 +37,8 @@ requirejs.config({
         "BezierCurve" : "./scene/bezier_curve",
         "AdaptiveCurve" : "./scene/adaptive_curve",
 
+        "Thales" : "scene/thales",
+
         "vec2" : "./math/vec2",
 
         "SceneController" : "./controller/scene_controller",
