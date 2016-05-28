@@ -19,7 +19,6 @@ define(["util", "vec2", "Scene", "PointDragger"], function(util, vec2, Scene, Po
         context.strokeStyle = "#0000AA";
         context.stroke();
 
-
         context.beginPath();
         context.moveTo(this.p1[0], this.p1[1]);
         context.lineTo(this.p2[0], this.p2[1]);
