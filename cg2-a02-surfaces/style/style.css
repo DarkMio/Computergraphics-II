@@ -48,7 +48,7 @@ button {
 }
 
 /* container to display editable parameters */
-#param_area {
+.param_content {
     float:left;
     width: 250px;
     height: 398px;

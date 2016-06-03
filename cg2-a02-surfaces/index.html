@@ -21,53 +21,55 @@
 <!-- centered region with drawing canvas and parameter area -->
 <div align="center">
     <div id="drawing_container" width="600" height="400"></div>
-    <div id="param_area">
-        <ul>
-            <li>
-                <button id="btnCube" type="button">Cube</button>
-                <button id="btnKnot" type="button">Knot</button>
-            </li>
-            <li>
-                <button id="btnTorus" type="button">Torus</button>
-                <input type="file" id="choose-file" />
-            </li>
-            <li>
-                <button id="btnNewRandom" type="button">Random</button>
-                <button id="btnNewBand" type="button">Band</button>
-            </li>
-            <li>
-                <button id="btnEllipsoid" type="button">Ellipsoid</button>
-                <button id="btnWaveSphere" type="button">Wave Sphere</button>
-            </li>
-            <li>
-                <button id="btnSnailSurface" type="button">Snail Surface</button>
-                <button id="btnBraidedTorus" type="button">Braided Torus</button>
-            </li>
-        </ul>
-        <h3>Parameters:</h3>
-        <ul>
-            <li>
-                <input type="number" id="fieldSegmentsWidth" title="Segments (width)" placeholder="Segments (width)">
-                <input type="number" id="fieldSegmentsHeight" title="Segments (height)" placeholder="Segments (height)">
-            </li>
-            <li>
-                <input type="number" id="fieldSize" title="Size (multiplier)" placeholder="Size (multiplier)">
-                <input type="color" id="fieldColor" title="color" placeholder="Color" value="#FFFFFF">
-            </li>
-            <li>
-            </li>
-            <li>
-                <select id="selectionMaterials" class="float" size="3" title="Material Selection">
-                    <option value="Normal" selected>Normal</option>
-                    <option value="Lambert">Lambert</option>
-                    <option value="Phong">Phong</option>
-                    <option value="MeshBasic">Mesh Basic</option>
-                </select>
-                <div class="float"><input id="checkAnimate" class="auto" type="checkbox"> Animate</div>
-                <div class="float"><input id="checkWireframe" class="auto" type="checkbox"> Wireframe</div>
-                <div class="float"><input id="checkPoints" class="auto" type="checkbox"> Points</div>
-            </li>
-        </ul>
+    <div id="param_area" class="param_content">
+        <div>
+            <ul>
+                <li>
+                    <button id="btnCube" type="button">Cube</button>
+                    <button id="btnKnot" type="button">Knot</button>
+                </li>
+                <li>
+                    <button id="btnTorus" type="button">Torus</button>
+                    <input type="file" id="choose-file" />
+                </li>
+                <li>
+                    <button id="btnNewRandom" type="button">Random</button>
+                    <button id="btnNewBand" type="button">Band</button>
+                </li>
+                <li>
+                    <button id="btnEllipsoid" type="button">Ellipsoid</button>
+                    <button id="btnWaveSphere" type="button">Wave Sphere</button>
+                </li>
+                <li>
+                    <button id="btnSnailSurface" type="button">Snail Surface</button>
+                    <button id="btnBraidedTorus" type="button">Braided Torus</button>
+                </li>
+            </ul>
+            <h3>Parameters:</h3>
+            <ul>
+                <li>
+                    <input type="number" id="fieldSegmentsWidth" title="Segments (width)" placeholder="Segments (width)">
+                    <input type="number" id="fieldSegmentsHeight" title="Segments (height)" placeholder="Segments (height)">
+                </li>
+                <li>
+                    <input type="number" id="fieldSize" title="Size (multiplier)" placeholder="Size (multiplier)">
+                    <input type="color" id="fieldColor" title="color" placeholder="Color" value="#FFFFFF">
+                </li>
+                <li>
+                </li>
+                <li>
+                    <select id="selectionMaterials" class="float" size="3" title="Material Selection">
+                        <option value="Normal" selected>Normal</option>
+                        <option value="Lambert">Lambert</option>
+                        <option value="Phong">Phong</option>
+                        <option value="MeshBasic">Mesh Basic</option>
+                    </select>
+                    <div class="float"><input id="checkAnimate" class="auto" type="checkbox"> Animate</div>
+                    <div class="float"><input id="checkWireframe" class="auto" type="checkbox"> Wireframe</div>
+                    <div class="float"><input id="checkPoints" class="auto" type="checkbox"> Points</div>
+                </li>
+            </ul>
+        </div>
         <div>
             <h3>Parametric Body:</h3>
             <ul>
@@ -88,6 +90,12 @@
                     <button type="button" id="btnNewParametric">Parametric</button>
                 </li>
             </ul>
+        </div>
+    </div>
+    <div class="param_content">
+        <div>
+            <h3>Animation panel</h3>
+            This is a draft.
         </div>
     </div>
 </div>

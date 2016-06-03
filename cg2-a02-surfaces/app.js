@@ -34,6 +34,8 @@ requirejs.config({
         "braided_torus" : "models/braided_torus",
         "objfile": "models/objfile",
         "util"  : "./utils/util",
+        "mat4x4" : "utils/mat4x4",
+        "transform" : "utils/transform",
         "shaders" : "./shaders",
         "BufferGeometry" : "./scene/buffer_geometry",
         "HtmlController": "./controller/html_controller"
