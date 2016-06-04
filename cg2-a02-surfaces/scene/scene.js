@@ -87,6 +87,11 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                     scope.currentMesh.position.x -= 10;
                 } else if(keyCode == 68) { // d
                     scope.currentMesh.position.x += 10;
+                } else if(keyCode == 79) { // o
+                    var rightLeg = scope.scene.getObjectByName("rightLegBone", true);
+                    if(rightLeg) {
+                        rightLeg.rotateX(Math.PI / 250);
+                    }
                 }
             }
 

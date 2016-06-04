@@ -5,7 +5,7 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
         this.material = new THREE.MeshNormalMaterial();
         this.group = new THREE.Group();
 
-        this.size = size;
+        this.size = size || 1;
 
         this.group.add(this.build());
         console.log(this.group);
