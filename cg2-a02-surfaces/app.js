@@ -32,6 +32,7 @@ requirejs.config({
         "wave_sphere" : "models/wave_sphere",
         "snail_surface" : "models/snail_surface",
         "braided_torus" : "models/braided_torus",
+        "robot" : "models/robot",
         "objfile": "models/objfile",
         "util"  : "./utils/util",
         "mat4x4" : "utils/mat4x4",

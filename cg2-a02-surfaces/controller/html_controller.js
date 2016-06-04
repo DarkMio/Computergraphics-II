@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus", "util", "inputfiletext", "objfile"],
-    (function($,BufferGeometry, Random, Band, ParametricSurface, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus, util, inputFileText, OBJFile) {
+define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "knot", "torus", "ellipsoid", "wave_sphere", "snail_surface", "braided_torus", "util", "inputfiletext", "objfile", "robot"],
+    (function($,BufferGeometry, Random, Band, ParametricSurface, Cube, Knot, Torus, Ellipsoid, WaveSphere, SnailSurface, BraidedTorus, util, inputFileText, OBJFile, Robot) {
         "use strict";
 
         /*
@@ -176,8 +176,14 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                     return;
                 }
                 children[1].visible = this.checked;
+            });
+
+
+            $("#btnRobot").click(function() {
+                scene.addMesh(new Robot(2, null).getMesh());
             })
         };
+
 
         // return the constructor function
         return HtmlController;

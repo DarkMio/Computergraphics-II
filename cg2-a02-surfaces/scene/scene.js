@@ -116,6 +116,11 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 scope.scene.add(scope.currentMesh);
             };
 
+            this.addMesh = function(mesh) {
+                scope.currentMesh = mesh;
+                scope.scene.add(scope.currentMesh);
+            };
+
             /*
              * drawing the scene
              */
