@@ -180,7 +180,7 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
 
 
             $("#btnRobot").click(function() {
-                scene.addMesh(new Robot(2, null).getMesh());
+                scene.addMesh(new Robot(3, null).getMesh());
             })
         };
 

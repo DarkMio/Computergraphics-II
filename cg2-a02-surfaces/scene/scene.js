@@ -90,7 +90,17 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 } else if(keyCode == 79) { // o
                     var rightLeg = scope.scene.getObjectByName("rightLegBone", true);
                     if(rightLeg) {
-                        rightLeg.rotateX(Math.PI / 250);
+                        rightLeg.rotateX(-Math.PI / 250);
+                    }
+                } else if(keyCode == 76) { // l
+                    var rightShank = scope.scene.getObjectByName("rightLegBone", true).children[2];
+                    if(rightShank) {
+                        rightShank.rotateX(Math.PI / 250);
+                    }
+                } else if(keyCode == 73) { // i
+                    var leftArm = scope.scene.getObjectByName("leftArmBone", true);
+                    if(leftArm) {
+                        leftArm.rotateX(-Math.PI / 250);
                     }
                 }
             }
