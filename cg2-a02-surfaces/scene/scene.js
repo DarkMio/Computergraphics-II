@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
-    (function(THREE, util, shaders, BufferGeometry, Random, Band) {
+define(["three", "util", "shaders", "BufferGeometry", "random", "band", "tween"],
+    (function(THREE, util, shaders, BufferGeometry, Random, Band, TWEEN) {
 
         "use strict";
 
@@ -37,6 +37,9 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
             // Add a listener for 'keydown' events. By this listener, all key events will be
             // passed to the function 'onDocumentKeyDown'. There's another event type 'keypress'.
             document.addEventListener("keydown", onDocumentKeyDown, false);
+
+            scope.audioListener = new THREE.AudioListener();
+            scope.camera.add(scope.audioListener);
 
 
             /**
@@ -90,17 +93,32 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
                 } else if(keyCode == 79) { // o
                     var rightLeg = scope.scene.getObjectByName("rightLegBone", true);
                     if(rightLeg) {
-                        rightLeg.rotateX(-Math.PI / 250);
+                        rightLeg.rotateX(-Math.PI / 100);
                     }
                 } else if(keyCode == 76) { // l
                     var rightShank = scope.scene.getObjectByName("rightLegBone", true).children[2];
                     if(rightShank) {
-                        rightShank.rotateX(Math.PI / 250);
+                        rightShank.rotateX(Math.PI / 100);
+                    }
+                } else if(keyCode == 190) { // .
+                    var rightFoot = scope.scene.getObjectByName("rightLegBone", true).children[2].children[3];
+                    if(rightFoot) {
+                        rightFoot.rotateX(Math.PI / 100);
                     }
                 } else if(keyCode == 73) { // i
                     var leftArm = scope.scene.getObjectByName("leftArmBone", true);
                     if(leftArm) {
-                        leftArm.rotateX(-Math.PI / 250);
+                        leftArm.rotateX(-Math.PI / 100);
+                    }
+                } else if(keyCode == 75) { // k
+                    var leftArmBed = scope.scene.getObjectByName("leftArmBone", true).children[3];
+                    if(leftArmBed) {
+                        leftArmBed.rotateX(-Math.PI / 100);
+                    }
+                } else if(keyCode == 85) { // u
+                    var head = scope.scene.getObjectByName("headBone", true);
+                    if(head) {
+                        head.rotateY(Math.PI / 100);
                     }
                 }
             }
@@ -141,6 +159,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band"],
              */
             this.draw = function() {
                 requestAnimFrame( scope.draw );
+                TWEEN.update();
                 if($("#checkAnimate").is(":checked") && scope.currentMesh) {
                     scope.currentMesh.rotation.x += 0.003;
                     scope.currentMesh.rotation.y += 0.003;

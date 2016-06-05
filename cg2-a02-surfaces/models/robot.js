@@ -69,7 +69,7 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
     };
 
     Robot.prototype.buildArms = function(upperTorso) {
-        var rightArm = this.buildUpperArm(50,"rightBone"); // this is different than in the sketch
+        var rightArm = this.buildUpperArm(50,"right"); // this is different than in the sketch
         var leftArm = this.buildUpperArm(-50, "left");  // because the objects overlap too hard
 
         upperTorso.add(rightArm);

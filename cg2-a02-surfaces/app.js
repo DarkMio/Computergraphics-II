@@ -21,6 +21,7 @@ requirejs.config({
         "inputfiletext": '../lib/jquery.inputFileText',
         "three" : "../lib/three.min",
         "objloader" : "loaders/OBJLoader",
+        "tween" : "../lib/Tween",
         "scene" : "./scene/scene",
         "random" : "./models/random",
         "band" : "./models/band",
