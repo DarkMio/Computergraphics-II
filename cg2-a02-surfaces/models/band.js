@@ -99,4 +99,4 @@ define(["three", "util"],
 
         return Band;
     }));
-    
+
