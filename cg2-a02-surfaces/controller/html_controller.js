@@ -260,6 +260,11 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
             });
             
             $("#btnPlayAnimation").click(function() {
+                if(this.running) {
+                    return;
+                } else {
+                    this.running = true;
+                }
                 var get = function(x) {return scene.scene.getObjectByName(x, true)};
 
                 var hardWireThisShit = function(frames, object, isLeft) {
@@ -283,8 +288,6 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                     tween.start();
                 };
 
-                var frames = 8;
-
                 var rightLegFrame = [-0.56548, -0.34557, 0.15707, 0.377699, 0.37699, 0.09424, -0.37699, -0.84822, ];
                 var rightShankFrame = [0.15707, 0.25132, 0.12566, -0.03141, 0.4084, 0.879645, 1.50796, 0.94247, ];
                 var rightFootFrame = [0, 0, -0.31415, -0.25132, -0.84822, 0.06283, -0.47123, 0.09424, ];
@@ -293,19 +296,19 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 var rightArmBedFrame = [-1.22522, -0.65973, -0.12566, -1.06814, -0.78539, -1.06814, -0.47123, -0.65973];
 
                 var rightLeg = get("rightLegBone");
-                var rightShank = rightLeg.children[2];
-                var rightFoot = rightShank.children[3];
+                var rightShank = get("rightShankBone");
+                var rightFoot = get("rightFootBone");
 
                 var leftLeg = get("leftLegBone");
-                var leftShank = rightLeg.children[2];
-                var leftFoot = rightShank.children[3];
+                var leftShank = get("leftShankBone");
+                var leftFoot = get("leftFootBone");
 
 
                 var rightArm = get("rightArmBone");
-                var rightArmBed = rightArm.children[3];
+                var rightArmBed = get("rightArmBedBone");
 
                 var leftArm = get("leftArmBone");
-                var leftArmBed = leftArm.children[3];
+                var leftArmBed = get("leftArmBedBone");
 
 
                 hardWireThisShit(rightLegFrame, rightLeg, false);

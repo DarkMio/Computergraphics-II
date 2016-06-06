@@ -82,12 +82,12 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
         var upperArm = this.buildMesh(new THREE.CylinderGeometry(10 * this.size, 10 * this.size, 50 * this.size));
         upperArm.position.y -= 25 * this.size;
         armBone.add(upperArm);
-        armBone.add(this.buildArmBed());
+        armBone.add(this.buildArmBed(namePrefix));
         return armBone;
     };
 
-    Robot.prototype.buildArmBed = function() {
-        var armBedBone = this.buildBone(0, 50, "armBedBone");
+    Robot.prototype.buildArmBed = function(name) {
+        var armBedBone = this.buildBone(0, 50, name + "ArmBedBone");
         armBedBone.add(this.buildMesh(new THREE.CylinderGeometry(12.5 * this.size, 12.5 * this.size, 10 * this.size, 32)));
 
 
@@ -117,8 +117,8 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
         legBone.add(leg);
 
 
-        var shank = this.buildShank();
-        var foot = this.buildFoot();
+        var shank = this.buildShank(namePrefix);
+        var foot = this.buildFoot(namePrefix);
 
         shank.add(foot);
         legBone.add(shank);
@@ -127,8 +127,8 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
 
     };
 
-    Robot.prototype.buildShank = function() {
-        var shankBone = this.buildBone(0, 50, "ShankBone");
+    Robot.prototype.buildShank = function(name) {
+        var shankBone = this.buildBone(0, 50, name + "ShankBone");
         shankBone.add(this.buildMesh(new THREE.CylinderGeometry(15 * this.size, 15 * this.size, 20 * this.size, 32)));
         var shank = this.buildMesh(new THREE.CylinderGeometry(10 * this.size, 10 * this.size, 50 * this.size));
         shank.position.y -= 25 * this.size;
@@ -136,8 +136,8 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
         return shankBone;
     };
 
-    Robot.prototype.buildFoot = function() {
-        var footBone = this.buildBone(0, 50, "FootBone");
+    Robot.prototype.buildFoot = function(name) {
+        var footBone = this.buildBone(0, 50, name + "FootBone");
         footBone.add(this.buildMesh(new THREE.CylinderGeometry(12.5 * this.size, 12.5 * this.size, 15 * this.size, 32)));
         var footPlate = this.buildMesh(new THREE.PlaneBufferGeometry(50 * this.size, 50 * this.size));
         footPlate.rotateX(-Math.PI/2);
