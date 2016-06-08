@@ -228,12 +228,19 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 var rightArmBedFrame = [-1.22522, -0.65973, -0.12566, -1.06814, -0.78539, -1.06814, -0.47123, -0.65973];
 
                 var rightLeg = get("rightLegBone");
-                var rightShank = rightLeg.children[2];
-                var rightFoot = rightShank.children[3];
+                var rightShank = get("rightShankBone");
+                var rightFoot = get("rightFootBone");
 
                 var leftLeg = get("leftLegBone");
-                var leftShank = rightLeg.children[2];
-                var leftFoot = rightShank.children[3];
+                var leftShank = get("leftShankBone");
+                var leftFoot = get("leftFootBone");
+
+
+                var rightArm = get("rightArmBone");
+                var rightArmBed = get("rightArmBedBone");
+
+                var leftArm = get("leftArmBone");
+                var leftArmBed = get("leftArmBedBone");
 
                 rightLeg.rotation.x = rightLegFrame[this.i % 8];
                 rightShank.rotation.x = rightShankFrame[this.i % 8];
@@ -242,13 +249,6 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 leftLeg.rotation.x = rightLegFrame[(this.i + 4) % 8];
                 leftShank.rotation.x = rightShankFrame[(this.i + 4) % 8];
                 leftFoot.rotation.x = rightFootFrame[(this.i + 4) % 8];
-
-
-                var rightArm = get("rightArmBone");
-                var rightArmBed = rightArm.children[3];
-
-                var leftArm = get("leftArmBone");
-                var leftArmBed = leftArm.children[3];
 
                 rightArm.rotation.x = rightUpperArmFrame[this.i % 8];
                 rightArmBed.rotation.x = rightArmBedFrame[this.i % 8];
@@ -268,9 +268,7 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                 var get = function(x) {return scene.scene.getObjectByName(x, true)};
 
                 var hardWireThisShit = function(frames, object, isLeft) {
-                    console.log(object);
                     var j = isLeft ? Math.floor(frames.length / 2) : 0; // jumps the framecount up
-                    console.log(j);
                     var i;
                     var tweens = [];
                     for(i = 0; i < frames.length; i++) {
@@ -288,9 +286,9 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                     tween.start();
                 };
 
-                var rightLegFrame = [-0.56548, -0.34557, 0.15707, 0.377699, 0.37699, 0.09424, -0.37699, -0.84822, ];
-                var rightShankFrame = [0.15707, 0.25132, 0.12566, -0.03141, 0.4084, 0.879645, 1.50796, 0.94247, ];
-                var rightFootFrame = [0, 0, -0.31415, -0.25132, -0.84822, 0.06283, -0.47123, 0.09424, ];
+                var rightLegFrame = [-0.56548, -0.34557, 0.15707, 0.377699, 0.37699, 0.09424, -0.37699, -0.84822];
+                var rightShankFrame = [0.15707, 0.25132, 0.12566, -0.03141, 0.4084, 0.879645, 1.50796, 0.94247];
+                var rightFootFrame = [0, 0, -0.31415, -0.25132, -0.84822, 0.06283, -0.47123, 0.09424];
 
                 var rightUpperArmFrame = [1.16238, 0.75398, 0.21991, -0.25132, -0.81681, -0.25132, -0.12566, 0.47123];
                 var rightArmBedFrame = [-1.22522, -0.65973, -0.12566, -1.06814, -0.78539, -1.06814, -0.47123, -0.65973];
@@ -336,8 +334,19 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
                     head.rotation.y = this.y;
                 });
                 headRight.start();
-            })
+            });
+
+            $("#btnScaleArm").click(function() {
+                var get = function(x) {return scene.scene.getObjectByName(x, true)};
+
+                var arm = get("rightUpperArm");
+                arm.scale.x += 0.5;
+                // arm.scale.y += 0.5;
+                arm.scale.z += 0.5;
+            });
         };
+
+
 
 
         // return the constructor function

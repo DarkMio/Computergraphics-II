@@ -33,7 +33,7 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
         bufferGeometry.computeBoundingBox();
         var mesh = new THREE.Mesh(bufferGeometry, this.material);
         // Copy/Paste end
-        headBone.add(mesh);
+        headBone.add(this.makeGroup("Head", [mesh]));
         return headBone;
     };
 
@@ -51,20 +51,23 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
     Robot.prototype.buildUpperTorso = function(neck) {
         var upperTorso = this.buildBone(0, -50, "upperTorsoBone");
         upperTorso.add(neck);
-        upperTorso.add(this.buildMesh(new THREE.BoxGeometry(75 * this.size, 100 * this.size, 50 * this.size)));
+        var upperTorsoGeometry = this.buildMesh(new THREE.BoxGeometry(75 * this.size, 100 * this.size, 50 * this.size));
+        upperTorso.add(this.makeGroup("UpperTorso", [upperTorsoGeometry]));
         return upperTorso;
     };
 
     Robot.prototype.buildNeck = function(head) {
         var neck = this.buildBone(0, -62.5, "neckBone");
         neck.add(head);
-        neck.add(this.buildMesh(new THREE.CylinderGeometry(25 * this.size, 25 * this.size, 25 * this.size, 32)));
+        var neckGeometry = this.buildMesh(new THREE.CylinderGeometry(25 * this.size, 25 * this.size, 25 * this.size, 32));
+        neck.add(this.makeGroup("Neck", [neckGeometry]));
         return neck;
     };
 
     Robot.prototype.buildLowerTorso = function() {
         var lowerTorsoBone = this.buildBone(0, 12.5, "lowerTorsoBone");
-        lowerTorsoBone.add(this.buildMesh(new THREE.BoxGeometry(100 * this.size, 25 * this.size, 40 * this.size)));
+        var lowerTorso = this.buildMesh(new THREE.BoxGeometry(100 * this.size, 25 * this.size, 40 * this.size));
+        lowerTorsoBone.add(this.makeGroup("LowerTorso", [lowerTorso]));
         return lowerTorsoBone;
     };
 
@@ -77,28 +80,24 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
     };
 
     Robot.prototype.buildUpperArm = function(x, namePrefix) {
-        var armBone = this.buildBone(x, -36.25, namePrefix + "ArmBone");
+        var armBone = this.buildBone(x, -60.25, namePrefix + "ArmBone");
         armBone.add(this.buildMesh(new THREE.BoxGeometry(25 * this.size, 25 * this.size, 25 * this.size)));
         var upperArm = this.buildMesh(new THREE.CylinderGeometry(10 * this.size, 10 * this.size, 50 * this.size));
         upperArm.position.y -= 25 * this.size;
-        armBone.add(upperArm);
+        armBone.add(this.makeGroup(namePrefix + "UpperArm", [upperArm]));
         armBone.add(this.buildArmBed(namePrefix));
         return armBone;
     };
 
     Robot.prototype.buildArmBed = function(name) {
         var armBedBone = this.buildBone(0, 50, name + "ArmBedBone");
-        armBedBone.add(this.buildMesh(new THREE.CylinderGeometry(12.5 * this.size, 12.5 * this.size, 10 * this.size, 32)));
-
-
+        var armBedJoint = this.buildMesh(new THREE.CylinderGeometry(12.5 * this.size, 12.5 * this.size, 10 * this.size, 32));
         var armBed = this.buildMesh(new THREE.CylinderGeometry(7.5 * this.size, 7.5 * this.size, 25 * this.size, 32));
         armBed.position.y -= 12.5 * this.size;
-        armBedBone.add(armBed);
-
         var hand = this.buildMesh(new THREE.SphereBufferGeometry(7.5 * this.size, 32, 32));
         hand.position.y -= 25 * this.size;
-        armBedBone.add(hand);
 
+        armBedBone.add(this.makeGroup(name + "ArmBed", [armBedJoint, armBed, hand]));
         return armBedBone;
     };
 
@@ -114,7 +113,7 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
         var legBone = this.buildBone(x, 0, namePrefix + "LegBone");
         var leg = this.buildMesh(new THREE.CylinderGeometry(12.5 * this.size, 12.5 * this.size,50 * this.size, 32));
         leg.position.y -= 25 * this.size;
-        legBone.add(leg);
+        legBone.add(this.makeGroup(namePrefix + "Leg", [leg]));
 
 
         var shank = this.buildShank(namePrefix);
@@ -129,20 +128,20 @@ define(["three", "ellipsoid", "mat4x4", "transform"], function(THREE, Ellipsoid,
 
     Robot.prototype.buildShank = function(name) {
         var shankBone = this.buildBone(0, 50, name + "ShankBone");
-        shankBone.add(this.buildMesh(new THREE.CylinderGeometry(15 * this.size, 15 * this.size, 20 * this.size, 32)));
+        var shankJoint = this.buildMesh(new THREE.CylinderGeometry(15 * this.size, 15 * this.size, 20 * this.size, 32));
         var shank = this.buildMesh(new THREE.CylinderGeometry(10 * this.size, 10 * this.size, 50 * this.size));
         shank.position.y -= 25 * this.size;
-        shankBone.add(shank);
+        shankBone.add(this.makeGroup(name + "Shank", [shankJoint, shank]));
         return shankBone;
     };
 
     Robot.prototype.buildFoot = function(name) {
         var footBone = this.buildBone(0, 50, name + "FootBone");
-        footBone.add(this.buildMesh(new THREE.CylinderGeometry(12.5 * this.size, 12.5 * this.size, 15 * this.size, 32)));
+        var foot = this.buildMesh(new THREE.CylinderGeometry(12.5 * this.size, 12.5 * this.size, 15 * this.size, 32));
         var footPlate = this.buildMesh(new THREE.PlaneBufferGeometry(50 * this.size, 50 * this.size));
         footPlate.rotateX(-Math.PI/2);
         footPlate.position.y -= 7.5 * this.size;
-        footBone.add(footPlate);
+        footBone.add(this.makeGroup(name + "Foot", [foot, footPlate]));
         return footBone;
     };
 
