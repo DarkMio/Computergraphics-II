@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <!--
+     *
+     * JavaScript / WebGL teaching framwork
+     * (C)opyright Kristian Hildebrand, khildebrand@beuth-hochschule.de
+    -->
+
+    <title>CG2 A2: WebGL / Surfaces</title>
+
+    <!-- import main module using RequireJS -->
+    <script data-main="app.js" src="../lib/require.js"></script>
+
+    <!-- import style sheet -->
+    <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+
+</head>
+
+<body>
+
+<!-- this element will be used to diplay errors -->
+<pre id="error"></pre>
+
+<!-- centered region with drawing canvas and parameter area -->
+<div align="center">
+
+    <div id="drawing_container" width="600" height="400"></div>
+
+    <div id="param_area" class="param_content">
+        <ul>
+            <li>
+                <button id="btnSphere" type="button">Sphere</button>
+                <button id="btnPlanet" type="button">Planet</button>
+            </li>
+            <li>
+                <button id="btnExplosion" type="button">Explosion</button>
+            </li>
+        </ul>
+
+        <h3>Sphere:</h3>
+        <ul>
+            <li>
+                <input type="number" id="fieldSegmentsWidth" title="Segments (width)" placeholder="Segments (width)">
+                <input type="number" id="fieldSegmentsHeight" title="Segments (height)" placeholder="Segments (height)">
+            </li>
+        </ul>
+
+        <h3>Planet:</h3>
+        <ul>
+            <li><input id="checkAnimate" class="auto" type="checkbox"> Animate</li>
+            <li><input id="checkDay" class="auto" type="checkbox" checked> Day</li>
+            <li><input id="checkNight" class="auto" type="checkbox" checked> Night</li>
+            <li><input id="checkClouds" class="auto" type="checkbox" checked> Clouds</li>
+        </ul>
+
+        <h3>Explosion:</h3>
+        <ul>
+            <li>
+                <input type="number" id="fieldFrequency" title="Frequency Scale" placeholder="Frequency Scale">
+                <input type="number" id="fieldColorScale" title="Color Scale" placeholder="Color Scale">
+            </li>
+            <li>
+                <input type="number" id="fieldWeight" title="Weight" placeholder="Weight">
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
