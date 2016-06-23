@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["three", "util", "shaders", "BufferGeometry", "random", "band", "tween"],
-    (function(THREE, util, shaders, BufferGeometry, Random, Band, TWEEN) {
+define(["three", "util", "shaders", "BufferGeometry"],
+    (function(THREE, util, shaders, BufferGeometry) {
 
         "use strict";
 
@@ -48,7 +48,7 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band", "tween"]
              */
             function setupLightning(scene) {
                 var ambient = new THREE.AmbientLight(0xAAAAAA);
-                var direct = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+                var direct = new THREE.DirectionalLight(0xDDDDDD, 1.0);
                 direct.name = "directLight";
                 direct.position.set(-1, 0, -0.3).normalize();
                 scene.add(ambient);
@@ -138,7 +138,6 @@ define(["three", "util", "shaders", "BufferGeometry", "random", "band", "tween"]
              */
             this.draw = function() {
                 requestAnimFrame( scope.draw );
-                TWEEN.update();
                 if($("#checkAnimate").is(":checked") && scope.currentMesh) {
                     scope.currentMesh.rotation.x += 0.003;
                     scope.currentMesh.rotation.y += 0.003;

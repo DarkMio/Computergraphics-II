@@ -25,6 +25,7 @@ requirejs.config({
         "torus" : "models/torus",
         "explosion" : "models/explosion",
         "planet" : "models/planet",
+        "phong" : "models/phong",
         "util"  : "utils/util",
         "shaders" : "shaders",
         "BufferGeometry" : "scene/buffer_geometry",

@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry"],
-    (function($,BufferGeometry) {
+define(["jquery", "BufferGeometry", "phong"],
+    (function($,BufferGeometry, Phong) {
         "use strict";
 
         /*
@@ -34,6 +34,13 @@ define(["jquery", "BufferGeometry"],
                 $("#random").hide();
                 $("#band").show();
             }));
+
+
+            $("#btnSphere").click( function() {
+                var sphere = new Phong();
+                scene.addMesh(sphere.getMesh());
+            });
+
 
             $("#btnNewRandom").click( (function() {
 

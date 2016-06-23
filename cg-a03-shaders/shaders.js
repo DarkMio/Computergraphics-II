@@ -12,12 +12,14 @@
 define(["text!shaders/vertex_color.vs",   "text!shaders/vertex_color.fs",
         "text!shaders/unicolor.vs",       "text!shaders/unicolor.fs",
         "text!shaders/planet_vs.glsl",    "text!shaders/planet_fs.glsl",
-        "text!shaders/explosion_vs.glsl", "text!shaders/explosion_fs.glsl"
+        "text!shaders/explosion_vs.glsl", "text!shaders/explosion_fs.glsl",
+        "text!shaders/phong_vs.glsl",     "text!shaders/phong_fs.glsl"
     ],
     (function( vs_vertex_color, fs_vertex_color,
                vs_unicolor,     fs_unicolor,
                vs_planet,       fs_planet,
-               vs_explosion,    fs_explosion
+               vs_explosion,    fs_explosion,
+               vs_phong,        fs_phong
     ) {
 
             "use strict";
@@ -28,6 +30,7 @@ define(["text!shaders/vertex_color.vs",   "text!shaders/vertex_color.fs",
             shaders["unicolor"] = {vertex: vs_unicolor, fragment: fs_unicolor};
             shaders["planet"] = {vertex: vs_planet, fragment: fs_planet};
             shaders["explosion"] = {vertex: vs_explosion, fragment: fs_explosion};
+            shaders["phong"] = {vertex: vs_phong, fragment: fs_phong};
 
             // return source code of a vertex shader
             shaders.getVertexShader = function(shadername) {
