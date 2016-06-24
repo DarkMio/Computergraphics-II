@@ -14,5 +14,7 @@ void main() {
     viewDir = useOrthographic ? vec3(0, 0, 1) : normalize(-ecPosition.xyz);
 
     gl_Position = projectionMatrix * ecPosition;
+
+    vUv = uv;
 }
 

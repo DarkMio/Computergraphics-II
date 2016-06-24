@@ -13,7 +13,9 @@ uniform vec3 phongDiffuseMaterial;                          // difusse color  k_
 uniform vec3 phongSpecularMaterial;                         // specular color k_s
 uniform float phongShininessMaterial;                       // phong exponent a
 
-uniform sampler2D textures[3];
+uniform sampler2D dayTexture;
+uniform sampler2D nightTexture;
+uniform sampler2D cloudTexture;
 
 // three js only supports int no bool
 // if you want a boolean value in the shader, use int
@@ -35,14 +37,12 @@ uniform vec3 directionalLightCol;
  * @var viewDirection: direction of the camera looking on that
  */
 vec3 phong(vec3 position, vec3 normal, vec3 viewDirection) {
-
-    vec2 uvCoord = normalize(ecPosition.xy);
-    vec3 dayColor = texture2D(textures[1], uvCoord).rgb;   // diffuse
-    vec3 nightColor = texture2D(textures[0], uvCoord).rgb; // base material color (? ambient)
-    vec3 cloudColor = texture2D(textures[2], uvCoord).rgb; // specular
+    vec3 dayColor = texture2D(dayTexture, vUv).rgb;   // diffuse
+    vec3 nightColor = texture2D(nightTexture, vUv).rgb; // base material color (? ambient)
+    vec3 cloudColor = texture2D(cloudTexture, vUv).rgb; // specular
 
 
-    vec3 vColor = phongAmbientMaterial;
+    vec3 vColor = nightColor * phongAmbientMaterial;
     vec3 lightPosition = normalize(directionalLightDir - position);
     // E = viewDirection
     vec3 angle = normalize(reflect(directionalLightDir, normal));
@@ -51,10 +51,10 @@ vec3 phong(vec3 position, vec3 normal, vec3 viewDirection) {
 
     vec3 diffuse = vec3(0, 0, 0);
     if(dotProduct > 0.0) {
-        diffuse = phongDiffuseMaterial * directionalLightCol * dotProduct; // * directionalLightColor[0] * dotProduct;
+        diffuse = dayColor * phongDiffuseMaterial * directionalLightCol * dotProduct; // * directionalLightColor[0] * dotProduct;
     }
 
-    vec3 specular = phongSpecularMaterial * directionalLightCol * pow(max(dot(angle, viewDirection), 0.0), phongShininessMaterial);
+    vec3 specular = cloudColor * phongSpecularMaterial * directionalLightCol * pow(max(dot(angle, viewDirection), 0.0), phongShininessMaterial);
     specular = clamp(specular, 0.0, 1.0);
 
     vColor = vColor + diffuse + specular;
@@ -111,4 +111,5 @@ void main() {
 
 
     gl_FragColor = vec4(phong(ecPosition.xyz, ecNormal, viewDir), 1.0);
+    // gl_FragColor = vec4( vec3(vUv, 0.0), 1.0);
 }

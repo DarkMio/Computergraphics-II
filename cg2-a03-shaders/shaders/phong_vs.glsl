@@ -14,7 +14,6 @@ varying vec4 ecPosition;
 varying vec3 ecNormal;
 varying vec3 viewDir;
 
-
 void main() {
 
     ecPosition = modelViewMatrix * vec4(position, 1.0);

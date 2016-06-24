@@ -4,8 +4,10 @@ define(["three", "shaders"],
 
         "use strict";
 
-        var Planet = function() {
+        var Planet = function(nightTexture, dayTexture, cloudTexture) {
 
+
+            console.log(nightTexture);
 
             this.root = new THREE.Object3D();
 
@@ -23,14 +25,19 @@ define(["three", "shaders"],
 
             var uniforms = THREE.UniformsUtils.merge( [
                 THREE.UniformsLib['lights'], {
-                    phongDiffuseMaterial: {type: 'c', value: new THREE.Color(1, 0, 0)},
+                    phongDiffuseMaterial: {type: 'c', value: new THREE.Color(1, 1, 1)},
                     phongSpecularMaterial: {type: 'c', value: new THREE.Color(0.7, 0.7, 0.7)},
-                    phongAmbientMaterial: {type: 'c', value: new THREE.Color(0.2, 0.2, 0.2)},
-                    phongShininessMaterial: {type: 'f', value: 16.0},
-                    directionalLightDir: {type: 'v3', value: new THREE.Vector3(-1, 0, -0.4).normalize()},
-                    directionalLightCol: {type: 'c', value: new THREE.Color(0xAAAAAA)}
+                    phongAmbientMaterial: {type: 'c', value: new THREE.Color(0.4, 0.4, 0.4)},
+                    phongShininessMaterial: {type: 'f', value: 1.0},
+                    directionalLightDir: {type: 'v3', value: new THREE.Vector3(-1, 0, -0).normalize()},
+                    directionalLightCol: {type: 'c', value: new THREE.Color(0xAAAAAA)},
+                    // nightTexture: {value: nightTexture}
                 }
             ]);
+
+            uniforms.nightTexture = {value: nightTexture};
+            uniforms.dayTexture = {value: dayTexture};
+            uniforms.cloudTexture = {value: cloudTexture};
 
             var material = new THREE.ShaderMaterial({
                 uniforms: uniforms,

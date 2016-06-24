@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "phong", "planet"],
-    (function($,BufferGeometry, Phong, Planet) {
+define(["jquery", "BufferGeometry", "phong", "planet", "three"],
+    (function($,BufferGeometry, Phong, Planet, THREE) {
         "use strict";
 
         /*
@@ -27,8 +27,46 @@ define(["jquery", "BufferGeometry", "phong", "planet"],
             });
 
             $("#btnPlanet").click( function() {
-                var planet = new Planet();
-                scene.addMesh(planet.getMesh());
+                function closure() {
+                    var night = null;
+                    var day = null;
+                    var cloud = null;
+
+                    var scope = this;
+                    function register(name, value) {
+                        if(name == "night") {
+                            night = value;
+                        } else if(name == "day") {
+                            day = value;
+                        } else if(name == "cloud") {
+                            cloud = value;
+                        }
+                        if(day && night && cloud)  {
+                            scene.addMesh(new Planet(night, day, cloud).getMesh());
+                            night = null;
+                            day = null;
+                            cloud = null;
+                        }
+                    }
+
+                    return register;
+                }
+
+                var loaderRegister = closure();
+
+
+                var loader = new THREE.TextureLoader();
+                loader.load("textures/earth_month04.jpg", function(texture) {
+                    loaderRegister("day", texture);
+                });
+
+                loader.load("textures/earth_at_night_2048.jpg", function(texture) {
+                    loaderRegister("night", texture);
+                });
+
+                loader.load("textures/earth_clouds_2048.jpg", function(texture) {
+                    loaderRegister("cloud", texture);
+                });
             })
 
         };
