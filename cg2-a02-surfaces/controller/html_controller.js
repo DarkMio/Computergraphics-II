@@ -339,10 +339,10 @@ define(["jquery", "BufferGeometry", "random", "band", "parametric", "cube", "kno
             $("#btnScaleArm").click(function() {
                 var get = function(x) {return scene.scene.getObjectByName(x, true)};
 
-                var arm = get("rightUpperArm");
-                arm.scale.x += 0.5;
+                var arm = get("rightUpperArmBone");
+                arm.scale.y += 0.5;
                 // arm.scale.y += 0.5;
-                arm.scale.z += 0.5;
+                //arm.scale.z += 0.5;
             });
         };
 

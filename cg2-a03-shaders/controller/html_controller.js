@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "phong"],
-    (function($,BufferGeometry, Phong) {
+define(["jquery", "BufferGeometry", "phong", "planet"],
+    (function($,BufferGeometry, Phong, Planet) {
         "use strict";
 
         /*
@@ -21,56 +21,15 @@ define(["jquery", "BufferGeometry", "phong"],
          */
         var HtmlController = function(scene) {
 
-
-            $("#random").show();
-            $("#band").hide();
-
-            $("#btnRandom").click( (function() {
-                $("#random").show();
-                $("#band").hide();
-            }));
-
-            $("#btnBand").click( (function() {
-                $("#random").hide();
-                $("#band").show();
-            }));
-
-
             $("#btnSphere").click( function() {
                 var sphere = new Phong();
                 scene.addMesh(sphere.getMesh());
             });
 
-
-            $("#btnNewRandom").click( (function() {
-
-                var numPoints = parseInt($("#numItems").attr("value"));
-                var random = new Random(numPoints);
-                var bufferGeometryRandom = new BufferGeometry();
-                bufferGeometryRandom.addAttribute("position", random.getPositions());
-                bufferGeometryRandom.addAttribute("color", random.getColors());
-
-                scene.addBufferGeometry(bufferGeometryRandom);
-            }));
-
-
-            $("#btnNewBand").click( (function() {
-
-                var config = {
-                    segments : parseInt($("#numSegments").attr("value")),
-                    radius : parseInt($("#radius").attr("value")),
-                    height : parseInt($("#height").attr("value"))
-                };
-
-
-                var band = new Band(config);
-                var bufferGeometryBand = new BufferGeometry();
-                bufferGeometryBand.addAttribute("position", band.getPositions());
-                bufferGeometryBand.addAttribute("color", band.getColors());
-
-                scene.addBufferGeometry(bufferGeometryBand);
-            }));
-
+            $("#btnPlanet").click( function() {
+                var planet = new Planet();
+                scene.addMesh(planet.getMesh());
+            })
 
         };
 

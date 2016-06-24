@@ -8,8 +8,12 @@ uniform vec3 directionalLightDirection[1];
 uniform vec3 ambientLightColor[1];
 
 // uniform material constants k_a, k_d, k_s, alpha
+uniform vec3 phongAmbientMaterial;                          // ambient color  k_a
+uniform vec3 phongDiffuseMaterial;                          // difusse color  k_d
+uniform vec3 phongSpecularMaterial;                         // specular color k_s
+uniform float phongShininessMaterial;                       // phong exponent a
 
-// uniform sampler2D textures
+uniform sampler2D textures[3];
 
 // three js only supports int no bool
 // if you want a boolean value in the shader, use int
@@ -19,8 +23,47 @@ varying vec4 ecPosition;
 varying vec3 ecNormal;
 varying vec2 vUv;
 
+varying vec3 viewDir;
+
+
+uniform vec3 directionalLightDir;
+uniform vec3 directionalLightCol;
+
+/**
+ * @var position: the position point which this vertex is at
+ * @var normal: the normal of that vertex
+ * @var viewDirection: direction of the camera looking on that
+ */
+vec3 phong(vec3 position, vec3 normal, vec3 viewDirection) {
+
+    vec2 uvCoord = normalize(ecPosition.xy);
+    vec3 dayColor = texture2D(textures[1], uvCoord).rgb;   // diffuse
+    vec3 nightColor = texture2D(textures[0], uvCoord).rgb; // base material color (? ambient)
+    vec3 cloudColor = texture2D(textures[2], uvCoord).rgb; // specular
+
+
+    vec3 vColor = phongAmbientMaterial;
+    vec3 lightPosition = normalize(directionalLightDir - position);
+    // E = viewDirection
+    vec3 angle = normalize(reflect(directionalLightDir, normal));
+
+    float dotProduct = dot(normal, -directionalLightDir);
+
+    vec3 diffuse = vec3(0, 0, 0);
+    if(dotProduct > 0.0) {
+        diffuse = phongDiffuseMaterial * directionalLightCol * dotProduct; // * directionalLightColor[0] * dotProduct;
+    }
+
+    vec3 specular = phongSpecularMaterial * directionalLightCol * pow(max(dot(angle, viewDirection), 0.0), phongShininessMaterial);
+    specular = clamp(specular, 0.0, 1.0);
+
+    vColor = vColor + diffuse + specular;
+    return vColor;
+}
+
 
 void main() {
+/*
 
 
     // get color from different textures
@@ -64,5 +107,8 @@ void main() {
     vec3 color = vec3(1,0,0); //replace with ambient + diffuse + specular;
 
     gl_FragColor = vec4(color, 1.0);
+*/
 
+
+    gl_FragColor = vec4(phong(ecPosition.xyz, ecNormal, viewDir), 1.0);
 }
