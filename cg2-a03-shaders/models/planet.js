@@ -4,7 +4,7 @@ define(["three", "shaders"],
 
         "use strict";
 
-        var Planet = function(nightTexture, dayTexture, cloudTexture) {
+        var Planet = function Planet(nightTexture, dayTexture, cloudTexture, scene) {
 
 
             console.log(nightTexture);
@@ -23,15 +23,19 @@ define(["three", "shaders"],
             // and then can be set like any other uniform variable
             // material.uniforms.<uniform-var-name>.value   = <uniform-value>;
 
+            var directionalLight = scene.children[1];
+            var ambientLight = scene.children[0];
+
+
+
             var uniforms = THREE.UniformsUtils.merge( [
                 THREE.UniformsLib['lights'], {
                     phongDiffuseMaterial: {type: 'c', value: new THREE.Color(1, 1, 1)},
                     phongSpecularMaterial: {type: 'c', value: new THREE.Color(0.7, 0.7, 0.7)},
-                    phongAmbientMaterial: {type: 'c', value: new THREE.Color(0.4, 0.4, 0.4)},
-                    phongShininessMaterial: {type: 'f', value: 1.0},
-                    directionalLightDir: {type: 'v3', value: new THREE.Vector3(-1, 0, -0).normalize()},
-                    directionalLightCol: {type: 'c', value: new THREE.Color(0xAAAAAA)},
-                    // nightTexture: {value: nightTexture}
+                    phongAmbientMaterial: {type: 'c', value: ambientLight.color},
+                    phongShininessMaterial: {type: 'f', value: 2.0},
+                    directionalLightDir: {type: 'v3', value: directionalLight.position},
+                    directionalLightCol: {type: 'c', value: directionalLight.color}
                 }
             ]);
 
@@ -49,8 +53,7 @@ define(["three", "shaders"],
 
 
             scope.mesh = new THREE.Mesh( new THREE.SphereGeometry(400, 100,100), material );
-            scope.mesh.name = "planet";
-
+            scope.root.name = "planet";
             scope.root.add(scope.mesh);
 
 

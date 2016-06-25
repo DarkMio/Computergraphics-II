@@ -1,12 +1,5 @@
 precision mediump float;
 
-
-// uniform lights (we only have the sun)
-uniform vec3 directionalLightColor[1];
-uniform vec3 directionalLightDirection[1];
-
-uniform vec3 ambientLightColor[1];
-
 // uniform material constants k_a, k_d, k_s, alpha
 uniform vec3 phongAmbientMaterial;                          // ambient color  k_a
 uniform vec3 phongDiffuseMaterial;                          // difusse color  k_d
@@ -16,6 +9,10 @@ uniform float phongShininessMaterial;                       // phong exponent a
 uniform sampler2D dayTexture;
 uniform sampler2D nightTexture;
 uniform sampler2D cloudTexture;
+
+uniform vec3 ambientLightColor;
+
+uniform vec3 directionalLightColor[1];
 
 // three js only supports int no bool
 // if you want a boolean value in the shader, use int
@@ -41,6 +38,7 @@ vec3 phong(vec3 position, vec3 normal, vec3 viewDirection) {
     vec3 nightColor = texture2D(nightTexture, vUv).rgb; // base material color (? ambient)
     vec3 cloudColor = texture2D(cloudTexture, vUv).rgb; // specular
 
+    nightColor = pow(nightColor, vec3(0.6));
 
     vec3 vColor = nightColor * phongAmbientMaterial;
     vec3 lightPosition = normalize(directionalLightDir - position);
@@ -57,7 +55,7 @@ vec3 phong(vec3 position, vec3 normal, vec3 viewDirection) {
     vec3 specular = cloudColor * phongSpecularMaterial * directionalLightCol * pow(max(dot(angle, viewDirection), 0.0), phongShininessMaterial);
     specular = clamp(specular, 0.0, 1.0);
 
-    vColor = vColor + diffuse + specular;
+    vColor = vColor * (1.0 - dotProduct) + diffuse * dotProduct + specular;
     return vColor;
 }
 

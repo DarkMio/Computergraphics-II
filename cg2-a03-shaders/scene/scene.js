@@ -32,7 +32,7 @@ define(["three", "util", "shaders", "BufferGeometry"],
             scope.camera.position.z = 1000;
             scope.scene = new THREE.Scene();
 
-            setupLightning(scope.scene);
+            setupLightning();
 
             // Add a listener for 'keydown' events. By this listener, all key events will be
             // passed to the function 'onDocumentKeyDown'. There's another event type 'keypress'.
@@ -41,18 +41,22 @@ define(["three", "util", "shaders", "BufferGeometry"],
             scope.audioListener = new THREE.AudioListener();
             scope.camera.add(scope.audioListener);
 
+            scope.start = Date.now();
+
 
             /**
              * Sets up some nice lights in the given scene.
-             * @param scene
              */
-            function setupLightning(scene) {
+            function setupLightning() {
+                scope.lightRotation = -Math.PI/2;
                 var ambient = new THREE.AmbientLight(0xAAAAAA);
                 var direct = new THREE.DirectionalLight(0xDDDDDD, 1.0);
                 direct.name = "directLight";
-                direct.position.set(-1, 0, -0.3).normalize();
-                scene.add(ambient);
-                scene.add(direct);
+                direct.position.set(Math.sin(scope.lightRotation), 0, Math.cos(scope.lightRotation)).normalize();
+                scope.scene.add(ambient);
+                scope.scene.add(direct);
+
+                scope.light = direct;
 
                 /*
                 var main = new THREE.PointLight(0xFFFFFF, 0.8, 1500);
@@ -138,10 +142,31 @@ define(["three", "util", "shaders", "BufferGeometry"],
              */
             this.draw = function() {
                 requestAnimFrame( scope.draw );
+                
+                
+                
                 if($("#checkAnimate").is(":checked") && scope.currentMesh) {
-                    scope.currentMesh.rotation.x += 0.003;
-                    scope.currentMesh.rotation.y += 0.003;
-                    scope.currentMesh.rotation.z += 0.003;
+                    // scope.currentMesh.rotation.x += 0.003;
+                    scope.currentMesh.rotation.y -= 0.003;
+                    // scope.currentMesh.rotation.z += 0.003;
+
+                }
+
+                if($("#checkLightAnimate").is(":checked") && scope.currentMesh) {
+                    var rot = scope.lightRotation;
+                    scope.lightRotation = (rot + 0.01) % (2 * Math.PI);
+                    scope.light.position.set(Math.sin(rot), 0, Math.cos(rot)).normalize();
+                    if(scope.currentMesh.name == "planet") {
+                        var uni = scope.currentMesh.children[0].material.uniforms;
+                        // uni.directionalLightCol.value = scope.light.color;
+                        uni.directionalLightDir.value = scope.light.position;
+                        // console.log(obj);
+                    }
+                }
+
+                if(scope.currentMesh && scope.currentMesh.name === "explosion") {
+                    scope.currentMesh.children[0].material.uniforms['time'].value = .00035 * (Date.now() - scope.start);
+
                 }
 
                 scope.renderer.render(scope.scene, scope.camera);

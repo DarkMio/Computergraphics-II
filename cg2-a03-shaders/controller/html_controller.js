@@ -11,8 +11,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "BufferGeometry", "phong", "planet", "three"],
-    (function($,BufferGeometry, Phong, Planet, THREE) {
+define(["jquery", "BufferGeometry", "phong", "planet", "explosion", "three"],
+    (function($,BufferGeometry, Phong, Planet, Explosion, THREE) {
         "use strict";
 
         /*
@@ -20,6 +20,8 @@ define(["jquery", "BufferGeometry", "phong", "planet", "three"],
          * and provide them with a closure defining context and scene
          */
         var HtmlController = function(scene) {
+
+            var scope = this;
 
             $("#btnSphere").click( function() {
                 var sphere = new Phong();
@@ -42,7 +44,7 @@ define(["jquery", "BufferGeometry", "phong", "planet", "three"],
                             cloud = value;
                         }
                         if(day && night && cloud)  {
-                            scene.addMesh(new Planet(night, day, cloud).getMesh());
+                            scene.addMesh(new Planet(night, day, cloud, scene.scene).getMesh());
                             night = null;
                             day = null;
                             cloud = null;
@@ -67,7 +69,47 @@ define(["jquery", "BufferGeometry", "phong", "planet", "three"],
                 loader.load("textures/earth_clouds_2048.jpg", function(texture) {
                     loaderRegister("cloud", texture);
                 });
-            })
+            });
+
+            $('#btnExplosion').click(function() {
+                var loader = new THREE.TextureLoader();
+                loader.load("textures/explosion.png", function(texture) {
+                    scene.addMesh(new Explosion(texture).getMesh());
+                    scope.setExplosionFilds();
+
+                });
+
+            });
+
+            this.setExplosionFilds = function() {
+                if(scene.currentMesh.name === "explosion") {
+                    var uniforms = scene.currentMesh.children[0].material.uniforms;
+                    $("#fieldFrequency").val(uniforms.freqScale.value);
+                    $("#fieldColorScale").val(uniforms.colorScale.value);
+                    $("#fieldWeight").val(uniforms.weight.value);
+                }
+            };
+
+            var changeListener = function() {
+                console.log("???");
+                var freqScale = $("#fieldFrequency").val();
+                var colorScale = $("#fieldColorScale").val();
+                var weight = $("#fieldWeight").val();
+
+                if(scene.currentMesh.name === "explosion") {
+                    var uniforms = scene.currentMesh.children[0].material.uniforms;
+                    uniforms.freqScale.value = parseFloat(freqScale);
+                    uniforms.colorScale.value = parseFloat(colorScale);
+                    uniforms.weight.value = parseFloat(weight);
+                    console.log(parseFloat(freqScale), freqScale)
+                }
+            };
+
+            $("#fieldFrequency").on('input', changeListener);
+            $("#fieldColorScale").on('input', changeListener);
+            $("#fieldWeight").on('input', changeListener);
+
+
 
         };
 
