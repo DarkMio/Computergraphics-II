@@ -1,4 +1,5 @@
-# Computergrafik 2 Repository
+# Computergraphics 2
 
-- Fabian Wendland 813158
-- Martin Zier 824320
+- A01: Canvas
+- A02: Parametric Geometry
+- A03: Shaders
